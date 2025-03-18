@@ -20,7 +20,15 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+
+    "baseUrl": ".",
+
+    /* Paths */
+    "paths": {
+      "@clients/*": ["src/clients/*"],
+      "@services/*": ["src/services/*"]
+    }
   },
   "include": ["src"]
 }

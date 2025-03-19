@@ -1,24 +1,23 @@
 // import qs from 'qs';
+import type { DragonballAPI } from './types';
 import { dragonballAPI } from './configuration';
 
 export const baseURL = '/characters';
 
-async function getAll(): Promise<unknown> {
+async function getAll(): Promise<DragonballAPI.CharactersResponse> {
     try {
-        const response = await dragonballAPI.get(`${baseURL}`);
-        const results = await response.json();
-        return results;
+        const result = await dragonballAPI.get<DragonballAPI.CharactersResponse>(`${baseURL}`);
+        return result;
     } catch (error) {
         console.error('[DRAGON_BALL API][CHARACTERS][ERROR][getAll]', error);
         throw error;
     }
 }
 
-async function getById(id: number | string): Promise<unknown> {
+async function getById(id: number | string): Promise<DragonballAPI.CharacterResponse> {
     try {
-        const response = await dragonballAPI.get(`${baseURL}/${id}`);
-        const results = await response.json();
-        return results;
+        const result = await dragonballAPI.get<DragonballAPI.CharacterResponse>(`${baseURL}/${id}`);
+        return result;
     } catch (error) {
         const payload = { id };
         console.error(`[DRAGON_BALL API][CHARACTERS][ERROR][getById] ${payload}`, error);

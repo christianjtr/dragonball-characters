@@ -4,22 +4,28 @@ interface HTTPClientConfig {
 }
 
 interface HTTPClient {
-  get: (uri: string, config?: RequestInit) => Promise<Response>;
+  get: <T>(uri: string, config?: RequestInit) => Promise<T>;
 }
 
 function createHTTPClient(config: HTTPClientConfig): HTTPClient {
   const baseURL = config.baseURL;
   const defaultHeaders = config.headers || {};
 
-  const get = async (uri: string, config?: RequestInit): Promise<Response> => {
+  const get = async <T>(uri: string, config?: RequestInit): Promise<T> => {
     const headers = { ...defaultHeaders, ...config?.headers };
 
     try {
-      const response = await fetch(`${baseURL}${uri}`, {
+      const request = await fetch(`${baseURL}${uri}`, {
         ...config,
         method: 'GET',
         headers,
       });
+
+      if (!request.ok) {
+        throw new Error(`[HTTPCLIENT][ERROR][status]: ${request.status}`);
+      }
+
+      const response = await request.json();
 
       return response;
     } catch (error) {

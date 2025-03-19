@@ -9,6 +9,7 @@ export default defineConfig({
     alias: {
       "@clients": resolve(__dirname, "./src/clients"),
       "@services": resolve(__dirname, "./src/services"),
+      "@hooks": resolve(__dirname, "./src/hooks"),
     },
   },
 })

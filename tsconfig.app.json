@@ -27,7 +27,8 @@
     /* Paths */
     "paths": {
       "@clients/*": ["src/clients/*"],
-      "@services/*": ["src/services/*"]
+      "@services/*": ["src/services/*"],
+      "@hooks/*": ["src/hooks/*"]
     }
   },
   "include": ["src"]

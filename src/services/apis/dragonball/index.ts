@@ -1,1 +1,1 @@
-export { default as characters } from './characters.services';
+export { default as DragonballCharacters } from './characters.services';

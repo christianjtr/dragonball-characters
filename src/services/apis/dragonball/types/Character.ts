@@ -1,5 +1,5 @@
-import { Planet } from "./Planet";
-import { Transformation } from "./Transformation";
+import type { Planet } from "./Planet";
+import type { Transformation } from "./Transformation";
 
 export interface Character {
     id: number;

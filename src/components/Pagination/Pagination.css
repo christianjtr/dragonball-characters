@@ -1,0 +1,48 @@
+nav[aria-label='Page navigation'] {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.pagination {
+  list-style: none;
+  padding: 0;
+  display: flex;
+}
+
+.page-item {
+  margin: 0 5px;
+}
+
+.page-link {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  background-color: white;
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.page-link:hover {
+  background-color: #f0f0f0;
+}
+
+.page-item.active .page-link {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.page-item.disabled .page-link {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.page-link:not(a) {
+  cursor: default;
+}
+
+.page-link:not(a):hover {
+  background-color: white;
+}

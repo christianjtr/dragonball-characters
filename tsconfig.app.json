@@ -30,7 +30,9 @@
       "@clients/*": ["src/clients/*"],
       "@services/*": ["src/services/*"],
       "@hooks/*": ["src/hooks/*"],
-      "@pages/*": ["src/pages/*"]
+      "@pages/*": ["src/pages/*"],
+      "@app-types/*": ["src/types/*"],
+      "@components/*": ["src/components/*"]
     }
   },
   "include": ["src"]

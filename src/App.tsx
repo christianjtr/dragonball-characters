@@ -1,16 +1,15 @@
-import React from 'react';
+import React, { Suspense } from 'react';
+import { BrowserRouter as Router } from "react-router";
+import { AppRoutes } from './routes/AppRoutes';
 import './App.css';
-import { useFetchCharacters } from './hooks/useFetchCharacters';
 
-function App() {
-  const { characters } = useFetchCharacters();
-
+function App(): React.JSX.Element {
   return (
-    <React.Fragment>
-      {characters?.map((eachCharacter) => (
-        <pre key={eachCharacter.id} style={{ textAlign: 'left' }}>{JSON.stringify(eachCharacter, null, 2)}</pre>
-      ))}
-    </React.Fragment>
+    <Router basename={"/"}>
+      <Suspense fallback={<span>Loading...</span>}>
+        <AppRoutes />
+      </Suspense>
+    </Router>
   );
 }
 

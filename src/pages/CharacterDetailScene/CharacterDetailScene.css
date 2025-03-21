@@ -1,0 +1,60 @@
+.character-details {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px;
+  width: 400px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.character-details img {
+  width: 100%;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.character-details h2 {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+.character-details p {
+  margin: 4px 0;
+}
+
+.character-details .ki {
+  font-weight: bold;
+  color: #007bff;
+}
+
+.character-details .max-ki {
+  font-style: italic;
+  color: #6c757d;
+}
+
+.origin-planet {
+  border: 1px solid #eee;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.origin-planet img {
+  width: 80px;
+  margin-bottom: 5px;
+}
+
+.transformations {
+  list-style: none;
+  padding: 0;
+}
+
+.transformations li {
+  border: 1px solid #eee;
+  padding: 10px;
+  margin-bottom: 5px;
+}
+
+.transformations li img {
+  width: 60px;
+  margin-bottom: 5px;
+}

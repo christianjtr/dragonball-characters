@@ -1,5 +1,6 @@
 import React from 'react';
 import { useFetchCharacters } from '@hooks/useFetchCharacters';
+import { CharacterList } from './components';
 
 export default function CharactersHomeScene(): React.JSX.Element | null {
     const { characters } = useFetchCharacters();
@@ -11,11 +12,7 @@ export default function CharactersHomeScene(): React.JSX.Element | null {
     return (
         <React.Fragment>
             <div>CharactersHomeScene</div>
-            <div style={{ textAlign: 'left' }}>
-                {characters.map((eachCharacter, index) => (
-                    <pre key={index}>{JSON.stringify(eachCharacter, null, 2)}</pre>
-                ))}
-            </div>
+            <CharacterList characters={characters} />
         </React.Fragment>
     );
 }

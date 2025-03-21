@@ -1,4 +1,4 @@
-import type { Character } from "./Character";
+import type { Character, CharacterSummary } from "./Character";
 
 export type Meta = {
     totalItems: number;
@@ -17,7 +17,7 @@ export type Links = {
 
 export namespace DragonballAPI {
     export interface CharactersResponse {
-        items: Omit<Character, 'originPlanet' | 'transformations'>[];
+        items: CharacterSummary[];
         meta: Meta;
         links: Links;
     }

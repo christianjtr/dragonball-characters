@@ -1,15 +1,20 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter as Router } from "react-router";
+import { Loader } from '@components/Loader/Loader';
 import { AppRoutes } from './routes/AppRoutes';
-import './App.css';
+import AppLayout from './layouts/AppLayout';
 
 function App(): React.JSX.Element {
   return (
-    <Router basename={"/"}>
-      <Suspense fallback={<span>Loading...</span>}>
-        <AppRoutes />
-      </Suspense>
-    </Router>
+    <React.Fragment>
+      <Router basename={"/"}>
+        <AppLayout>
+          <Suspense fallback={<Loader />}>
+            <AppRoutes />
+          </Suspense>
+        </AppLayout>
+      </Router>
+    </React.Fragment>
   );
 }
 

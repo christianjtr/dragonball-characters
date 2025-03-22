@@ -1,0 +1,10 @@
+.loader__image-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.loader__image {
+  max-height: 200px;
+  width: auto;
+}

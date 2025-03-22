@@ -13,6 +13,7 @@ export default defineConfig({
       "@pages": resolve(__dirname, "./src/pages"),
       "@app-types": resolve(__dirname, "./src/types"),
       "@components": resolve(__dirname, "./src/components"),
+      "@assets": resolve(__dirname, "./src/assets"),
     },
   },
 })

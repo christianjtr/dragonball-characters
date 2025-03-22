@@ -1,0 +1,63 @@
+/* BEM CSS */
+
+.header {
+  display: flex;
+  align-items: center;
+  background-color: #f0f0f0;
+  padding: 1rem;
+  position: sticky;
+  top: 0px;
+}
+
+.header__logo-container {
+  margin-right: 1rem; /* Space between logo and other elements */
+}
+
+.header__logo {
+  max-height: 50px; /* Adjust as needed */
+  width: auto;
+}
+
+.header__title {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.header__nav {
+  margin-left: auto; /* Push navigation to the right */
+}
+
+.header__nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+}
+
+.header__nav-item {
+  margin-left: 1rem;
+}
+
+.header__nav-link {
+  text-decoration: none;
+  color: #333;
+}
+
+.header__nav-link:hover {
+  color: #007bff; /* Example hover color */
+}
+
+/* Example Modifiers (if needed) */
+
+.header--dark {
+  background-color: #333;
+  color: #fff;
+}
+
+.header--dark .header__nav-link {
+  color: #fff;
+}
+
+.header--dark .header__nav-link:hover {
+  color: #add8e6;
+}

@@ -1,12 +1,28 @@
-// import qs from 'qs';
+import qs from 'qs';
 import type { DragonballAPI } from './types';
 import { dragonballAPI } from './configuration';
 
 export const baseURL = '/characters';
 
-async function getAll(): Promise<DragonballAPI.CharactersResponse> {
+export interface GetAllCharactersServiceProps {
+    pagination?: DragonballAPI.Pagination;
+    filters?: DragonballAPI.Filters;
+    url?: string;
+}
+
+const defaultPagination = {
+    page: 1,
+    limit: 10,
+};
+
+async function getAll(opts?: GetAllCharactersServiceProps): Promise<DragonballAPI.CharactersResponse> {
+    const { pagination, filters, url } = opts || { pagination: defaultPagination };
+    const queryString = qs.stringify({ ...pagination, ...filters }, { addQueryPrefix: true, skipNulls: true });
+
+    const requestURL = url || `${baseURL}${queryString}`;
+
     try {
-        const result = await dragonballAPI.get<DragonballAPI.CharactersResponse>(`${baseURL}`);
+        const result = await dragonballAPI.get<DragonballAPI.CharactersResponse>(requestURL);
         return result;
     } catch (error) {
         console.error('[DRAGON_BALL API][CHARACTERS][ERROR][getAll]', error);
@@ -25,7 +41,7 @@ async function getById(id: number | string): Promise<DragonballAPI.CharacterResp
     }
 }
 
-export default {
+export const DragonballCharactersService = {
     getAll,
     getById
 }

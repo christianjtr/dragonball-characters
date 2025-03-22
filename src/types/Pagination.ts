@@ -1,16 +1,9 @@
-export namespace Pagination {
-    export type Meta = {
-        totalItems: number;
-        itemCount: number;
-        itemsPerPage: number;
-        totalPages: number;
-        currentPage: number;
-    };
+export const DEFAULT_PAGE_SIZE = 10;
+export const DEFAULT_CURRENT_PAGE = 1;
+export const DEFAULT_TOTAL_PAGE = 1;
+export const DEFAULT_PAGE_RANGE_DISPLAYED = 5;
 
-    export type Links = {
-        first: string;
-        previous: string | null;
-        next: string | null;
-        last: string;
-    };
+export type Pagination = {
+    page: number;
+    limit: number;
 }

@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback, useTransition } from "react";
 import type { DragonballAPI } from "@services/apis/dragonball/types";
-import { DragonballCharacters } from "@services/apis/dragonball";
+import { DragonballCharactersService } from "@services/apis/dragonball";
 
 export const useFetchCharacterById = (id: number | string) => {
     const [character, setCharacter] = useState<DragonballAPI.CharacterResponse>();
@@ -10,7 +10,7 @@ export const useFetchCharacterById = (id: number | string) => {
     const fetch = useCallback(() => {
         startTransition(async () => {
             try {
-                const data = await DragonballCharacters.getById(id);
+                const data = await DragonballCharactersService.getById(id);
                 setCharacter(data);
             } catch (error) {
                 setError(error);

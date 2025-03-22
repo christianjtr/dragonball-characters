@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useParams } from "react-router";
 import { useFetchCharacterById } from '@hooks/useFetchCharacterById';
 import './CharacterDetailScene.css';
@@ -6,7 +6,9 @@ import './CharacterDetailScene.css';
 export default function CharacterDetailScene(): React.JSX.Element | null {
     const { id } = useParams<{ id: string }>();
 
-    const { character } = useFetchCharacterById(id!);
+    const { character } = useFetchCharacterById(
+        useMemo(() => id!, [id]),
+    );
 
     if (!character) {
         return null;

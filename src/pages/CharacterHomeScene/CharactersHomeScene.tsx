@@ -20,13 +20,13 @@ export default function CharactersHomeScene(): React.JSX.Element | null {
         }), [pageNumber, pageSize]),
     );
 
-    const handleOnChangePage = ((pageNumber: number) => {
+    const handleOnChangePage = (pageNumber: number) => {
         setPageNumber(pageNumber);
-    });
+    };
 
-    const handleOnChangePageSize = ((pageSize: number) => {
+    const handleOnChangePageSize = (pageSize: number) => {
         setPageSize(pageSize);
-    });
+    };
 
     useEffect(() => {
         setSearchParams({

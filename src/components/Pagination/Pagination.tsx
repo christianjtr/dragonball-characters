@@ -11,7 +11,7 @@ interface PaginationProps {
     onChangePageSize: (pageSize: number) => void;
 }
 
-const Pagination: React.FC<PaginationProps> = (props) => {
+const Pagination: React.FC<PaginationProps> = (props): React.JSX.Element => {
     const {
         currentPage = DEFAULT_CURRENT_PAGE,
         totalPages = DEFAULT_TOTAL_PAGE,

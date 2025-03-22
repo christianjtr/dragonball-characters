@@ -7,11 +7,11 @@ interface CharacterListProps {
     characters: CharacterSummary[];
 }
 
-const CharacterList: React.FC<CharacterListProps> = ({ characters }) => {
+const CharacterList: React.FC<CharacterListProps> = ({ characters }): React.JSX.Element => {
     return (
         <div className='grid-container'>
             {characters.map((eachCharacter, index) => (
-                <CharacterCard key={index} character={eachCharacter} />
+                <CharacterCard key={`character_card_item_${index}`} character={eachCharacter} />
             ))}
         </div>
     );

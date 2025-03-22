@@ -7,7 +7,7 @@ interface CharacterCardProps {
     character: CharacterSummary;
 }
 
-const CharacterCard: React.FC<CharacterCardProps> = ({ character }) => {
+const CharacterCard: React.FC<CharacterCardProps> = ({ character }): React.JSX.Element => {
     const {
         image,
         name,

@@ -11,7 +11,7 @@ export const Header = (): React.JSX.Element => {
                     <img src={DragonballLogo} alt="Dragonball brand logo" className="header__logo" />
                 </Link>
             </div>
-            <h1 className="header__title">My Brand</h1>
+            <h1 className="header__title">Dragonball Characters</h1>
             {/* <nav className="header__nav">
                 <ul className="header__nav-list">
                     <li className="header__nav-item">

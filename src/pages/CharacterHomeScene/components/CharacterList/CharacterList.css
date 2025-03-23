@@ -1,9 +1,9 @@
 .grid-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  max-width: 1200px; /* Example max-width */
-  margin: 0 auto; /* Center the grid container */
+  gap: 5px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 @media (max-width: 768px) {

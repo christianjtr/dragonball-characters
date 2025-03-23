@@ -16,5 +16,5 @@ export interface Character {
     transformations: Transformation[];
 }
 
-export type CharacterSummary = Omit<Character, 'originPlanet' | 'transformations'>;
+export type CharacterSummary = Omit<Character, "originPlanet" | "transformations">;
 

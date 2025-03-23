@@ -17,7 +17,7 @@ function createHTTPClient(config: HTTPClientConfig): HTTPClient {
     try {
       const request = await fetch(`${baseURL}${uri}`, {
         ...config,
-        method: 'GET',
+        method: "GET",
         headers,
       });
 
@@ -29,7 +29,7 @@ function createHTTPClient(config: HTTPClientConfig): HTTPClient {
 
       return response;
     } catch (error) {
-      console.error('[HTTPCLIENT][ERROR][GET]', error);
+      console.error("[HTTPCLIENT][ERROR][GET]", error);
       throw error;
     }
   }

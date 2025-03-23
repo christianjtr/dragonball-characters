@@ -1,7 +1,7 @@
-import { createHTTPClient } from '@clients/httpClient';
+import { createHTTPClient } from "@clients/httpClient";
 
 const API_CONFIGURATION = {
-    BASE_API_URL: 'https://dragonball-api.com/api',
+    BASE_API_URL: "https://dragonball-api.com/api",
 };
 
 export const dragonballAPI = createHTTPClient({

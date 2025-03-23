@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
+import React, { useMemo } from "react";
 import { useParams } from "react-router";
-import { useFetchCharacterById } from '@hooks/useFetchCharacterById';
-import './CharacterDetailScene.css';
+import { useFetchCharacterById } from "@hooks/useFetchCharacterById";
+import "./CharacterDetailScene.css";
 
 export default function CharacterDetailScene(): React.JSX.Element | null {
     const { id } = useParams<{ id: string }>();
@@ -29,7 +29,7 @@ export default function CharacterDetailScene(): React.JSX.Element | null {
             <div className="origin-planet">
                 <img src={character.originPlanet.image} alt={character.originPlanet.name} />
                 <h4>{character.originPlanet.name}</h4>
-                <p><strong>Destruido:</strong> {character.originPlanet.isDestroyed ? 'Sí' : 'No'}</p>
+                <p><strong>Destruido:</strong> {character.originPlanet.isDestroyed ? "Sí" : "No"}</p>
                 <p>{character.originPlanet.description}</p>
             </div>
 

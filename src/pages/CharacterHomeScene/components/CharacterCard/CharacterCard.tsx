@@ -1,7 +1,7 @@
-import React from 'react';
-import { Link } from 'react-router';
-import type { CharacterSummary } from '@services/apis/dragonball/types/Character';
-import './CharacterCard.css';
+import React from "react";
+import { Link } from "react-router";
+import type { CharacterSummary } from "@services/apis/dragonball/types/Character";
+import "./CharacterCard.css";
 
 interface CharacterCardProps {
     character: CharacterSummary;

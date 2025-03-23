@@ -1,16 +1,15 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router";
-import { useFetchCharacters } from '@hooks/useFetchCharacters';
-import { ALLOWED_PAGE_SIZES, DEFAULT_CURRENT_PAGE, DEFAULT_PAGE_SIZE } from '@app-types/Pagination';
-import { Pagination } from '@components/Pagination/Pagination';
-import { CharacterList } from './components';
-import { CharacterSorter } from './components/CharacterSorter/CharacterSorter';
+import { useFetchCharacters } from "@hooks/useFetchCharacters";
+import { ALLOWED_PAGE_SIZES, DEFAULT_CURRENT_PAGE, DEFAULT_PAGE_SIZE } from "@app-types/Pagination";
+import { Pagination } from "@components/Pagination/Pagination";
+import { CharacterList, CharacterSorter } from "./components";
 
 export default function CharactersHomeScene(): React.JSX.Element | null {
     const [searchParam, setSearchParams] = useSearchParams();
 
-    const pageNumberParam = Number(searchParam.get('page'));
-    const pageSizeParam = Number(searchParam.get('limit'));
+    const pageNumberParam = Number(searchParam.get("page"));
+    const pageSizeParam = Number(searchParam.get("limit"));
 
     const [pageNumber, setPageNumber] = useState<number>(pageNumberParam || DEFAULT_CURRENT_PAGE);
     const [pageSize, setPageSize] = useState<number>(ALLOWED_PAGE_SIZES.includes(pageSizeParam) ? pageSizeParam : DEFAULT_PAGE_SIZE);
@@ -51,7 +50,7 @@ export default function CharactersHomeScene(): React.JSX.Element | null {
     }
 
     return (
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 4fr' }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 4fr" }}>
             <div>
                 <CharacterSorter onSort={handleOnApplySortFilters} />
             </div>

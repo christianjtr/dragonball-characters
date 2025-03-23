@@ -1,1 +1,1 @@
-export { DragonballCharactersService } from './characters.services';
+export { DragonballCharactersService } from "./characters.services";

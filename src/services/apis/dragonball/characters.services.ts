@@ -1,8 +1,8 @@
-import qs from 'qs';
-import type { DragonballAPI } from './types';
-import { dragonballAPI } from './configuration';
+import qs from "qs";
+import type { DragonballAPI } from "./types";
+import { dragonballAPI } from "./configuration";
 
-export const baseURL = '/characters';
+export const baseURL = "/characters";
 
 export interface GetAllCharactersServiceProps {
     pagination?: DragonballAPI.Pagination;
@@ -25,7 +25,7 @@ async function getAll(opts?: GetAllCharactersServiceProps): Promise<DragonballAP
         const result = await dragonballAPI.get<DragonballAPI.CharactersResponse>(requestURL);
         return result;
     } catch (error) {
-        console.error('[DRAGON_BALL API][CHARACTERS][ERROR][getAll]', error);
+        console.error("[DRAGON_BALL API][CHARACTERS][ERROR][getAll]", error);
         throw error;
     }
 }

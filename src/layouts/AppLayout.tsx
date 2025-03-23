@@ -1,6 +1,6 @@
 import React from "react";
 import { Header } from "./Header/Header";
-import './AppLayout.css';
+import "./AppLayout.css";
 
 interface AppLayoutProps {
     children: React.JSX.Element;

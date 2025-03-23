@@ -5,16 +5,16 @@ interface CharacterSorterProps {
     onSort: (fields: string[]) => void;
 }
 
-export const CharacterSorter: React.FC<CharacterSorterProps> = (props): React.JSX.Element => {
+const CharacterSorter: React.FC<CharacterSorterProps> = (props): React.JSX.Element => {
     const [fields, setFields] = useState<string[]>([]);
 
     const { onSort } = props;
 
     const sorters = [
-        { key: 'affiliation', label: 'Affiliation' },
-        { key: 'gender', label: 'Gender' },
-        { key: 'name', label: 'Name' },
-        { key: 'race', label: 'Race' },
+        { key: "affiliation", label: "Affiliation" },
+        { key: "gender", label: "Gender" },
+        { key: "name", label: "Name" },
+        { key: "race", label: "Race" },
     ];
 
     const handleOnCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,9 +36,9 @@ export const CharacterSorter: React.FC<CharacterSorterProps> = (props): React.JS
     }
 
     return (
-        <div style={{ textAlign: 'left' }}>
+        <div style={{ textAlign: "left" }}>
             <h3>Sort alphabetycally by:</h3>
-            <div style={{ display: 'flex', flexFlow: 'column' }}>
+            <div style={{ display: "flex", flexFlow: "column" }}>
                 {sorters.map((sorter, index) => (
                     <label htmlFor={`sorter_item_${sorter.key}`} key={`sorter_item_${index}`}>
                         <input
@@ -58,3 +58,5 @@ export const CharacterSorter: React.FC<CharacterSorterProps> = (props): React.JS
         </div>
     );
 }
+
+export default CharacterSorter;

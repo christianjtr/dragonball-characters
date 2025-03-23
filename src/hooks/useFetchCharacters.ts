@@ -1,23 +1,47 @@
 import { useEffect, useState, useCallback, useTransition } from "react";
+import { sortDataBy } from "@utils/sortDataBy";
 import type { DragonballAPI } from "@services/apis/dragonball/types";
 import type { GetAllCharactersServiceProps } from "@services/apis/dragonball/characters.services";
 import { DragonballCharactersService } from "@services/apis/dragonball";
+import type { CharacterSummary } from "@services/apis/dragonball/types/Character";
 
-export const useFetchCharacters = (searchFilters: GetAllCharactersServiceProps) => {
+interface UseFetchCharactersProps {
+    searchFilters?: GetAllCharactersServiceProps,
+    sortFields?: string[];
+}
+
+export const useFetchCharacters = (props: UseFetchCharactersProps) => {
+    const { searchFilters, sortFields } = props || {};
+
     const [data, setCharacters] = useState<DragonballAPI.CharactersResponse>();
     const [isLoading, startTransition] = useTransition();
     const [error, setError] = useState<unknown>();
+
+    const shouldSortData = sortFields!.length > 0;
 
     const fetch = useCallback(() => {
         startTransition(async () => {
             try {
                 const data = await DragonballCharactersService.getAll(searchFilters);
-                setCharacters(data);
+
+                let items = data.items;
+                if (shouldSortData) {
+                    items = sortDataBy<CharacterSummary>(data.items, sortFields!);
+                }
+
+                setCharacters({
+                    ...data,
+                    items,
+                });
             } catch (error) {
                 setError(error);
             }
         });
-    }, [searchFilters]);
+    }, [searchFilters, shouldSortData, sortFields]);
+
+    useEffect(() => {
+
+    }, [sortFields]);
 
     useEffect(() => {
         fetch();

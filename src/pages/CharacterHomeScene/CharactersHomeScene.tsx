@@ -4,6 +4,7 @@ import { useFetchCharacters } from '@hooks/useFetchCharacters';
 import { ALLOWED_PAGE_SIZES, DEFAULT_CURRENT_PAGE, DEFAULT_PAGE_SIZE } from '@app-types/Pagination';
 import { Pagination } from '@components/Pagination/Pagination';
 import { CharacterList } from './components';
+import { CharacterSorter } from './components/CharacterSorter/CharacterSorter';
 
 export default function CharactersHomeScene(): React.JSX.Element | null {
     const [searchParam, setSearchParams] = useSearchParams();
@@ -13,12 +14,18 @@ export default function CharactersHomeScene(): React.JSX.Element | null {
 
     const [pageNumber, setPageNumber] = useState<number>(pageNumberParam || DEFAULT_CURRENT_PAGE);
     const [pageSize, setPageSize] = useState<number>(ALLOWED_PAGE_SIZES.includes(pageSizeParam) ? pageSizeParam : DEFAULT_PAGE_SIZE);
+    const [selectedSortFields, setSelectedSortFields] = useState<string[]>([]);
 
-    const { characters, totalPages, currentPage, itemsPerPage, totalItems } = useFetchCharacters(
-        useMemo(() => ({
-            pagination: { page: pageNumber, limit: pageSize }
-        }), [pageNumber, pageSize]),
-    );
+    const searchFilters = useMemo(() => ({
+        pagination: { page: pageNumber, limit: pageSize },
+    }), [pageNumber, pageSize]);
+
+    const sortFields = useMemo(() => selectedSortFields, [selectedSortFields]);
+
+    const { characters, totalPages, currentPage, itemsPerPage, totalItems } = useFetchCharacters({
+        searchFilters,
+        sortFields
+    });
 
     const handleOnChangePage = (pageNumber: number) => {
         setPageNumber(pageNumber);
@@ -27,6 +34,10 @@ export default function CharactersHomeScene(): React.JSX.Element | null {
     const handleOnChangePageSize = (pageSize: number) => {
         setPageSize(pageSize);
     };
+
+    const handleOnApplySortFilters = (fields: string[]) => {
+        setSelectedSortFields(fields);
+    }
 
     useEffect(() => {
         setSearchParams({
@@ -40,16 +51,21 @@ export default function CharactersHomeScene(): React.JSX.Element | null {
     }
 
     return (
-        <React.Fragment>
-            <CharacterList characters={characters} />
-            <Pagination
-                totalPages={totalPages}
-                currentPage={currentPage}
-                pageSize={itemsPerPage}
-                totalItems={totalItems}
-                onChangePage={handleOnChangePage}
-                onChangePageSize={handleOnChangePageSize}
-            />
-        </React.Fragment>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 4fr' }}>
+            <div>
+                <CharacterSorter onSort={handleOnApplySortFilters} />
+            </div>
+            <div>
+                <CharacterList characters={characters} />
+                <Pagination
+                    totalPages={totalPages}
+                    currentPage={currentPage}
+                    pageSize={itemsPerPage}
+                    totalItems={totalItems}
+                    onChangePage={handleOnChangePage}
+                    onChangePageSize={handleOnChangePageSize}
+                />
+            </div>
+        </div>
     );
 }

@@ -1,0 +1,6 @@
+.characters-home-scene {
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  gap: var(--space-lg);
+  padding: var(--space-xl);
+}

@@ -4,6 +4,7 @@ import { useFetchCharacters } from "@hooks/useFetchCharacters";
 import { ALLOWED_PAGE_SIZES, DEFAULT_CURRENT_PAGE, DEFAULT_PAGE_SIZE } from "@app-types/Pagination";
 import { Pagination } from "@components/Pagination/Pagination";
 import { CharacterList, CharacterSorter } from "./components";
+import "./CharactersHomeScene.css";
 
 export default function CharactersHomeScene(): React.JSX.Element | null {
     const [searchParam, setSearchParams] = useSearchParams();
@@ -50,7 +51,7 @@ export default function CharactersHomeScene(): React.JSX.Element | null {
     }
 
     return (
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 4fr" }}>
+        <div className="characters-home-scene">
             <div>
                 <CharacterSorter onSort={handleOnApplySortFilters} />
             </div>

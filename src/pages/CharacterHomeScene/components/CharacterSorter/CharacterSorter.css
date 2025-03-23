@@ -1,0 +1,30 @@
+.character-sorter {
+  text-align: left;
+}
+
+.character-sorter h3 {
+  margin: 0;
+  margin-bottom: var(--space-md);
+}
+
+.character-sorter__checkbox-list-container {
+  display: flex;
+  flex-flow: column;
+  width: fit-content;
+  gap: var(--space-xs);
+}
+
+.character-sorter__checkbox-list-container label {
+  margin-bottom: var(--space-xs);
+  cursor: pointer;
+}
+
+.character-sorter__checkbox-list-container input[type='radio'] {
+  margin-right: var(--space-sm);
+}
+
+.character-sorter__buttons-container {
+  margin-top: var(--space-md);
+  display: flex;
+  gap: var(--space-xs);
+}

@@ -1,25 +1,25 @@
 .character-details {
   border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 16px;
-  margin: 16px;
+  border-radius: var(--space-xs);
+  padding: var(--space-md);
+  margin: var(--space-md);
   width: 400px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px var(--space-xxs) rgba(0, 0, 0, 0.1);
 }
 
 .character-details img {
   width: 100%;
-  border-radius: 4px;
+  border-radius: var(--space-xxs);
   margin-bottom: 10px;
 }
 
 .character-details h2 {
   margin-top: 0;
-  margin-bottom: 8px;
+  margin-bottom: var(--space-xs);
 }
 
 .character-details p {
-  margin: 4px 0;
+  margin: var(--space-xxs) 0;
 }
 
 .character-details .ki {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./CharacterSorter.css";
 
 interface CharacterSorterProps {
@@ -6,18 +6,19 @@ interface CharacterSorterProps {
 }
 
 const CharacterSorter: React.FC<CharacterSorterProps> = (props): React.JSX.Element => {
+    const formRef = useRef<HTMLFormElement>(null);
     const [fields, setFields] = useState<string[]>([]);
 
     const { onSort } = props;
 
     const sorters = [
         { key: "affiliation", label: "Affiliation" },
-        { key: "gender", label: "Gender" },
+        { key: "gender", label: "People" },
         { key: "name", label: "Name" },
-        { key: "race", label: "Race" },
+        { key: "race", label: "Origin" },
     ];
 
-    const handleOnCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleOnCheckSorter = (event: React.ChangeEvent<HTMLInputElement>) => {
         const isChecked = event.currentTarget.checked;
         const value = event.currentTarget.value;
 
@@ -29,32 +30,55 @@ const CharacterSorter: React.FC<CharacterSorterProps> = (props): React.JSX.Eleme
         setFields([value]);
     }
 
-    const handleOnClick = () => {
+    const handleOnSort = () => {
         if (fields.length > 0) {
             onSort(fields);
         }
     }
 
+    const handleOnClear = () => {
+        formRef?.current?.reset();
+        setFields([]);
+        onSort([]);
+    }
+
     return (
-        <div style={{ textAlign: "left" }}>
-            <h3>Sort alphabetycally by:</h3>
-            <div style={{ display: "flex", flexFlow: "column" }}>
-                {sorters.map((sorter, index) => (
-                    <label htmlFor={`sorter_item_${sorter.key}`} key={`sorter_item_${index}`}>
-                        <input
-                            name="radio_sorteable_attributes"
-                            type="radio"
-                            id={`sorter_item_${sorter.key}`}
-                            value={sorter.key}
-                            onChange={handleOnCheck}
-                        />
-                        {sorter.label}
-                    </label>
-                ))}
-            </div>
-            <button onClick={handleOnClick} name="btn_sort" id="btn_sort">
-                Sort
-            </button>
+        <div className="character-sorter">
+            <form ref={formRef}>
+                <h3>Sort alphabetycally:</h3>
+                <div className="character-sorter__checkbox-list-container">
+                    {sorters.map((sorter, index) => (
+                        <label htmlFor={`sorter_item_${sorter.key}`} key={`sorter_item_${index}`}>
+                            <input
+                                name="radio_sorteable_attributes"
+                                type="radio"
+                                id={`sorter_item_${sorter.key}`}
+                                value={sorter.key}
+                                onChange={handleOnCheckSorter}
+                            />
+                            {sorter.label}
+                        </label>
+                    ))}
+                </div>
+                <div className="character-sorter__buttons-container">
+                    <button
+                        name="btn_sort"
+                        id="btn_sort"
+                        onClick={handleOnSort}
+                        type="button"
+                        aria-label="Apply sort filter">
+                        Sort
+                    </button>
+                    <button
+                        name="btn_clear"
+                        id="btn_clear"
+                        onClick={handleOnClear}
+                        type="reset"
+                        aria-label="Clear filters">
+                        Clear
+                    </button>
+                </div>
+            </form>
         </div>
     );
 }

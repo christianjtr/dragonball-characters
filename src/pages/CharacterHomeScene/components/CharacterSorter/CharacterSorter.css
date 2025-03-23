@@ -1,5 +1,11 @@
 .character-sorter {
   text-align: left;
+  color: var(--text-color);
+  background: white;
+  padding: var(--space-md);
+  border-radius: 8px;
+  position: sticky;
+  top: 120px;
 }
 
 .character-sorter h3 {
@@ -27,4 +33,5 @@
   margin-top: var(--space-md);
   display: flex;
   gap: var(--space-xs);
+  justify-content: flex-start;
 }

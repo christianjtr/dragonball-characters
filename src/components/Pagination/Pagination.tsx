@@ -41,41 +41,38 @@ const Pagination: React.FC<PaginationProps> = (props): React.JSX.Element => {
     };
 
     return (
-        <React.Fragment>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <div style={{ textAlign: "left" }}>
-                    <p>{`Showing ${startItem} to ${endItem} of ${totalItems} results`}</p>
-                    <p>{`Page ${currentPage} out of ${totalPages}`}</p>
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
-                    <nav aria-label="Page navigation">
-                        <ul className="pagination">
-                            <li
-                                className={`page-item ${currentPage === 1 ? "disabled" : ""}`}
-                                onClick={() => handleOnNavigate("prev")}
-                                role="button">
-                                <span className="page-link">Prev</span>
-                            </li>
-                            <li
-                                className={`page-item ${currentPage === totalPages ? "disabled" : ""}`}
-                                onClick={() => handleOnNavigate("next")}
-                                role="button"
-                            >
-                                <span className="page-link">Next</span>
-                            </li>
-                        </ul>
-                    </nav>
-                    <div>
-                        <label htmlFor="pageSizeSelect" aria-label="Page size selector">Page Size:</label>
-                        <select id="pageSizeSelect" value={pageSize} onChange={handleOnChangePageSize}>
-                            {ALLOWED_PAGE_SIZES.map((eachPageSize, index) => (
-                                <option key={`page_size_item_${index}`} value={eachPageSize}>{eachPageSize}</option>
-                            ))}
-                        </select>
-                    </div>
+        <div className="pagination-container">
+            <div className="pagination__info-container">
+                <p>Showing <strong>{startItem}</strong> to <strong>{endItem}</strong> of <strong>{totalItems}</strong> results</p>
+                <p>Page <strong>{currentPage}</strong> out of <strong>{totalPages}</strong></p>
+            </div>
+            <div className="pagination__pages-container" aria-label="Page navigation">
+                <ul className="pagination">
+                    <li
+                        className={`page-item ${currentPage === 1 ? "disabled" : ""}`}
+                        onClick={() => handleOnNavigate("prev")}
+                        role="button"
+                    >
+                        <span className="page-link primary-button">Prev</span>
+                    </li>
+                    <li
+                        className={`page-item ${currentPage === totalPages ? "disabled" : ""}`}
+                        onClick={() => handleOnNavigate("next")}
+                        role="button"
+                    >
+                        <span className="page-link">Next</span>
+                    </li>
+                </ul>
+                <div className="pagination-controls-container">
+                    <label htmlFor="pageSizeSelect" aria-label="Page size selector">Page size:</label>
+                    <select id="pageSizeSelect" value={pageSize} onChange={handleOnChangePageSize}>
+                        {ALLOWED_PAGE_SIZES.map((eachPageSize, index) => (
+                            <option key={`page_size_item_${index}`} value={eachPageSize}>{eachPageSize}</option>
+                        ))}
+                    </select>
                 </div>
             </div>
-        </React.Fragment>
+        </div>
     );
 };
 

@@ -1,7 +1,25 @@
-nav[aria-label='Page navigation'] {
+.pagination-container {
   display: flex;
-  justify-content: center;
-  margin: 20px 0;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--space-xl);
+  background: white;
+  padding: 8px 24px;
+  border-radius: 8px;
+}
+.pagination-container p {
+  margin: var(--space-xs) 0;
+  color: var(--secondary-text-color);
+}
+
+.pagination__info-container {
+  text-align: left;
+}
+
+.pagination__pages-container {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
 }
 
 .pagination {
@@ -16,34 +34,26 @@ nav[aria-label='Page navigation'] {
 }
 
 .page-link {
-  padding: var(--space-xs) var(--space-sm);
-  border: 1px solid #ddd;
-  background-color: white;
-  color: #333;
+  color: white;
   text-decoration: none;
-  cursor: pointer;
-  border-radius: var(--space-xxs);
+  padding: var(--space-xs) var(--space-sm);
+  background-color: var(--primary-color);
+  border-radius: var(--space-xs);
 }
 
 .page-link:hover {
-  background-color: #f0f0f0;
-}
-
-.page-item.active .page-link {
-  background-color: #007bff;
-  color: white;
-  border-color: #007bff;
+  filter: brightness(95%);
 }
 
 .page-item.disabled .page-link {
   opacity: 0.5;
   cursor: default;
+  background-color: transparent;
+  color: var(--text-color);
+  cursor: default !important;
 }
 
-.page-link:not(a) {
-  cursor: default;
-}
-
-.page-link:not(a):hover {
-  background-color: white;
+.pagination-controls-container {
+  display: flex;
+  gap: var(--space-md);
 }

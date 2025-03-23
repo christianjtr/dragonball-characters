@@ -66,6 +66,7 @@ const CharacterSorter: React.FC<CharacterSorterProps> = (props): React.JSX.Eleme
                         id="btn_sort"
                         onClick={handleOnSort}
                         type="button"
+                        className="primary-btn"
                         aria-label="Apply sort filter">
                         Sort
                     </button>
@@ -74,6 +75,7 @@ const CharacterSorter: React.FC<CharacterSorterProps> = (props): React.JSX.Eleme
                         id="btn_clear"
                         onClick={handleOnClear}
                         type="reset"
+                        className="link-btn"
                         aria-label="Clear filters">
                         Clear
                     </button>

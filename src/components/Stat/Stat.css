@@ -13,7 +13,7 @@
 
 .stat__title {
   font-size: 0.8em;
-  color: #aaaaaa;
+  color: var(--secondary-text-color);
   margin-bottom: 2px;
 }
 

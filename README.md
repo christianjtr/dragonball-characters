@@ -15,12 +15,11 @@ This assessment aims to create a simple mini-app to fetch data from the [Dragonb
 
 ### 🎯 Goals
 
-● App should be listing only 10 items initially
-● The list should be sorted by any available attribute Alphabetically
-● Details view should contain at least 3 pieces of information not available in the list data.
-● Details view should contain an image
-● Use types-script regardless of the framework chosen.
-● UI should look appealing and be responsive, but do not use a css-framework(Preprocessing is ok)
+- App should be listing only 10 items initially.
+- The list should be sorted by any available attribute Alphabetically.
+- Details view should contain at least 3 pieces of information not available in the list data and an image.
+- Use types-script.
+- Do not use a css-framework(Preprocessing is ok)
 
 <a name="002"></a>
 
@@ -71,17 +70,17 @@ Click on the following link [GitHub page project](https://christianjtr.github.io
 1. Home
 
 <p align="center">
-  <img src="https://github.com/christianjtr/dragonball-characters/blob/main/sample/home.png"/>
+  <img src="https://github.com/christianjtr/dragonball-characters/blob/main/samples/home.png"/>
 </p>
 
 2. Detail
 
 <p align="center">
-  <img src="https://github.com/christianjtr/dragonball-characters/blob/main/sample/detail.png"/>
+  <img src="https://github.com/christianjtr/dragonball-characters/blob/main/samples/detail.png"/>
 </p>
 
 3. Not found
 
 <p align="center">
-  <img src="https://github.com/christianjtr/dragonball-characters/blob/main/sample/not_found.png"/>
+  <img src="https://github.com/christianjtr/dragonball-characters/blob/main/samples/not_found.png/>
 </p>

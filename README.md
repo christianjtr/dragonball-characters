@@ -82,5 +82,5 @@ Click on the following link [GitHub page project](https://christianjtr.github.io
 3. Not found
 
 <p align="center">
-  <img src="https://github.com/christianjtr/dragonball-characters/blob/main/samples/not_found.png/>
+  <img src="https://github.com/christianjtr/dragonball-characters/blob/main/samples/not_found.png"/>
 </p>

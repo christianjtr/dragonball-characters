@@ -65,7 +65,7 @@ Before executing these scripts, you must run **pnpm install** in the directory y
 
 ##### Live demo
 
-Click on the following link [GitHub page project](https://christianjtr.github.io/dragonball-characters/characters).
+Click on the following link [GitHub page project](https://christianjtr.github.io/dragonball-characters/).
 
 1. Home
 

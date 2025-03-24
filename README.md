@@ -1,54 +1,87 @@
-# React + TypeScript + Vite
+# Dragonball application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This assessment aims to create a simple mini-app to fetch data from the [Dragonball API](https://web.dragonball-api.com/) using React v19 + TypeScript.
 
-Currently, two official plugins are available:
+> [!NOTE]
+>
+> - ❤️ Feel free to add any improvements or suggestions you consider.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. [Goals](#001)
+2. [Tech Stack](#002)
+3. [Installation and running the project](#003)
+4. [Samples](#004)
 
-## Expanding the ESLint configuration
+<a name="001"></a>
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 🎯 Goals
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+● App should be listing only 10 items initially
+● The list should be sorted by any available attribute Alphabetically
+● Details view should contain at least 3 pieces of information not available in the list data.
+● Details view should contain an image
+● Use types-script regardless of the framework chosen.
+● UI should look appealing and be responsive, but do not use a css-framework(Preprocessing is ok)
+
+<a name="002"></a>
+
+### Tech Stack
+
+This conceptual test has been developed using the following technologies:
+
+- **Front-end**
+  - [React](https://react.dev/)
+  - [TypeScript](https://www.typescriptlang.org/)
+  - [Vite](https://vitejs.dev/)
+
+<a name="003"></a>
+
+### Installation and running the project
+
+The project requires:
+
+- [NodeJS](https://nodejs.org/)
+
+**Clone the repository:**
+
+```shell
+git clone https://github.com/christianjtr/dragonball-characters.git
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+**Scripts:**
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Before executing these scripts, you must run **pnpm install** in the directory you just downloaded/cloned the codebase. _Other scripts are in package.json file_.
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```shell
+# Start the development environment
+> pnpm run dev
+
+# Build the project in development mode
+> pnpm run build
+
 ```
+
+<a name="004"></a>
+
+### Samples
+
+##### Live demo
+
+Click on the following link [GitHub page project](https://christianjtr.github.io/dragonball-characters/characters).
+
+1. Home
+
+<p align="center">
+  <img src="https://github.com/christianjtr/dragonball-characters/blob/main/sample/home.png"/>
+</p>
+
+2. Detail
+
+<p align="center">
+  <img src="https://github.com/christianjtr/dragonball-characters/blob/main/sample/detail.png"/>
+</p>
+
+3. Not found
+
+<p align="center">
+  <img src="https://github.com/christianjtr/dragonball-characters/blob/main/sample/not_found.png"/>
+</p>

@@ -14,5 +14,5 @@
 
 .grid-item {
   padding: 20px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--base-color);
 }

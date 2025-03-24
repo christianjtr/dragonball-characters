@@ -19,7 +19,7 @@
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  background-color: var(--background-color);
+  background-color: #faf9f6;
   font-synthesis: none;
   width: 100%;
   text-rendering: optimizeLegibility;
@@ -33,7 +33,7 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  background-color: var(--background-color);
+  background-color: #faf9f6;
   color: var(--text-color);
 }
 

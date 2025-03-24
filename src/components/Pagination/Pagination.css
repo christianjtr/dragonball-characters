@@ -57,3 +57,12 @@
   display: flex;
   gap: var(--space-md);
 }
+
+@media (max-width: 768px) {
+  .pagination-container {
+    flex-direction: column;
+  }
+  .pagination-container p {
+    text-align: center;
+  }
+}

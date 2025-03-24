@@ -45,7 +45,7 @@ const CharacterSorter: React.FC<CharacterSorterProps> = (props): React.JSX.Eleme
     return (
         <div className="character-sorter">
             <form ref={formRef}>
-                <h3>Sort alphabetycally:</h3>
+                <h3 className="title">Sort alphabetycally:</h3>
                 <div className="character-sorter__checkbox-list-container">
                     {sorters.map((sorter, index) => (
                         <label htmlFor={`sorter_item_${sorter.key}`} key={`sorter_item_${index}`}>

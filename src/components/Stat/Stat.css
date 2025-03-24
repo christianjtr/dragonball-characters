@@ -18,6 +18,6 @@
 }
 
 .stat__value {
-  font-size: 1em;
+  font-size: 0.8125rem;
   color: var(--text-color);
 }

@@ -8,9 +8,10 @@
   top: 120px;
 }
 
-.character-sorter h3 {
+.character-sorter > h3.title {
   margin: 0;
   margin-bottom: var(--space-md);
+  color: var(--text-color);
 }
 
 .character-sorter__checkbox-list-container {

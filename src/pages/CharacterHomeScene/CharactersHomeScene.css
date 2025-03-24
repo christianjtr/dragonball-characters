@@ -4,3 +4,9 @@
   gap: var(--space-lg);
   padding: var(--space-xl);
 }
+
+@media (max-width: 768px) {
+  .characters-home-scene {
+    grid-template-columns: 1fr;
+  }
+}

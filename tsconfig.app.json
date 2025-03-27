@@ -34,7 +34,8 @@
       "@app-types/*": ["src/types/*"],
       "@components/*": ["src/components/*"],
       "@assets/*": ["src/assets/*"],
-      "@utils/*": ["src/utils/*"]
+      "@utils/*": ["src/utils/*"],
+      "@config/*": ["src/config/*"]
     }
   },
   "include": ["src"]

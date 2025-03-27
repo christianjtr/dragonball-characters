@@ -40,10 +40,6 @@ export const useFetchCharacters = (props: UseFetchCharactersProps) => {
     }, [searchFilters, shouldSortData, sortFields]);
 
     useEffect(() => {
-
-    }, [sortFields]);
-
-    useEffect(() => {
         fetch();
     }, [fetch]);
 

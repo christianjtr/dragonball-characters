@@ -1,0 +1,20 @@
+.error_boundary_container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 25px;
+}
+
+.error_boundary_container h1 {
+  color: var(--secondary-color);
+  position: absolute;
+  top: 200px;
+}
+
+@media (max-width: 768px) {
+  .error_boundary_container h1 {
+    font-size: 2.5rem;
+  }
+}

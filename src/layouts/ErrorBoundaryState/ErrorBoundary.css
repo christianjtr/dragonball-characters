@@ -1,20 +1,40 @@
-.error_boundary_container {
+.error-boundary-container {
   display: flex;
-  justify-content: center;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  max-width: 640px;
+  margin: var(--space-xl) auto;
+  padding: var(--space-xl);
+  border: 2px solid var(--arcade-ink);
+  border-radius: 12px;
+  background:
+    radial-gradient(rgba(18, 58, 77, 0.055) 1px, transparent 1px) 0 0 / 12px 12px,
+    linear-gradient(180deg, #fffaf0, #fff0d4);
+  box-shadow: 6px 6px 0 rgba(18, 58, 77, 0.18);
   text-align: center;
-  padding: 25px;
 }
 
-.error_boundary_container h1 {
-  color: var(--secondary-color);
-  position: absolute;
-  top: 200px;
+.error-boundary__image {
+  width: min(220px, 50vw);
+  height: auto;
+  border: 2px solid var(--arcade-ink);
+  border-radius: 10px;
 }
 
-@media (max-width: 768px) {
-  .error_boundary_container h1 {
-    font-size: 2.5rem;
-  }
+.error-boundary__title {
+  margin: 0;
+  color: var(--arcade-magenta);
+  font-family: var(--arcade-display);
+  font-size: clamp(1.6rem, 3.4vw, 2.6rem);
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.error-boundary__message {
+  max-width: 46ch;
+  margin: 0;
+  color: var(--arcade-ink-dim);
 }

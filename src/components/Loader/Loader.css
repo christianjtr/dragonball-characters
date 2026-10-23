@@ -1,16 +1,24 @@
 .loader-container {
-  height: 100vh;
-}
-
-.loader__image-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  height: 100vh;
+  justify-content: center;
+  gap: var(--space-sm);
+  min-height: 50vh;
+  padding: var(--space-xl) var(--space-md);
 }
 
 .loader__image {
-  max-height: 300px;
-  width: auto;
+  width: clamp(120px, 20vw, 180px);
+  height: auto;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 0 24px rgba(14, 138, 160, 0.35));
+}
+
+.loader__label {
+  color: var(--arcade-ink);
+  font-size: 0.68rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  animation: arcade-blink 1.2s steps(1, end) infinite;
 }

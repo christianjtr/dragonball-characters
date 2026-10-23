@@ -1,0 +1,39 @@
+.fighter-portrait {
+  --fighter-accent: var(--arcade-cyan);
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 4px;
+  background:
+    radial-gradient(
+      circle at 50% 78%,
+      color-mix(in srgb, var(--fighter-accent) 28%, transparent) 0%,
+      transparent 62%
+    ),
+    linear-gradient(180deg, #dff6fb 0%, #fff4d8 100%);
+}
+
+.fighter-portrait__image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: bottom center;
+  filter: drop-shadow(0 8px 18px rgba(18, 58, 77, 0.28));
+  transition: transform 0.2s ease;
+}
+
+.fighter-portrait__fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: var(--fighter-accent);
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}

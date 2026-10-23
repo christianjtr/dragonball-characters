@@ -1,0 +1,24 @@
+.start-prompt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.arcade-button.start-prompt__button {
+  padding: 0.9em 2.4em;
+  background: var(--arcade-orange);
+  color: var(--arcade-ink);
+  font-size: 1rem;
+}
+
+.arcade-button.start-prompt__button:hover:not(:disabled) {
+  background: #e07d1c;
+}
+
+.start-prompt__hint {
+  color: var(--arcade-ink);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}

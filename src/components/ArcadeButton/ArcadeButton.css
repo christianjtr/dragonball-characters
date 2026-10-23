@@ -1,0 +1,83 @@
+.arcade-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  padding: 0.7em 1.5em;
+  border: 2px solid var(--arcade-ink);
+  border-radius: 999px;
+  background: var(--arcade-panel);
+  color: var(--arcade-ink);
+  font-family: var(--arcade-display);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 3px 3px 0 var(--arcade-ink);
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.arcade-button:hover:not(:disabled) {
+  background: var(--arcade-panel-strong);
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--arcade-ink);
+}
+
+.arcade-button:active:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--arcade-ink);
+}
+
+.arcade-button:focus-visible {
+  outline-color: var(--arcade-ink);
+}
+
+.arcade-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.arcade-button--primary {
+  background: var(--arcade-orange);
+}
+
+.arcade-button--primary:hover:not(:disabled) {
+  background: #e07d1c;
+}
+
+.arcade-button--ghost {
+  background: transparent;
+}
+
+.arcade-button--ghost:hover:not(:disabled) {
+  background: var(--arcade-panel);
+}
+
+.arcade-button--danger {
+  background: var(--arcade-magenta);
+  color: var(--arcade-panel);
+}
+
+.arcade-button--danger:hover:not(:disabled) {
+  background: #96365a;
+  color: var(--arcade-panel);
+}
+
+.arcade-button--sm {
+  padding: 0.45em 1em;
+  font-size: 0.64rem;
+  box-shadow: 2px 2px 0 var(--arcade-ink);
+}
+
+.arcade-button--sm:hover:not(:disabled) {
+  box-shadow: 3px 3px 0 var(--arcade-ink);
+}
+
+.arcade-button--sm:active:not(:disabled) {
+  box-shadow: 0 0 0 var(--arcade-ink);
+}

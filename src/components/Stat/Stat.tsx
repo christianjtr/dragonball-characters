@@ -12,7 +12,7 @@ export const Stat: React.FC<StatProps> = (props): React.JSX.Element => {
 
     return (
         <div className="stat">
-            <img className="stat__icon" src={icon} alt="Icon" aria-label="Icon" />
+            <img className="stat__icon" src={icon} alt="Icono" aria-label="Icono" />
             <span className="stat__title">{title}</span>
             <span className="stat__value">{value}</span>
         </div>

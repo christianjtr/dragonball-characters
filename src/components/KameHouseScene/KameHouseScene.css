@@ -1,0 +1,59 @@
+.kame-house-scene {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.kame-house-scene__clouds {
+  animation: kame-cloud-drift 34s ease-in-out infinite alternate;
+}
+
+.kame-house-scene__waves {
+  animation: kame-wave-shift 12s ease-in-out infinite alternate;
+}
+
+.kame-house-scene__palm {
+  transform-box: fill-box;
+  transform-origin: bottom center;
+}
+
+.kame-house-scene__palm--left {
+  animation: kame-palm-sway 8s ease-in-out infinite;
+}
+
+.kame-house-scene__palm--right {
+  animation: kame-palm-sway 9s ease-in-out infinite reverse;
+}
+
+.kame-house-scene__palm--small {
+  animation: kame-palm-sway 7s ease-in-out infinite;
+}
+
+@keyframes kame-cloud-drift {
+  from {
+    transform: translateX(-10px);
+  }
+  to {
+    transform: translateX(14px);
+  }
+}
+
+@keyframes kame-wave-shift {
+  from {
+    transform: translateX(-8px);
+  }
+  to {
+    transform: translateX(8px);
+  }
+}
+
+@keyframes kame-palm-sway {
+  0%,
+  100% {
+    transform: rotate(-1deg);
+  }
+  50% {
+    transform: rotate(1.2deg);
+  }
+}

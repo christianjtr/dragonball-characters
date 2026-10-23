@@ -1,0 +1,136 @@
+@keyframes arcade-blink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  55%,
+  100% {
+    opacity: 0.12;
+  }
+}
+
+@keyframes arcade-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes arcade-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+}
+
+@keyframes arcade-ready {
+  0% {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes arcade-vs-slam {
+  0% {
+    opacity: 0;
+    transform: scale(2.6) rotate(-6deg);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(0.94) rotate(2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes arcade-wipe {
+  from {
+    transform: translateX(-110%);
+  }
+  to {
+    transform: translateX(110%);
+  }
+}
+
+@keyframes arcade-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes arcade-boot {
+  0% {
+    opacity: 0;
+    transform: scaleY(0.004);
+  }
+  35% {
+    opacity: 1;
+    transform: scaleY(0.004);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+.arcade-heading {
+  font-family: var(--arcade-display);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--arcade-ink);
+}
+
+.arcade-muted {
+  color: var(--arcade-ink-dim);
+}
+
+.arcade-panel {
+  border: 2px solid var(--arcade-ink);
+  border-radius: 12px;
+  background:
+    radial-gradient(rgba(18, 58, 77, 0.055) 1px, transparent 1px) 0 0 / 12px 12px,
+    linear-gradient(180deg, #fffaf0, #fff0d4);
+  box-shadow:
+    4px 4px 0 rgba(18, 58, 77, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+
+.arcade-kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.6em;
+  padding: 0.15em 0.45em;
+  border: 1px solid var(--arcade-line-strong);
+  border-bottom-width: 3px;
+  border-radius: 4px;
+  background: rgba(14, 138, 160, 0.1);
+  color: var(--arcade-cyan);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+

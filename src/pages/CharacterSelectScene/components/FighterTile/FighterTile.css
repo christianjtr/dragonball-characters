@@ -1,0 +1,95 @@
+.fighter-tile {
+  --fighter-accent: var(--arcade-cyan);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  padding: var(--space-xs);
+  border: 2px solid var(--arcade-ink);
+  border-radius: 12px;
+  background: var(--arcade-panel);
+  color: var(--arcade-ink);
+  text-align: left;
+  box-shadow: 3px 3px 0 rgba(18, 58, 77, 0.16);
+  scroll-margin-top: 96px;
+  scroll-margin-bottom: 32px;
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.fighter-tile:hover {
+  border-color: var(--fighter-accent);
+  box-shadow: 4px 4px 0 var(--fighter-accent);
+  transform: translate(-1px, -1px);
+}
+
+.fighter-tile:hover .fighter-portrait__image {
+  transform: scale(1.05);
+}
+
+.fighter-tile.is-active {
+  border-color: var(--arcade-orange);
+  background: #fffaf0;
+  box-shadow: 4px 4px 0 var(--arcade-orange);
+  transform: translate(-1px, -1px);
+}
+
+.fighter-tile:focus-visible {
+  outline: 3px solid var(--arcade-blue);
+  outline-offset: 2px;
+}
+
+.fighter-tile__star {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 1;
+  display: none;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--arcade-ink);
+  border-radius: 50%;
+  background: var(--arcade-panel);
+  color: var(--arcade-star);
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.fighter-tile.is-active .fighter-tile__star {
+  display: grid;
+  animation: arcade-ready 0.3s ease-out;
+}
+
+.fighter-tile__name {
+  padding-top: 2px;
+  font-family: var(--arcade-display);
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.01em;
+  line-height: 1.15;
+}
+
+.fighter-tile__meta {
+  color: var(--arcade-ink-dim);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.fighter-tile .fighter-portrait {
+  aspect-ratio: 1 / 1;
+  border: 1px solid rgba(18, 58, 77, 0.18);
+  border-radius: 8px;
+  background:
+    radial-gradient(
+      circle at 50% 80%,
+      color-mix(in srgb, var(--fighter-accent) 24%, transparent) 0%,
+      transparent 60%
+    ),
+    linear-gradient(180deg, #dff6fb 0%, #fff4d8 100%);
+}

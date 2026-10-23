@@ -1,0 +1,40 @@
+.ready-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  border: 2px solid var(--arcade-ink);
+  border-radius: 10px;
+  background: rgba(239, 143, 47, 0.18);
+  box-shadow: 3px 3px 0 rgba(18, 58, 77, 0.16);
+  animation: arcade-ready 0.35s ease-out;
+}
+
+.ready-banner__player {
+  color: var(--arcade-ink);
+  font-family: var(--arcade-display);
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.ready-banner__player::before {
+  margin-right: 4px;
+  color: var(--arcade-star);
+  content: "★";
+}
+
+.ready-banner__name {
+  font-family: var(--arcade-display);
+  font-size: 1rem;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.ready-banner__hint {
+  color: var(--arcade-ink-dim);
+  font-size: 0.7rem;
+}

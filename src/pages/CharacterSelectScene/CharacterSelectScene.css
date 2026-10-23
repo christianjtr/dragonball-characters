@@ -1,0 +1,69 @@
+.select-scene {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.select-scene__intro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+
+.select-scene__intro h1 {
+  margin: 0;
+  font-size: clamp(1.6rem, 3.2vw, 2.5rem);
+  line-height: 1.05;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.select-scene__lede {
+  max-width: 62ch;
+  margin: var(--space-xs) 0 0;
+  color: var(--arcade-ink-dim);
+  font-size: 0.9rem;
+}
+
+.select-scene__hint {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-xs);
+  margin: 0;
+  color: var(--arcade-ink);
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.select-scene__stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
+  gap: var(--space-lg);
+  align-items: start;
+}
+
+.select-scene__skeleton-tile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding: var(--space-xs);
+  border: 1px solid var(--arcade-line);
+  border-radius: 4px;
+}
+
+.select-scene__skeleton-preview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+}
+
+@media (max-width: 980px) {
+  .select-scene__stage {
+    grid-template-columns: 1fr;
+  }
+}

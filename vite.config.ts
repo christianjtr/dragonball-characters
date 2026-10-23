@@ -16,7 +16,6 @@ export default defineConfig(({ mode }) => {
         "@services": resolve(__dirname, "./src/services"),
         "@hooks": resolve(__dirname, "./src/hooks"),
         "@pages": resolve(__dirname, "./src/pages"),
-        "@app-types": resolve(__dirname, "./src/types"),
         "@components": resolve(__dirname, "./src/components"),
         "@assets": resolve(__dirname, "./src/assets"),
         "@utils": resolve(__dirname, "./src/utils"),

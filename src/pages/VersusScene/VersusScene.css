@@ -1,0 +1,299 @@
+.versus-scene {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.versus-scene__topbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+
+.versus-scene__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 4px 10px;
+  border: 2px solid var(--arcade-ink);
+  border-radius: 999px;
+  background: var(--arcade-panel);
+  color: var(--arcade-magenta);
+  font-family: var(--arcade-display);
+  font-size: 0.6rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  box-shadow: 2px 2px 0 var(--arcade-ink);
+}
+
+.versus-scene__eyebrow::before {
+  color: var(--arcade-star);
+  content: "★";
+}
+
+.versus-scene__title {
+  margin: var(--space-xs) 0 0;
+  font-family: var(--arcade-display);
+  font-size: clamp(1.4rem, 3vw, 2.4rem);
+  font-weight: 900;
+  letter-spacing: 0.01em;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+.versus-scene__back {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 var(--space-sm);
+  border: 2px solid var(--arcade-ink);
+  border-radius: 999px;
+  background: var(--arcade-panel);
+  color: var(--arcade-ink);
+  font-family: var(--arcade-display);
+  font-size: 0.64rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  box-shadow: 2px 2px 0 var(--arcade-ink);
+}
+
+.versus-scene__back:hover {
+  background: var(--arcade-panel-strong);
+  color: var(--arcade-ink);
+}
+
+.versus-scene__arena {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: var(--space-md);
+  align-items: stretch;
+}
+
+.versus-scene__fighter {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  box-shadow: 4px 4px 0 var(--profile-accent, var(--arcade-ink));
+}
+
+.versus-scene__fighter--right {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.versus-scene__fighter--left {
+  align-items: flex-start;
+}
+
+.versus-scene__label {
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+  padding: 3px 10px;
+  border: 2px solid var(--arcade-ink);
+  border-radius: 999px;
+  background: var(--arcade-orange);
+  color: var(--arcade-ink);
+  font-family: var(--arcade-display);
+  font-size: 0.66rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  box-shadow: 2px 2px 0 var(--arcade-ink);
+}
+
+.versus-scene__fighter--right .versus-scene__label {
+  background: var(--arcade-blue);
+  color: var(--arcade-panel);
+}
+
+.versus-scene__portrait {
+  height: clamp(220px, 38vh, 360px);
+  border: 2px solid var(--arcade-ink);
+  border-radius: 10px;
+}
+
+.versus-scene__name {
+  margin: 0;
+  font-family: var(--arcade-display);
+  font-size: clamp(1.3rem, 2.6vw, 2rem);
+  font-weight: 900;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.versus-scene__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.versus-scene__fighter--right .versus-scene__tags {
+  justify-content: flex-end;
+}
+
+.versus-scene__tags li {
+  padding: 3px 9px;
+  border: 2px solid var(--arcade-ink);
+  border-radius: 999px;
+  background: var(--arcade-panel);
+  color: var(--arcade-ink);
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.versus-scene__stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-xs);
+  width: 100%;
+  margin: 0;
+}
+
+.versus-scene__stats div {
+  padding: var(--space-xs) var(--space-sm);
+  border: 2px solid var(--arcade-ink);
+  border-radius: 8px;
+  background: var(--arcade-bg-soft);
+  box-shadow: 2px 2px 0 rgba(18, 58, 77, 0.12);
+}
+
+.versus-scene__stats dt {
+  color: var(--arcade-ink-dim);
+  font-size: 0.56rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.versus-scene__stats dd {
+  margin: 4px 0 0;
+  font-size: 0.85rem;
+}
+
+.versus-scene__vs {
+  display: grid;
+  align-self: center;
+  place-items: center;
+  width: clamp(96px, 12vw, 140px);
+  aspect-ratio: 1;
+  background: var(--arcade-orange);
+  clip-path: polygon(
+    50% 0%,
+    61% 19%,
+    82% 9%,
+    80% 32%,
+    100% 50%,
+    80% 68%,
+    82% 91%,
+    61% 81%,
+    50% 100%,
+    39% 81%,
+    18% 91%,
+    20% 68%,
+    0% 50%,
+    20% 32%,
+    18% 9%,
+    39% 19%
+  );
+  color: var(--arcade-ink);
+  filter: drop-shadow(4px 4px 0 var(--arcade-ink));
+  font-family: var(--arcade-display);
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  font-weight: 900;
+  letter-spacing: 0;
+  text-shadow: 2px 2px 0 var(--arcade-panel);
+  animation: arcade-vs-slam 0.5s ease-out both;
+}
+
+.versus-scene__note {
+  margin: 0;
+  color: var(--arcade-ink);
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+}
+
+.versus-scene__note::before {
+  margin-right: 6px;
+  color: var(--arcade-star);
+  content: "★";
+}
+
+.versus-scene__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.versus-scene__action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 var(--space-md);
+  border: 2px solid var(--arcade-ink);
+  border-radius: 999px;
+  background: var(--arcade-orange);
+  color: var(--arcade-ink);
+  font-family: var(--arcade-display);
+  font-size: 0.66rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  box-shadow: 3px 3px 0 var(--arcade-ink);
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    background-color 0.15s ease;
+}
+
+.versus-scene__action:hover {
+  background: #e07d1c;
+  box-shadow: 4px 4px 0 var(--arcade-ink);
+  color: var(--arcade-ink);
+  transform: translate(-1px, -1px);
+}
+
+.versus-scene__action:active {
+  box-shadow: 1px 1px 0 var(--arcade-ink);
+  transform: translate(2px, 2px);
+}
+
+.versus-scene__action--ghost {
+  background: var(--arcade-panel);
+}
+
+.versus-scene__action--ghost:hover {
+  background: var(--arcade-panel-strong);
+}
+
+@media (max-width: 820px) {
+  .versus-scene__arena {
+    grid-template-columns: 1fr;
+  }
+
+  .versus-scene__vs {
+    justify-self: center;
+    width: 96px;
+  }
+
+  .versus-scene__fighter--right {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .versus-scene__fighter--right .versus-scene__tags {
+    justify-content: flex-start;
+  }
+}

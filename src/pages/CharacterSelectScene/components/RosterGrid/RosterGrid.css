@@ -1,0 +1,33 @@
+.roster-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
+  gap: var(--space-sm);
+  align-content: start;
+  max-height: calc(100dvh - 250px);
+  overflow-y: auto;
+  padding: var(--space-xs);
+  scrollbar-color: var(--arcade-line-strong) transparent;
+  scrollbar-width: thin;
+}
+
+.roster-grid::-webkit-scrollbar {
+  width: 8px;
+}
+
+.roster-grid::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: var(--arcade-line-strong);
+}
+
+@media (max-width: 980px) {
+  .roster-grid {
+    max-height: none;
+    overflow-y: visible;
+  }
+}
+
+@media (max-width: 420px) {
+  .roster-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

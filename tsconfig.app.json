@@ -28,6 +28,7 @@
     /* Paths */
     "paths": {
       "@clients/*": ["src/clients/*"],
+      "@context/*": ["src/context/*"],
       "@services/*": ["src/services/*"],
       "@hooks/*": ["src/hooks/*"],
       "@pages/*": ["src/pages/*"],
@@ -35,7 +36,8 @@
       "@components/*": ["src/components/*"],
       "@assets/*": ["src/assets/*"],
       "@utils/*": ["src/utils/*"],
-      "@config/*": ["src/config/*"]
+      "@config/*": ["src/config/*"],
+      "@styles/*": ["src/styles/*"]
     }
   },
   "include": ["src"]

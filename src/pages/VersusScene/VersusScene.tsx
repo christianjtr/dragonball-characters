@@ -142,13 +142,10 @@ export default function VersusScene(): React.JSX.Element {
 
   return (
     <section className="versus-scene" aria-labelledby="versus-heading">
+      <h1 id="versus-heading" className="visually-hidden">
+        {p1Character.name} vs {p2Character.name}
+      </h1>
       <div className="versus-scene__topbar">
-        <div>
-          <p className="versus-scene__eyebrow">Combate</p>
-          <h1 id="versus-heading" className="versus-scene__title">
-            {p1Character.name} vs {p2Character.name}
-          </h1>
-        </div>
         <Link className="versus-scene__back" to="/select">
           Volver a luchadores
         </Link>
@@ -178,6 +175,12 @@ export default function VersusScene(): React.JSX.Element {
           to={`/fighters/${p1Character.id}`}
         >
           Ver perfil de P1
+        </Link>
+        <Link
+          className="versus-scene__action versus-scene__action--ghost"
+          to={`/fighters/${p2Character.id}`}
+        >
+          Ver perfil de P2
         </Link>
       </div>
     </section>

@@ -7,42 +7,9 @@
 .versus-scene__topbar {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: var(--space-sm);
-}
-
-.versus-scene__eyebrow {
-  display: inline-flex;
   align-items: center;
-  gap: 6px;
-  margin: 0;
-  padding: 4px 10px;
-  border: 2px solid var(--arcade-ink);
-  border-radius: 999px;
-  background: var(--arcade-panel);
-  color: var(--arcade-magenta);
-  font-family: var(--arcade-display);
-  font-size: 0.6rem;
-  font-weight: 900;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  box-shadow: 2px 2px 0 var(--arcade-ink);
-}
-
-.versus-scene__eyebrow::before {
-  color: var(--arcade-star);
-  content: "★";
-}
-
-.versus-scene__title {
-  margin: var(--space-xs) 0 0;
-  font-family: var(--arcade-display);
-  font-size: clamp(1.4rem, 3vw, 2.4rem);
-  font-weight: 900;
-  letter-spacing: 0.01em;
-  line-height: 1.05;
-  text-transform: uppercase;
+  justify-content: flex-end;
+  gap: var(--space-sm);
 }
 
 .versus-scene__back {

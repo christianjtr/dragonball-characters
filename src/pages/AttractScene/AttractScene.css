@@ -108,13 +108,23 @@
 }
 
 .attract-scene__logo-line {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 0.1em;
   padding-right: 0.12em;
   color: transparent;
   background-clip: text;
   paint-order: stroke fill;
   -webkit-background-clip: text;
   -webkit-text-stroke: 0.09em var(--arcade-ink);
+}
+
+.attract-scene__title-ball {
+  flex: none;
+  width: 0.68em;
+  height: 0.68em;
+  filter: drop-shadow(0.04em 0.04em 0 rgba(18, 58, 77, 0.35));
+  transform: rotate(8deg) skewX(4deg);
 }
 
 .attract-scene__logo-line--yellow {

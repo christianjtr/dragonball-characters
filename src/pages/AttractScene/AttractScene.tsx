@@ -5,6 +5,7 @@ import { StartPrompt } from "@components/StartPrompt/StartPrompt";
 import { useRoster } from "@context/rosterContext";
 import { useArcadeAudio } from "@hooks/useArcadeAudio";
 import { useDocumentTitle } from "@hooks/useDocumentTitle";
+import DragonballLogo from "@assets/dragon-ball.svg";
 import "./AttractScene.css";
 
 const isInteractiveTarget = (target: EventTarget | null): boolean => {
@@ -51,10 +52,16 @@ export default function AttractScene(): React.JSX.Element {
   return (
     <section className="attract-scene" aria-labelledby="attract-heading">
       <div className="attract-scene__content">
-        <p className="attract-scene__eyebrow">Arcade Kame House</p>
+        <p className="attract-scene__eyebrow">Kame House</p>
 
         <h1 id="attract-heading" className="attract-scene__title">
           <span className="attract-scene__logo-line attract-scene__logo-line--yellow">
+            <img
+              src={DragonballLogo}
+              alt=""
+              className="attract-scene__title-ball"
+              aria-hidden="true"
+            />
             Dragonball
           </span>
           <span className="attract-scene__logo-line attract-scene__logo-line--red">

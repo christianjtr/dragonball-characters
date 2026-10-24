@@ -1,8 +1,9 @@
 import React from "react";
 import { Link, NavLink } from "react-router";
 import { useRoster } from "@context/rosterContext";
+import { KameHouseMark } from "@components/KameHouseMark/KameHouseMark";
 import { SoundToggle } from "@components/SoundToggle/SoundToggle";
-import DragonballLogo from "@assets/dragon-ball.svg";
+import Goku from "@assets/goku.gif";
 import "./Header.css";
 
 const getRosterLabel = (count: number): string => {
@@ -19,8 +20,11 @@ export const Header: React.FC = () => {
   return (
     <header className="header">
       <Link to="/" className="header__brand" aria-label="Inicio de Dragonball Arcade">
-        <img src={DragonballLogo} alt="" className="header__logo" />
-        <span className="header__title">Dragonball Arcade</span>
+        <KameHouseMark className="header__logo" />
+        <span className="header__brand-copy">
+          <span className="header__title">Dragonball Arcade</span>
+          <span className="header__subtitle">Kame House</span>
+        </span>
       </Link>
 
       <nav className="header__nav" aria-label="Navegación principal">
@@ -32,15 +36,6 @@ export const Header: React.FC = () => {
         >
           Luchadores
         </NavLink>
-        <NavLink
-          to="/"
-          end
-          className={({ isActive }) =>
-            `header__link ${isActive ? "is-active" : ""}`.trim()
-          }
-        >
-          Inicio
-        </NavLink>
       </nav>
 
       <div className="header__meta">
@@ -48,6 +43,9 @@ export const Header: React.FC = () => {
           {getRosterLabel(characters.length)}
         </span>
         <SoundToggle />
+        <span className="header__mascot" aria-hidden="true">
+          <img src={Goku} alt="" />
+        </span>
       </div>
     </header>
   );

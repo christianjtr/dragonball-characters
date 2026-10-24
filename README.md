@@ -4,6 +4,12 @@ SPA de personajes de Dragon Ball con estética de arcade retro, construida con R
 
 **Demo:** [christianjtr.github.io/dragonball-characters](https://christianjtr.github.io/dragonball-characters/)
 
+## Capturas
+
+| Portada | Modo versus |
+| --- | --- |
+| <img src="samples/landing_v2.png" alt="Portada de Dragonball Arcade v2" width="100%" /> | <img src="samples/vs_v2.png" alt="Modo versus de Dragonball Arcade v2" width="100%" /> |
+
 ## Versión 2.0 (actual)
 
 - **Portada tipo arcade:** título con bola de dragón, Kame House ilustrada, nubes, mar y llamada a empezar.

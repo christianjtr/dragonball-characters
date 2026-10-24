@@ -1,86 +1,77 @@
-# Dragonball application
+# Dragonball Arcade
 
-This assessment aims to create a simple mini-app to fetch data from the [Dragonball API](https://web.dragonball-api.com/) using React v19 + TypeScript.
+SPA de personajes de Dragon Ball con estética de arcade retro, construida con React 19, TypeScript y Vite. La aplicación consume la [Dragonball API](https://web.dragonball-api.com/) y ofrece un flujo completo de selección de luchadores: portada, roster, ficha de personaje y combate para dos jugadores.
 
-> [!NOTE]
->
-> - ❤️ Feel free to add any improvements or suggestions you consider.
+**Demo:** [christianjtr.github.io/dragonball-characters](https://christianjtr.github.io/dragonball-characters/)
 
-1. [Goals](#001)
-2. [Tech Stack](#002)
-3. [Installation and running the project](#003)
-4. [Samples](#004)
+## Versión 2.0 (actual)
 
-<a name="001"></a>
+- **Portada tipo arcade:** título con bola de dragón, Kame House ilustrada, nubes, mar y llamada a empezar.
+- **Roster de 58 luchadores:** búsqueda por nombre, filtros por raza y afiliación, orden alfabético y estado de la URL compartible.
+- **Ficha de personaje:** retrato, ki, descripción, planeta de origen y transformaciones.
+- **Modo versus 2P:** selección de dos luchadores y pantalla de enfrentamiento.
+- **Interfaz en español:** etiquetas traducidas para razas, afiliaciones, géneros y estados.
+- **Diseño responsive:** layout adaptado a escritorio, tablet y móvil.
+- **Audio de arcade:** efectos de navegación y música de fondo con interruptor de sonido; el audio arranca desactivado.
+- **GitHub Pages:** fallback de rutas SPA mediante `public/404.html` y `.nojekyll`.
 
-### 🎯 Goals
+## Stack
 
-- App should be listing only 10 items initially.
-- The list should be sorted by any available attribute Alphabetically.
-- Details view should contain at least 3 pieces of information not available in the list data and an image.
-- Use types-script.
-- Do not use a css-framework(Preprocessing is ok)
+- [React 19](https://react.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Vite](https://vitejs.dev/)
+- [React Router](https://reactrouter.com/)
+- CSS puro con tokens y componentes propios
+- [Luckiest Guy](https://fontsource.org/fonts/luckiest-guy) para el logotipo
 
-<a name="002"></a>
+## Instalación y scripts
 
-### Tech Stack
-
-This conceptual test has been developed using the following technologies:
-
-- **Front-end**
-  - [React](https://react.dev/)
-  - [TypeScript](https://www.typescriptlang.org/)
-  - [Vite](https://vitejs.dev/)
-
-<a name="003"></a>
-
-### Installation and running the project
-
-The project requires:
-
-- [NodeJS](https://nodejs.org/)
-
-**Clone the repository:**
+Requiere [Node.js](https://nodejs.org/) y pnpm.
 
 ```shell
 git clone https://github.com/christianjtr/dragonball-characters.git
+cd dragonball-characters
+pnpm install
 ```
-
-**Scripts:**
-
-Before executing these scripts, you must run **pnpm install** in the directory you just downloaded/cloned the codebase. _Other scripts are in package.json file_.
 
 ```shell
-# Start the development environment
-> pnpm run dev
+# Entorno de desarrollo
+pnpm dev
 
-# Build the project in development mode
-> pnpm run build
+# Verificación de tipos
+pnpm typecheck
 
+# Lint
+pnpm lint
+
+# Build de producción
+pnpm build
 ```
 
-<a name="004"></a>
+## Audio
 
-### Samples
+La música de fondo usa el instrumental TV-size de **Romantic Ageru Yo**, ending de **Dragon Ball**, publicado en Internet Archive bajo licencia **Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)**. Se usa el MP4 original sin modificaciones.
 
-##### Live demo
+- Archivo: `public/audio/dragon-ball-romantic-ageru-yo.mp4`
+- Fuente: [Internet Archive](https://archive.org/details/OG-DB-Ending-Original-Instrumental)
+- Créditos completos: `public/audio/CREDITS.md`
+- El audio arranca desactivado; se activa o desactiva desde el botón del header.
 
-Click on the following link [GitHub page project](https://christianjtr.github.io/dragonball-characters/).
+## Estructura
 
-1. Home
+```text
+src/
+  components/   Componentes visuales reutilizables
+  config/       Configuración del arcade
+  context/      Estado de sonido y roster
+  hooks/        Audio, datos, navegación y utilidades
+  layouts/      Header y layout principal
+  pages/        Portada, roster, ficha y versus
+  services/     Cliente y servicios de la Dragonball API
+  styles/       Tokens y estilos globales del arcade
+  utils/        Filtros, orden, etiquetas y temas
+```
 
-<p align="center">
-  <img src="https://github.com/christianjtr/dragonball-characters/blob/main/samples/home.png"/>
-</p>
+## Versión 1.0
 
-2. Detail
-
-<p align="center">
-  <img src="https://github.com/christianjtr/dragonball-characters/blob/main/samples/detail.png"/>
-</p>
-
-3. Not found
-
-<p align="center">
-  <img src="https://github.com/christianjtr/dragonball-characters/blob/main/samples/not_found.png"/>
-</p>
+La primera versión nació como assessment técnico: listar personajes de la Dragonball API, ordenarlos alfabéticamente y abrir una vista de detalle con información adicional e imagen. Se implementó con React 19 + TypeScript + Vite, sin framework CSS, y sentó la base de componentes y servicios que hoy usa la experiencia arcade.

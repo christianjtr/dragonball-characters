@@ -8,6 +8,10 @@ import { StatusPanel } from "@components/StatusPanel/StatusPanel";
 import { useCharacterDetail } from "@hooks/useCharacterDetail";
 import { useDocumentTitle } from "@hooks/useDocumentTitle";
 import { getCharacterAccent } from "@utils/characterTheme";
+import BloodIcon from "@assets/blood.png";
+import EqualityIcon from "@assets/equality.png";
+import FireIcon from "@assets/fire.png";
+import FistBumpIcon from "@assets/fist-bump.png";
 import {
   getAffiliationLabel,
   getGenderLabel,
@@ -124,19 +128,34 @@ export default function FighterProfileScene(): React.JSX.Element {
               {character.name}
             </h1>
             <ul className="profile-scene__tags">
-              <li>{getAffiliationLabel(character.affiliation)}</li>
-              <li>{getGenderLabel(character.gender)}</li>
-              <li>{getRaceLabel(character.race)}</li>
+              <li>
+                <img src={FistBumpIcon} alt="" aria-hidden="true" />
+                {getAffiliationLabel(character.affiliation)}
+              </li>
+              <li>
+                <img src={EqualityIcon} alt="" aria-hidden="true" />
+                {getGenderLabel(character.gender)}
+              </li>
+              <li>
+                <img src={BloodIcon} alt="" aria-hidden="true" />
+                {getRaceLabel(character.race)}
+              </li>
             </ul>
           </header>
 
           <dl className="profile-scene__stats">
             <div>
-              <dt>Ki base</dt>
+              <dt>
+                <img src={FireIcon} alt="" aria-hidden="true" />
+                Ki base
+              </dt>
               <dd>{character.ki}</dd>
             </div>
             <div>
-              <dt>Ki máximo</dt>
+              <dt>
+                <img src={FireIcon} alt="" aria-hidden="true" />
+                Ki máximo
+              </dt>
               <dd>{character.maxKi}</dd>
             </div>
           </dl>
@@ -189,9 +208,13 @@ export default function FighterProfileScene(): React.JSX.Element {
                           width={48}
                           height={48}
                         />
-                        <span>{transformation.name}</span>
-                        <span className="profile-scene__transform-ki">
-                          {transformation.ki}
+                        <span className="profile-scene__transform-body">
+                          <span className="profile-scene__transform-name">
+                            {transformation.name}
+                          </span>
+                          <span className="profile-scene__transform-ki">
+                            {transformation.ki}
+                          </span>
                         </span>
                       </li>
                     ))}

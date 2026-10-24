@@ -1,14 +1,51 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/dragonball-characters/dragon-ball.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dragonball Characters</title>
-    <script type="module" crossorigin src="/dragonball-characters/assets/index-BX3RIQje.js"></script>
-    <link rel="stylesheet" crossorigin href="/dragonball-characters/assets/index-D-MlIBHj.css">
+    <meta name="theme-color" content="#2f7fd8" />
+    <meta name="color-scheme" content="light" />
+    <meta
+      name="description"
+      content="Explora la lista completa de luchadores de Dragon Ball, consulta sus estadísticas y transformaciones y prepara un combate para dos jugadores."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Dragonball Arcade" />
+    <meta
+      property="og:description"
+      content="Explora la lista completa de luchadores de Dragon Ball, consulta sus estadísticas y transformaciones y prepara un combate para dos jugadores."
+    />
+    <meta name="twitter:card" content="summary" />
+    <title>Dragonball Arcade | Elige tu luchador</title>
+    <script>
+      (function (location) {
+        if (location.search[1] !== "/") {
+          return;
+        }
+
+        var decoded = location.search
+          .slice(1)
+          .split("&")
+          .map(function (segment) {
+            return segment.replace(/~and~/g, "&");
+          })
+          .join("?");
+
+        window.history.replaceState(
+          null,
+          "",
+          location.pathname.slice(0, -1) + decoded + location.hash,
+        );
+      })(window.location);
+    </script>
+    <script type="module" crossorigin src="/dragonball-characters/assets/index-BCe5hS7T.js"></script>
+    <link rel="stylesheet" crossorigin href="/dragonball-characters/assets/index-C2PCoUuK.css">
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      Dragonball Arcade necesita JavaScript activado para cargar la lista de luchadores.
+    </noscript>
   </body>
 </html>

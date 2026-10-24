@@ -8,8 +8,10 @@
 
 .roster-filter-bar__field {
   display: flex;
+  flex: 1 1 180px;
   flex-direction: column;
   gap: 4px;
+  min-width: 0;
 }
 
 .roster-filter-bar__label {
@@ -21,6 +23,8 @@
 
 .roster-filter-bar input,
 .roster-filter-bar select {
+  width: 100%;
+  height: 44px;
   min-height: 44px;
   padding: 0 var(--space-sm);
   border: 2px solid var(--arcade-ink);
@@ -29,6 +33,25 @@
   color: var(--arcade-ink);
   font-size: 0.8rem;
   box-shadow: 2px 2px 0 rgba(18, 58, 77, 0.12);
+}
+
+.roster-filter-bar select {
+  padding-right: 2.5rem;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5l5-5' fill='none' stroke='%23123a4d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.95rem center;
+  background-size: 12px 8px;
+  cursor: pointer;
+}
+
+.roster-filter-bar select::-ms-expand {
+  display: none;
+}
+
+.roster-filter-bar select option {
+  background: var(--arcade-panel);
+  color: var(--arcade-ink);
 }
 
 .roster-filter-bar input:focus-visible,
@@ -51,7 +74,7 @@
 }
 
 .roster-filter-bar__search {
-  flex: 1 1 200px;
+  flex: 2 1 240px;
 }
 
 .roster-filter-bar__search input {

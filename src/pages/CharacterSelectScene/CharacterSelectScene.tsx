@@ -14,6 +14,7 @@ import { useRoster } from "@context/rosterContext";
 import { useArcadeAudio } from "@hooks/useArcadeAudio";
 import { useDocumentTitle } from "@hooks/useDocumentTitle";
 import { useGridColumns } from "@hooks/useGridColumns";
+import { useMediaQuery } from "@hooks/useMediaQuery";
 import { useRosterNavigation } from "@hooks/useRosterNavigation";
 import {
   buildRosterParams,
@@ -22,6 +23,7 @@ import {
 } from "@utils/rosterQuery";
 import { buildRosterView } from "@utils/rosterSort";
 import { getAffiliationLabel, getRaceLabel } from "@utils/characterLabels";
+import DragonballLogo from "@assets/dragon-ball.svg";
 import {
   FighterPreview,
   ReadyBanner,
@@ -58,6 +60,7 @@ export default function CharacterSelectScene(): React.JSX.Element {
 
   const gridRef = useRef<HTMLDivElement>(null);
   const columns = useGridColumns(gridRef);
+  const isCompact = useMediaQuery("(max-width: 980px)");
   const shouldFocus = useRef(true);
   const prefetchTimer = useRef<number | undefined>(undefined);
 
@@ -148,6 +151,15 @@ export default function CharacterSelectScene(): React.JSX.Element {
     [activeCharacter?.id, navigate, p1Id, play, versusMode],
   );
 
+  const handleQuickSelect = useCallback(
+    (id: number) => {
+      shouldFocus.current = true;
+      updateQuery({ focus: id });
+      handleConfirm(id);
+    },
+    [handleConfirm, updateQuery],
+  );
+
   const handleEscape = useCallback(() => {
     play("back");
 
@@ -193,25 +205,41 @@ export default function CharacterSelectScene(): React.JSX.Element {
       : "Elegir como P1"
     : "Confirmar luchador";
 
+  const quickSelect = versusMode && isCompact;
+  const quickActionPlayer = p1Id ? "P2" : "P1";
+  const quickActionLabel = `Elegir ${quickActionPlayer}`;
+  const lede = isCompact
+    ? versusMode
+      ? "Toca una tarjeta para elegir P1 y luego P2."
+      : "Toca una tarjeta para ver su ficha; vuelve a tocarla para confirmar."
+    : `${versusMode ? "Elige un luchador para P1 y luego para P2. " : ""}Usa las flechas para moverte, Enter para confirmar y Escape para volver.`;
+
   const isInitialLoading =
     (status === "idle" || status === "loading") && characters.length === 0;
 
   return (
     <section className="select-scene" aria-labelledby="select-heading">
       <div className="select-scene__intro">
-        <div>
-          <h1 id="select-heading">Elige tu luchador</h1>
-          <p className="select-scene__lede">
-            {versusMode ? "Elige un luchador para P1 y luego para P2. " : ""}
-            Usa las flechas para moverte, Enter para confirmar y Escape para
-            volver.
-          </p>
+        <div className="select-scene__heading">
+          <h1 id="select-heading" className="select-scene__title">
+            <img
+              src={DragonballLogo}
+              alt=""
+              className="select-scene__title-ball"
+              aria-hidden="true"
+            />
+            <span className="select-scene__title-kicker">Elige tu</span>
+            <span className="select-scene__title-main">Luchador</span>
+          </h1>
+          <p className="select-scene__lede">{lede}</p>
         </div>
-        <p className="select-scene__hint">
-          <span className="arcade-kbd">Flechas</span> mover
-          <span className="arcade-kbd">Enter</span> elegir
-          <span className="arcade-kbd">Esc</span> volver
-        </p>
+        {!isCompact ? (
+          <p className="select-scene__hint">
+            <span className="arcade-kbd">Flechas</span> mover
+            <span className="arcade-kbd">Enter</span> elegir
+            <span className="arcade-kbd">Esc</span> volver
+          </p>
+        ) : null}
       </div>
 
       <RosterFilterBar
@@ -274,8 +302,13 @@ export default function CharacterSelectScene(): React.JSX.Element {
           <RosterGrid
             characters={view}
             activeId={activeCharacter?.id}
+            selectedP1Id={p1Id ?? undefined}
             gridRef={gridRef}
+            quickSelect={quickSelect}
+            quickActionLabel={quickActionLabel}
+            quickActionPlayer={quickActionPlayer}
             onActivate={handleActivate}
+            onQuickSelect={handleQuickSelect}
             onConfirm={handleConfirm}
             onPrefetch={handlePrefetch}
             onKeyDown={handleKeyDown}

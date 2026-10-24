@@ -65,6 +65,36 @@
   animation: arcade-ready 0.3s ease-out;
 }
 
+.fighter-tile__quick-action {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  z-index: 2;
+  padding: 3px 8px;
+  border: 2px solid var(--arcade-ink);
+  border-radius: 999px;
+  background: var(--arcade-orange);
+  color: var(--arcade-ink);
+  font-family: var(--arcade-display);
+  font-size: 0.5rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  box-shadow: 2px 2px 0 var(--arcade-ink);
+  pointer-events: none;
+}
+
+.fighter-tile__quick-action--p2 {
+  background: var(--arcade-blue);
+  color: var(--arcade-panel);
+}
+
+.fighter-tile__quick-action--ready {
+  background: var(--arcade-green);
+  color: var(--arcade-panel);
+}
+
 .fighter-tile__name {
   padding-top: 2px;
   font-family: var(--arcade-display);

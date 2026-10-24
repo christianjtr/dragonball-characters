@@ -12,12 +12,63 @@
   gap: var(--space-md);
 }
 
-.select-scene__intro h1 {
+.select-scene__heading {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-xs);
+  min-width: 0;
+}
+
+.select-scene__title {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.08em;
+  max-width: 100%;
   margin: 0;
-  font-size: clamp(1.6rem, 3.2vw, 2.5rem);
-  line-height: 1.05;
-  letter-spacing: 0.04em;
+  padding: 0 0.08em 0.08em 0;
+  font-family: var(--arcade-logo);
+  font-size: clamp(1.9rem, 6.2vw, 4rem);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 0.9;
   text-transform: uppercase;
+  filter: drop-shadow(4px 4px 0 rgba(18, 58, 77, 0.28));
+  transform: rotate(-1deg);
+  transform-origin: left center;
+}
+
+.select-scene__title-kicker {
+  flex: none;
+  color: var(--arcade-ink);
+  font-size: 0.48em;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+}
+
+.select-scene__title-ball {
+  flex: none;
+  width: 0.78em;
+  height: 0.78em;
+  filter: drop-shadow(0.04em 0.04em 0 rgba(18, 58, 77, 0.3));
+  transform: rotate(8deg);
+}
+
+.select-scene__title-main {
+  flex: none;
+  white-space: nowrap;
+  color: transparent;
+  background-image: linear-gradient(
+    180deg,
+    #fff8b0 0%,
+    #ffd23f 42%,
+    #f5a623 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-stroke: 0.045em var(--arcade-ink);
+  paint-order: stroke fill;
 }
 
 .select-scene__lede {

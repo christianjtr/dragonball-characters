@@ -10,8 +10,6 @@ export const ARCADE_CONFIG = {
   },
   audio: {
     volume: 0.045,
-  },
-  storageKeys: {
-    settings: "dbz-arcade-settings:v1",
+    musicVolume: 0.14,
   },
 } as const;

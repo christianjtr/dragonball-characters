@@ -1,5 +1,6 @@
 import React from "react";
 import { Header } from "./Header/Header";
+import { useArcadeMusic } from "@hooks/useArcadeMusic";
 import "./AppLayout.css";
 
 interface AppLayoutProps {
@@ -9,6 +10,8 @@ interface AppLayoutProps {
 export default function AppLayout({
   children,
 }: AppLayoutProps): React.JSX.Element {
+  useArcadeMusic();
+
   return (
     <React.Fragment>
       <a className="app-layout__skip-link" href="#main-content">

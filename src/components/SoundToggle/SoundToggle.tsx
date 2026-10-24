@@ -8,8 +8,13 @@ export const SoundToggle: React.FC = () => {
   return (
     <button
       type="button"
-      className={`sound-toggle ${soundEnabled ? "is-on" : ""}`}
+      className={`sound-toggle ${soundEnabled ? "is-on" : "is-off"}`}
       aria-pressed={soundEnabled}
+      aria-label={
+        soundEnabled
+          ? "Silenciar el sonido del arcade"
+          : "Activar el sonido del arcade"
+      }
       onClick={toggleSound}
       title={soundEnabled ? "Silenciar el sonido del arcade" : "Activar el sonido del arcade"}
     >
@@ -19,7 +24,7 @@ export const SoundToggle: React.FC = () => {
         <i />
       </span>
       <span className="sound-toggle__label">
-        SONIDO {soundEnabled ? "ON" : "OFF"}
+        {soundEnabled ? "SILENCIAR" : "ACTIVAR AUDIO"}
       </span>
     </button>
   );

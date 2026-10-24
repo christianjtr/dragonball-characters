@@ -12,9 +12,32 @@
   text-transform: uppercase;
 }
 
+.sound-toggle.is-off {
+  border-color: var(--arcade-cyan);
+  background: rgba(14, 138, 160, 0.08);
+  color: var(--arcade-cyan);
+  animation: sound-toggle-hint 2.4s ease-out infinite;
+}
+
 .sound-toggle:hover {
   border-color: var(--arcade-cyan);
-  color: var(--arcade-cyan);
+  background: var(--arcade-cyan);
+  color: var(--arcade-panel);
+}
+
+.sound-toggle.is-off .sound-toggle__bars i {
+  opacity: 0.55;
+}
+
+@keyframes sound-toggle-hint {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(14, 138, 160, 0);
+  }
+
+  45% {
+    box-shadow: 0 0 0 4px rgba(14, 138, 160, 0.18);
+  }
 }
 
 .sound-toggle__bars {
@@ -45,6 +68,12 @@
 .sound-toggle.is-on {
   border-color: var(--arcade-green);
   color: var(--arcade-green);
+}
+
+.sound-toggle.is-on:hover {
+  border-color: var(--arcade-green);
+  background: var(--arcade-green);
+  color: var(--arcade-panel);
 }
 
 .sound-toggle.is-on .sound-toggle__bars i {

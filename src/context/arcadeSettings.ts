@@ -2,7 +2,11 @@ import { createContext, use } from "react";
 
 export interface ArcadeSettings {
   soundEnabled: boolean;
+  effectsEnabled: boolean;
+  musicEnabled: boolean;
   toggleSound: () => void;
+  toggleEffects: () => void;
+  toggleMusic: () => void;
 }
 
 export const ArcadeSettingsContext = createContext<ArcadeSettings | null>(null);

@@ -1,0 +1,289 @@
+.arcade-options__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(16px, 4vw, 40px);
+  background:
+    radial-gradient(
+      circle at 50% 20%,
+      rgba(255, 244, 196, 0.18) 0%,
+      transparent 55%
+    ),
+    rgba(18, 58, 77, 0.55);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  animation: arcade-options-fade 0.16s ease-out both;
+}
+
+.arcade-options {
+  position: relative;
+  width: min(560px, 100%);
+  max-height: min(88dvh, 720px);
+  padding: clamp(20px, 3vw, 32px);
+  overflow-y: auto;
+  border: 2px solid var(--arcade-ink);
+  border-radius: 12px;
+  background:
+    radial-gradient(rgba(18, 58, 77, 0.055) 1px, transparent 1px) 0 0 / 12px
+      12px,
+    linear-gradient(180deg, #fffaf0, #fff0d4);
+  box-shadow:
+    6px 6px 0 rgba(18, 58, 77, 0.28),
+    0 24px 70px rgba(18, 58, 77, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  color: var(--arcade-ink);
+  animation: arcade-options-in 0.2s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+}
+
+.arcade-options:focus {
+  outline: none;
+}
+
+.arcade-options__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.arcade-options__eyebrow {
+  margin: 0 0 4px;
+  color: var(--arcade-magenta);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.arcade-options__title {
+  margin: 0;
+  color: transparent;
+  background-image: linear-gradient(
+    180deg,
+    #fff8b0 0%,
+    #ffd23f 42%,
+    #f5a623 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  font-family: var(--arcade-logo);
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  line-height: 0.9;
+  text-transform: uppercase;
+  filter: drop-shadow(3px 3px 0 rgba(18, 58, 77, 0.2));
+  paint-order: stroke fill;
+  transform: rotate(-1deg);
+  -webkit-text-stroke: 0.04em var(--arcade-ink);
+}
+
+.arcade-options__close {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--arcade-ink);
+  border-radius: 8px;
+  background: var(--arcade-panel);
+  color: var(--arcade-ink);
+  font-size: 1rem;
+  box-shadow: 2px 2px 0 var(--arcade-ink);
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    background-color 0.14s ease,
+    color 0.14s ease;
+}
+
+.arcade-options__close:hover {
+  background: var(--arcade-orange);
+  color: var(--arcade-ink);
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 var(--arcade-ink);
+}
+
+.arcade-options__close:focus-visible,
+.arcade-options__row:focus-visible,
+.arcade-options__back:focus-visible {
+  outline: 3px solid var(--arcade-blue);
+  outline-offset: 2px;
+}
+
+.arcade-options__rows {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.arcade-options__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  width: 100%;
+  min-height: 64px;
+  padding: 12px 16px;
+  border: 2px solid var(--arcade-ink);
+  border-radius: 10px;
+  background: var(--arcade-panel);
+  color: var(--arcade-ink);
+  text-align: left;
+  box-shadow: 3px 3px 0 rgba(18, 58, 77, 0.16);
+  transition:
+    border-color 0.14s ease,
+    background-color 0.14s ease,
+    transform 0.14s ease,
+    box-shadow 0.14s ease;
+}
+
+.arcade-options__row:hover,
+.arcade-options__row:focus-visible {
+  border-color: var(--arcade-orange);
+  background: #fffaf0;
+  box-shadow: 4px 4px 0 var(--arcade-orange);
+  transform: translate(-1px, -1px);
+}
+
+.arcade-options__row.is-on {
+  border-color: var(--arcade-green);
+  box-shadow: 4px 4px 0 var(--arcade-green);
+}
+
+.arcade-options__row-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.arcade-options__row-label {
+  font-family: var(--arcade-display);
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.arcade-options__row-description {
+  color: var(--arcade-ink-dim);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.arcade-options__switch {
+  flex: none;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 52px;
+  height: 28px;
+  padding: 3px;
+  border: 2px solid var(--arcade-ink);
+  border-radius: 999px;
+  background: var(--arcade-panel-strong);
+  transition:
+    border-color 0.16s ease,
+    background-color 0.16s ease;
+}
+
+.arcade-options__switch-knob {
+  display: block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--arcade-ink);
+  transition:
+    transform 0.16s ease,
+    background-color 0.16s ease;
+}
+
+.arcade-options__row.is-on .arcade-options__switch {
+  border-color: var(--arcade-ink);
+  background: var(--arcade-green);
+}
+
+.arcade-options__row.is-on .arcade-options__switch-knob {
+  background: #fff;
+  transform: translateX(24px);
+}
+
+.arcade-options__note {
+  margin: var(--space-md) 0 var(--space-lg);
+  color: var(--arcade-ink-dim);
+  font-size: 0.62rem;
+  line-height: 1.6;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.arcade-options__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 20px;
+  border: 2px solid var(--arcade-ink);
+  border-radius: 999px;
+  background: var(--arcade-panel);
+  color: var(--arcade-ink);
+  font-family: var(--arcade-display);
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  box-shadow: 3px 3px 0 var(--arcade-ink);
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    background-color 0.14s ease;
+}
+
+.arcade-options__back:hover {
+  background: var(--arcade-panel-strong);
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--arcade-ink);
+}
+
+.arcade-options__back:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--arcade-ink);
+}
+
+@keyframes arcade-options-fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes arcade-options-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 560px) {
+  .arcade-options__row-description {
+    display: none;
+  }
+
+  .arcade-options__row {
+    min-height: 56px;
+  }
+}

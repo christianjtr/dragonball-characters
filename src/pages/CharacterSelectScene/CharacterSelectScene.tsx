@@ -55,7 +55,9 @@ export default function CharacterSelectScene(): React.JSX.Element {
     [characters, deferredSearch, query.race, query.affiliation, query.sort],
   );
 
-  const [versusMode, setVersusMode] = useState(false);
+  const [versusMode, setVersusMode] = useState(
+    () => searchParams.get("versus") === "1",
+  );
   const [p1Id, setP1Id] = useState<number | null>(null);
 
   const gridRef = useRef<HTMLDivElement>(null);
@@ -170,25 +172,55 @@ export default function CharacterSelectScene(): React.JSX.Element {
 
     if (versusMode) {
       setVersusMode(false);
+      setSearchParams(
+        (previous) => {
+          const params = new URLSearchParams(previous);
+          params.delete("versus");
+          return params;
+        },
+        { replace: true },
+      );
       return;
     }
 
     navigate("/");
-  }, [navigate, p1Id, play, versusMode]);
+  }, [navigate, p1Id, play, setSearchParams, versusMode]);
 
   const handleClear = useCallback(() => {
-    setSearchParams(new URLSearchParams(), { replace: true });
+    const params = new URLSearchParams();
+
+    if (versusMode) {
+      params.set("versus", "1");
+    }
+
+    setSearchParams(params, { replace: true });
     play("back");
-  }, [play, setSearchParams]);
+  }, [play, setSearchParams, versusMode]);
 
   const handleToggleVersus = useCallback(() => {
-    if (versusMode) {
+    const next = !versusMode;
+
+    if (!next) {
       setP1Id(null);
     }
 
-    setVersusMode(!versusMode);
+    setVersusMode(next);
+    setSearchParams(
+      (previous) => {
+        const params = new URLSearchParams(previous);
+
+        if (next) {
+          params.set("versus", "1");
+        } else {
+          params.delete("versus");
+        }
+
+        return params;
+      },
+      { replace: true },
+    );
     play("move");
-  }, [play, versusMode]);
+  }, [play, setSearchParams, versusMode]);
 
   const { handleKeyDown } = useRosterNavigation({
     items: view,

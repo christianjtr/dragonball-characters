@@ -6,7 +6,7 @@ const BASE_PATH = import.meta.env.BASE_URL.replace(/\/$/, "");
 const MUSIC_SRC = `${BASE_PATH}/audio/dragon-ball-romantic-ageru-yo.mp4`;
 
 export const useArcadeMusic = (): void => {
-  const { soundEnabled } = useArcadeSettings();
+  const { musicEnabled } = useArcadeSettings();
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
@@ -31,7 +31,7 @@ export const useArcadeMusic = (): void => {
       return;
     }
 
-    if (!soundEnabled) {
+    if (!musicEnabled) {
       audio.pause();
       return;
     }
@@ -63,5 +63,5 @@ export const useArcadeMusic = (): void => {
       removeRetryListeners();
       music.pause();
     };
-  }, [soundEnabled]);
+  }, [musicEnabled]);
 };

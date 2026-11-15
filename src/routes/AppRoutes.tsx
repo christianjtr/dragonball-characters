@@ -1,7 +1,9 @@
 import React, { lazy, useEffect } from "react";
 import { Navigate, Route, Routes, useLocation, useParams } from "react-router";
 
-const AttractScene = lazy(() => import("@pages/AttractScene/AttractScene"));
+const ArcadeMenuScene = lazy(
+  () => import("@pages/ArcadeMenuScene/ArcadeMenuScene"),
+);
 const CharacterSelectScene = lazy(
   () => import("@pages/CharacterSelectScene/CharacterSelectScene"),
 );
@@ -26,7 +28,7 @@ export const AppRoutes = (): React.JSX.Element => {
 
   return (
     <Routes>
-      <Route path="/" element={<AttractScene />} />
+      <Route path="/" element={<ArcadeMenuScene />} />
       <Route path="/select" element={<CharacterSelectScene />} />
       <Route path="/fighters/:id" element={<FighterProfileScene />} />
       <Route path="/versus/:p1Id/:p2Id" element={<VersusScene />} />

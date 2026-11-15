@@ -1,24 +1,27 @@
 # Dragonball Arcade
 
-SPA de personajes de Dragon Ball con estética de arcade retro, construida con React 19, TypeScript y Vite. La aplicación consume la [Dragonball API](https://web.dragonball-api.com/) y ofrece un flujo completo de selección de luchadores: portada, roster, ficha de personaje y combate para dos jugadores.
+SPA de personajes de Dragon Ball con estética de arcade retro, construida con React 19, TypeScript y Vite. La aplicación consume la [Dragonball API](https://web.dragonball-api.com/) y ofrece un flujo completo de selección de luchadores: menú principal arcade, roster, ficha de personaje y combate para dos jugadores.
 
 **Demo:** [christianjtr.github.io/dragonball-characters](https://christianjtr.github.io/dragonball-characters/)
 
 ## Capturas
 
-| Portada | Selección Personaje | Modo versus |
+| Menú principal | Selección Personaje | Modo versus |
 | --- | --- | --- |
-| <img src="samples/landing_v2.png" alt="Portada de Dragonball Arcade v2" width="100%" /> | <img src="samples/characters_v2.png" alt="Selección de Personaje Arcade v2" width="100%" /> | <img src="samples/vs_v2.png" alt="Modo versus de Dragonball Arcade v2" width="100%" /> |
+| <img src="samples/menu_v3.png" alt="Menú principal de Dragonball Arcade" width="100%" /> | <img src="samples/characters_v2.png" alt="Selección de Personaje Arcade v2" width="100%" /> | <img src="samples/vs_v2.png" alt="Modo versus de Dragonball Arcade v2" width="100%" /> |
+
+Vista móvil del menú: <img src="samples/menu_mobile_v3.png" alt="Menú principal en móvil" width="280" />
 
 ## Versión 2.0 (actual)
 
-- **Portada tipo arcade:** título con bola de dragón, Kame House ilustrada, nubes, mar y llamada a empezar.
+- **Menú principal tipo arcade:** título con bola de dragón, Kame House, luchador destacado y opciones de Versus, Fighter Select y Options con navegación por teclado, ratón y táctil.
 - **Roster de 58 luchadores:** búsqueda por nombre, filtros por raza y afiliación, orden alfabético y estado de la URL compartible.
 - **Ficha de personaje:** retrato, ki, descripción, planeta de origen y transformaciones.
 - **Modo versus 2P:** selección de dos luchadores y pantalla de enfrentamiento.
 - **Interfaz en español:** etiquetas traducidas para razas, afiliaciones, géneros y estados.
 - **Diseño responsive:** layout adaptado a escritorio, tablet y móvil.
-- **Audio de arcade:** efectos de navegación y música de fondo con interruptor de sonido; el audio arranca desactivado.
+- **Audio de arcade:** efectos de navegación y música de fondo con controles separados en Options, persistidos en `localStorage`; el audio arranca desactivado y respeta las restricciones de autoplay.
+- **Accesibilidad:** navegación completa por teclado, foco gestionado, textos alternativos y respeto a `prefers-reduced-motion`.
 - **GitHub Pages:** fallback de rutas SPA mediante `public/404.html` y `.nojekyll`.
 
 ## Stack
@@ -29,6 +32,7 @@ SPA de personajes de Dragon Ball con estética de arcade retro, construida con R
 - [React Router](https://reactrouter.com/)
 - CSS puro con tokens y componentes propios
 - [Luckiest Guy](https://fontsource.org/fonts/luckiest-guy) para el logotipo
+- Vitest + Testing Library para pruebas de interacción
 
 ## Instalación y scripts
 
@@ -50,6 +54,9 @@ pnpm typecheck
 # Lint
 pnpm lint
 
+# Pruebas
+pnpm test
+
 # Build de producción
 pnpm build
 ```
@@ -61,7 +68,7 @@ La música de fondo usa el instrumental TV-size de **Romantic Ageru Yo**, ending
 - Archivo: `public/audio/dragon-ball-romantic-ageru-yo.mp4`
 - Fuente: [Internet Archive](https://archive.org/details/OG-DB-Ending-Original-Instrumental)
 - Créditos completos: `public/audio/CREDITS.md`
-- El audio arranca desactivado; se activa o desactiva desde el botón del header.
+- El audio arranca desactivado; se activa desde `OPTIONS` (efectos y música por separado) o con el interruptor del header. Las preferencias se guardan en `localStorage`.
 
 ## Estructura
 
@@ -72,7 +79,7 @@ src/
   context/      Estado de sonido y roster
   hooks/        Audio, datos, navegación y utilidades
   layouts/      Header y layout principal
-  pages/        Portada, roster, ficha y versus
+  pages/        Menú principal, roster, ficha y versus
   services/     Cliente y servicios de la Dragonball API
   styles/       Tokens y estilos globales del arcade
   utils/        Filtros, orden, etiquetas y temas

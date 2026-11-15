@@ -32,7 +32,7 @@ const getAudioContextConstructor = (): AudioContextConstructor | undefined => {
 };
 
 export const useArcadeAudio = () => {
-  const { soundEnabled } = useArcadeSettings();
+  const { effectsEnabled } = useArcadeSettings();
   const contextRef = useRef<AudioContext | null>(null);
 
   useEffect(() => {
@@ -44,7 +44,7 @@ export const useArcadeAudio = () => {
 
   const play = useCallback(
     (cue: ArcadeCue) => {
-      if (!soundEnabled) {
+      if (!effectsEnabled) {
         return;
       }
 
@@ -90,7 +90,7 @@ export const useArcadeAudio = () => {
         startAt += spec.duration;
       });
     },
-    [soundEnabled],
+    [effectsEnabled],
   );
 
   return play;

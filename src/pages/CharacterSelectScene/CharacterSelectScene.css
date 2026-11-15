@@ -121,6 +121,10 @@
   box-shadow: 4px 4px 0 rgba(18, 58, 77, 0.16);
 }
 
+.select-scene__players--mobile {
+  display: none;
+}
+
 .select-scene__versus-mark {
   align-self: center;
   color: var(--arcade-magenta);
@@ -138,13 +142,47 @@
   white-space: nowrap;
 }
 
-.select-scene--arcade-versus .select-scene__stage {
-  grid-template-columns: minmax(0, 1fr);
+.select-scene__secret-tile {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 30;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 0 14px;
+  border: 2px solid var(--arcade-ink);
+  border-radius: 10px;
+  background: linear-gradient(135deg, #fff5a6, #ffc83d 48%, #a7f1ff);
+  color: var(--arcade-ink);
+  font-family: var(--arcade-display);
+  font-size: 0.63rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  box-shadow:
+    3px 3px 0 var(--arcade-ink),
+    0 0 16px rgba(255, 198, 55, 0.75);
+  animation: secret-tile-zap 0.42s steps(2, end) infinite alternate;
 }
 
-.select-scene--arcade-versus .roster-grid {
-  grid-template-columns: repeat(auto-fill, minmax(108px, 1fr));
-  max-height: calc(100dvh - 485px);
+.select-scene--arcade-versus .select-scene__players--desktop .player-select-card {
+  min-height: 178px;
+}
+
+.select-scene__secret-tile span {
+  color: #e58a13;
+  font-size: 1.25rem;
+  text-shadow: 0 0 8px rgba(255, 186, 35, 0.9);
+}
+
+@keyframes secret-tile-zap {
+  from { box-shadow: 3px 3px 0 var(--arcade-ink), 0 0 10px rgba(255, 198, 55, 0.45); }
+  to { box-shadow: 3px 3px 0 var(--arcade-ink), 0 0 22px rgba(54, 199, 232, 0.9); }
+}
+
+.select-scene--arcade-versus .select-scene__stage {
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .select-scene--arcade-versus .fighter-tile {
@@ -183,9 +221,6 @@
     grid-template-columns: 1fr;
   }
 
-  .select-scene--arcade-versus .roster-grid {
-    max-height: none;
-  }
 }
 
 @media (max-width: 720px) {
@@ -193,6 +228,14 @@
     grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
     gap: 8px;
     padding: 8px;
+  }
+
+  .select-scene__players--desktop {
+    display: none;
+  }
+
+  .select-scene__players--mobile {
+    display: grid;
   }
 
   .select-scene__start-fight {
@@ -203,20 +246,14 @@
     grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   }
 
-  .select-scene--arcade-versus .roster-grid {
-    grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
-  }
-}
-
-@media (max-width: 420px) {
-  .select-scene--arcade-versus .roster-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 6px;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .select-scene__versus-mark {
     transform: none;
+  }
+
+  .select-scene__secret-tile {
+    animation: none;
   }
 }

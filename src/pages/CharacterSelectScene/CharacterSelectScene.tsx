@@ -77,6 +77,7 @@ export default function CharacterSelectScene(): React.JSX.Element {
   const [p2Id, setP2Id] = useState<number | null>(null);
   const [gamepadConnected, setGamepadConnected] = useState(false);
   const [showRecruiterCard, setShowRecruiterCard] = useState(false);
+  const [konamiUnlocked, setKonamiUnlocked] = useState(false);
   const konamiProgress = useRef(0);
 
   const gridRef = useRef<HTMLDivElement>(null);
@@ -140,15 +141,6 @@ export default function CharacterSelectScene(): React.JSX.Element {
     [setSearchParams],
   );
 
-  const handleActivate = useCallback(
-    (id: number) => {
-      shouldFocus.current = true;
-      updateQuery({ focus: id });
-      play("move");
-    },
-    [play, updateQuery],
-  );
-
   const handlePrefetch = useCallback(
     (id: number) => {
       window.clearTimeout(prefetchTimer.current);
@@ -191,6 +183,15 @@ export default function CharacterSelectScene(): React.JSX.Element {
     [activeCharacter?.id, navigate, p1Id, p2Id, play, updateQuery, view, versusMode],
   );
 
+  const handleActivate = useCallback(
+    (id: number) => {
+      shouldFocus.current = true;
+      updateQuery({ focus: id });
+      play("move");
+    },
+    [play, updateQuery],
+  );
+
   const handleStartFight = useCallback(() => {
     if (p1Id && p2Id) {
       play("confirm");
@@ -202,9 +203,13 @@ export default function CharacterSelectScene(): React.JSX.Element {
     (id: number) => {
       shouldFocus.current = true;
       updateQuery({ focus: id });
-      handleConfirm(id);
+      if (p2Character) {
+        handleStartFight();
+      } else {
+        handleConfirm(id);
+      }
     },
-    [handleConfirm, updateQuery],
+    [handleConfirm, handleStartFight, p2Character, updateQuery],
   );
 
   const handleEscape = useCallback(() => {
@@ -235,6 +240,17 @@ export default function CharacterSelectScene(): React.JSX.Element {
 
     navigate("/");
   }, [navigate, p1Id, p2Id, play, setSearchParams, versusMode]);
+
+  const handleCancelP1 = useCallback(() => {
+    setP1Id(null);
+    setP2Id(null);
+    play("back");
+  }, [play]);
+
+  const handleCancelP2 = useCallback(() => {
+    setP2Id(null);
+    play("back");
+  }, [play]);
 
   const handleClear = useCallback(() => {
     const params = new URLSearchParams();
@@ -276,7 +292,10 @@ export default function CharacterSelectScene(): React.JSX.Element {
     columns,
     activeId: activeCharacter?.id,
     onFocusChange: handleActivate,
-    onConfirm: () => (p2Character ? handleStartFight() : handleConfirm()),
+    onConfirm: () => {
+      if (versusMode && p2Character) handleStartFight();
+      else handleConfirm();
+    },
     onEscape: handleEscape,
   });
   const activeIndex = keyboardActiveIndex;
@@ -321,7 +340,10 @@ export default function CharacterSelectScene(): React.JSX.Element {
   useGamepadNavigation({
     enabled: true,
     onMove: handleGamepadMove,
-    onConfirm: () => (p2Character ? handleStartFight() : handleConfirm()),
+    onConfirm: () => {
+      if (versusMode && p2Character) handleStartFight();
+      else handleConfirm();
+    },
     onBack: handleEscape,
     onConnectedChange: setGamepadConnected,
     onMoveHaptic: () => pulseGamepad(35, 0.15, 0.22),
@@ -329,7 +351,7 @@ export default function CharacterSelectScene(): React.JSX.Element {
   });
 
   const handleKonamiKey = useCallback(
-    (event: React.KeyboardEvent<HTMLDivElement>) => {
+    (event: KeyboardEvent) => {
       const expected = KONAMI_SEQUENCE[konamiProgress.current];
       const pressed = event.key.length === 1 ? event.key.toLowerCase() : event.key;
 
@@ -341,6 +363,7 @@ export default function CharacterSelectScene(): React.JSX.Element {
         konamiProgress.current += 1;
         if (konamiProgress.current === KONAMI_SEQUENCE.length) {
           setShowRecruiterCard(true);
+          setKonamiUnlocked(true);
           konamiProgress.current = 0;
           play("transform");
         }
@@ -372,10 +395,14 @@ export default function CharacterSelectScene(): React.JSX.Element {
     (status === "idle" || status === "loading") && characters.length === 0;
 
   return (
+    <div
+      onKeyDownCapture={(event) =>
+        handleKonamiKey(event.nativeEvent)
+      }
+    >
     <section
       className={`select-scene${versusMode ? " select-scene--arcade-versus" : ""}`}
       aria-labelledby="select-heading"
-      onKeyDownCapture={handleKonamiKey}
     >
       <div className="select-scene__intro">
         <div className="select-scene__heading">
@@ -402,23 +429,48 @@ export default function CharacterSelectScene(): React.JSX.Element {
       </div>
 
       {!versusMode ? (
-        <>
-          <div className="select-scene__toolbar">
-            <RosterFilterBar
-              query={query}
-              resultCount={view.length}
-              totalCount={characters.length}
-              versusMode={false}
-              onChange={updateQuery}
-              onClear={handleClear}
-              onToggleVersus={handleToggleVersus}
-            />
-          </div>
-        </>
+        <div className="select-scene__toolbar">
+          <RosterFilterBar
+            query={query}
+            resultCount={view.length}
+            totalCount={characters.length}
+            versusMode={false}
+            onChange={updateQuery}
+            onClear={handleClear}
+            onToggleVersus={handleToggleVersus}
+          />
+        </div>
       ) : null}
 
       {!versusMode && p1Character ? (
         <ReadyBanner player="P1" name={p1Character.name} />
+      ) : null}
+
+      {versusMode ? (
+        <div className="select-scene__players select-scene__players--mobile" aria-label="Selección de jugadores">
+          <PlayerSelectCard
+            player="P1"
+            character={p1Character}
+            active={activePlayer === "P1"}
+            onClear={p1Id ? handleCancelP1 : undefined}
+          />
+          <div className="select-scene__versus-mark" aria-hidden="true">VS</div>
+          <PlayerSelectCard
+            player="P2"
+            character={p2Character}
+            active={activePlayer === "P2"}
+            onClear={p2Id ? handleCancelP2 : undefined}
+          />
+          {p2Character ? (
+            <button
+              type="button"
+              className="select-scene__start-fight arcade-button"
+              onClick={handleStartFight}
+            >
+              INICIAR COMBATE
+            </button>
+          ) : null}
+        </div>
       ) : null}
 
       {isInitialLoading ? (
@@ -466,7 +518,7 @@ export default function CharacterSelectScene(): React.JSX.Element {
         <div className="select-scene__stage">
           <RosterGrid
             characters={view}
-              activeId={activeCharacter?.id}
+            activeId={activeCharacter?.id}
             selectedP1Id={p1Id ?? undefined}
             selectedP2Id={p2Id ?? undefined}
             gridRef={gridRef}
@@ -477,9 +529,9 @@ export default function CharacterSelectScene(): React.JSX.Element {
             onQuickSelect={handleQuickSelect}
             onConfirm={handleConfirm}
             onPrefetch={handlePrefetch}
-              onKeyDown={handleKeyDown}
-              auraActive={versusMode && Boolean(activeDetail?.transformations.length)}
-            />
+            onKeyDown={handleKeyDown}
+            auraActive={versusMode && Boolean(activeDetail?.transformations.length)}
+          />
           {activeCharacter && !versusMode ? (
             <FighterPreview
               character={activeCharacter}
@@ -491,19 +543,19 @@ export default function CharacterSelectScene(): React.JSX.Element {
       )}
 
       {versusMode ? (
-        <div className="select-scene__players" aria-label="Selección de jugadores">
+        <div className="select-scene__players select-scene__players--desktop" aria-label="Selección de jugadores">
           <PlayerSelectCard
             player="P1"
             character={p1Character}
             active={activePlayer === "P1"}
-            onClear={p1Id ? () => { setP1Id(null); setP2Id(null); } : undefined}
+            onClear={p1Id ? handleCancelP1 : undefined}
           />
           <div className="select-scene__versus-mark" aria-hidden="true">VS</div>
           <PlayerSelectCard
             player="P2"
             character={p2Character}
             active={activePlayer === "P2"}
-            onClear={p2Id ? () => setP2Id(null) : undefined}
+            onClear={p2Id ? handleCancelP2 : undefined}
           />
           {p2Character ? (
             <button
@@ -517,6 +569,17 @@ export default function CharacterSelectScene(): React.JSX.Element {
         </div>
       ) : null}
 
+      {konamiUnlocked ? (
+        <button
+          type="button"
+          className="select-scene__secret-tile"
+          onClick={() => setShowRecruiterCard(true)}
+        >
+          <span aria-hidden="true">⚡</span>
+          PERFIL SECRETO
+        </button>
+      ) : null}
+
       <p className="visually-hidden" aria-live="polite">
         {activeCharacter
           ? `${activeCharacter.name}. ${getRaceLabel(activeCharacter.race)}. ${getAffiliationLabel(activeCharacter.affiliation)}.`
@@ -526,5 +589,6 @@ export default function CharacterSelectScene(): React.JSX.Element {
         <RecruiterCard onClose={() => setShowRecruiterCard(false)} />
       ) : null}
     </section>
+    </div>
   );
 }

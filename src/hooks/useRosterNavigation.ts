@@ -55,10 +55,12 @@ export const useRosterNavigation = ({
   );
 
   const handleKeyDown = useCallback(
-    (event: KeyboardEvent<HTMLElement>) => {
+    (event: KeyboardEvent<HTMLElement>): boolean => {
       if (isEditableTarget(event.target)) {
-        return;
+        return false;
       }
+
+      let handled = true;
 
       switch (event.key) {
         case "ArrowRight":
@@ -111,8 +113,10 @@ export const useRosterNavigation = ({
           onEscape();
           break;
         default:
+          handled = false;
           break;
       }
+      return handled;
     },
     [activeIndex, columns, items.length, moveTo, onConfirm, onEscape],
   );

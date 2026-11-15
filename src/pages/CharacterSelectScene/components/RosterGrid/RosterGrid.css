@@ -10,6 +10,11 @@
   scrollbar-width: thin;
 }
 
+.select-scene--arcade-versus .roster-grid {
+  grid-template-columns: repeat(auto-fill, minmax(108px, 1fr));
+  max-height: calc(100dvh - 485px);
+}
+
 .roster-grid[data-aura-active="true"] .fighter-tile.is-active {
   animation: fighter-aura 1.2s ease-in-out infinite alternate;
 }
@@ -44,11 +49,20 @@
     max-height: none;
     overflow-y: visible;
   }
+
+  .select-scene--arcade-versus .roster-grid {
+    max-height: none;
+  }
 }
 
 @media (max-width: 420px) {
   .roster-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .select-scene--arcade-versus .roster-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
   }
 }
 

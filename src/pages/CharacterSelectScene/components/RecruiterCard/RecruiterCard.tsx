@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { ARCADE_CONFIG } from "@config/arcadeConfig";
 import "./RecruiterCard.css";
 
@@ -12,9 +12,48 @@ const STATS = [
   { label: "Product sense", value: 90 },
 ];
 
-export const RecruiterCard: React.FC<RecruiterCardProps> = ({ onClose }) => (
+export const RecruiterCard: React.FC<RecruiterCardProps> = ({ onClose }) => {
+  const dialogRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const previousFocus = document.activeElement instanceof HTMLElement
+      ? document.activeElement
+      : null;
+    dialogRef.current?.querySelector<HTMLButtonElement>("button")?.focus();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+        return;
+      }
+
+      if (event.key !== "Tab" || !dialogRef.current) return;
+      const focusable = dialogRef.current.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled])',
+      );
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first?.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      previousFocus?.focus();
+    };
+  }, [onClose]);
+
+  return (
   <div className="recruiter-card__backdrop" onMouseDown={onClose}>
     <section
+      ref={dialogRef}
       className="recruiter-card arcade-panel"
       role="dialog"
       aria-modal="true"
@@ -77,22 +116,13 @@ export const RecruiterCard: React.FC<RecruiterCardProps> = ({ onClose }) => (
             VER CV ↗
           </a>
         ) : null}
-        {ARCADE_CONFIG.recruiter.githubUrl ? (
-          <a
-            className="recruiter-card__action recruiter-card__action--secondary"
-            href={ARCADE_CONFIG.recruiter.githubUrl}
-            target="_blank"
-            rel="noreferrer"
-          >
-            GITHUB ↗
-          </a>
-        ) : null}
-        {!ARCADE_CONFIG.recruiter.cvUrl && !ARCADE_CONFIG.recruiter.githubUrl ? (
+        {!ARCADE_CONFIG.recruiter.cvUrl ? (
           <p className="recruiter-card__links-note">
-            Enlaces del perfil pendientes de configurar.
+            Enlace al CV pendiente de configurar.
           </p>
         ) : null}
       </div>
     </section>
   </div>
-);
+  );
+};

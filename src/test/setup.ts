@@ -1,4 +1,8 @@
 import "@testing-library/jest-dom/vitest";
+
+if (!HTMLElement.prototype.scrollIntoView) {
+  HTMLElement.prototype.scrollIntoView = () => undefined;
+}
 import { cleanup } from "@testing-library/react";
 import { afterEach, vi } from "vitest";
 

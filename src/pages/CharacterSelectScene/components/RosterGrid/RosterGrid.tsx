@@ -7,6 +7,7 @@ interface RosterGridProps {
   characters: CharacterSummary[];
   activeId?: number;
   selectedP1Id?: number;
+  selectedP2Id?: number;
   gridRef: React.RefObject<HTMLDivElement | null>;
   quickSelect: boolean;
   quickActionLabel: string;
@@ -16,12 +17,14 @@ interface RosterGridProps {
   onConfirm: (id: number) => void;
   onPrefetch: (id: number) => void;
   onKeyDown: (event: React.KeyboardEvent<HTMLDivElement>) => void;
+  auraActive?: boolean;
 }
 
 export const RosterGrid: React.FC<RosterGridProps> = ({
   characters,
   activeId,
   selectedP1Id,
+  selectedP2Id,
   gridRef,
   quickSelect,
   quickActionLabel,
@@ -31,6 +34,7 @@ export const RosterGrid: React.FC<RosterGridProps> = ({
   onConfirm,
   onPrefetch,
   onKeyDown,
+  auraActive = false,
 }) => {
   return (
     <div
@@ -39,6 +43,7 @@ export const RosterGrid: React.FC<RosterGridProps> = ({
       role="listbox"
       aria-label="Lista de luchadores"
       onKeyDown={onKeyDown}
+      data-aura-active={auraActive || undefined}
     >
       {characters.map((character) => (
         <FighterTile
@@ -46,6 +51,7 @@ export const RosterGrid: React.FC<RosterGridProps> = ({
           character={character}
           isActive={character.id === activeId}
           isP1Selected={character.id === selectedP1Id}
+          isP2Selected={character.id === selectedP2Id}
           quickSelect={quickSelect}
           quickActionLabel={quickActionLabel}
           quickActionPlayer={quickActionPlayer}

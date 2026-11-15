@@ -12,4 +12,8 @@ export const ARCADE_CONFIG = {
     volume: 0.045,
     musicVolume: 0.14,
   },
+  recruiter: {
+    cvUrl: import.meta.env.VITE_RECRUITER_CV_URL ?? "",
+    githubUrl: import.meta.env.VITE_RECRUITER_GITHUB_URL ?? "",
+  },
 } as const;

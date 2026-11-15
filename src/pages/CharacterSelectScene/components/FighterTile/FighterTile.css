@@ -38,6 +38,14 @@
   transform: translate(-1px, -1px);
 }
 
+.fighter-tile.is-p1-selected {
+  border-color: var(--arcade-orange);
+}
+
+.fighter-tile.is-p2-selected {
+  border-color: var(--arcade-blue);
+}
+
 .fighter-tile:focus-visible {
   outline: 3px solid var(--arcade-blue);
   outline-offset: 2px;
@@ -63,6 +71,31 @@
 .fighter-tile.is-active .fighter-tile__star {
   display: grid;
   animation: arcade-ready 0.3s ease-out;
+}
+
+.fighter-tile__player-mark {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  min-width: 26px;
+  height: 24px;
+  padding: 0 4px;
+  border: 2px solid var(--arcade-ink);
+  border-radius: 6px;
+  background: var(--arcade-orange);
+  color: var(--arcade-ink);
+  font-family: var(--arcade-display);
+  font-size: 0.52rem;
+  font-weight: 900;
+  box-shadow: 2px 2px 0 var(--arcade-ink);
+}
+
+.fighter-tile__player-mark--p2 {
+  background: var(--arcade-blue);
+  color: var(--arcade-panel);
 }
 
 .fighter-tile__quick-action {

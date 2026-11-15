@@ -97,6 +97,71 @@
   align-items: start;
 }
 
+.select-scene__gamepad {
+  padding: 4px 8px;
+  border: 1px solid var(--arcade-green);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--arcade-green) 14%, transparent);
+  color: var(--arcade-ink);
+  font-weight: 800;
+}
+
+.select-scene__players {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: var(--space-sm);
+  align-items: stretch;
+  padding: var(--space-sm);
+  border: 2px solid var(--arcade-ink);
+  border-radius: 14px;
+  background:
+    radial-gradient(rgba(18, 58, 77, 0.045) 1px, transparent 1px) 0 0 / 12px
+      12px,
+    var(--arcade-panel-strong);
+  box-shadow: 4px 4px 0 rgba(18, 58, 77, 0.16);
+}
+
+.select-scene__versus-mark {
+  align-self: center;
+  color: var(--arcade-magenta);
+  font-family: var(--arcade-logo);
+  font-size: clamp(1.2rem, 2vw, 1.8rem);
+  text-shadow: 2px 2px 0 rgba(18, 58, 77, 0.18);
+  transform: rotate(-8deg);
+}
+
+.select-scene__start-fight {
+  align-self: center;
+  min-height: 48px;
+  grid-column: 1 / -1;
+  justify-self: center;
+  white-space: nowrap;
+}
+
+.select-scene--arcade-versus .select-scene__stage {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.select-scene--arcade-versus .roster-grid {
+  grid-template-columns: repeat(auto-fill, minmax(108px, 1fr));
+  max-height: calc(100dvh - 485px);
+}
+
+.select-scene--arcade-versus .fighter-tile {
+  padding: 6px;
+}
+
+.select-scene--arcade-versus .fighter-tile__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.select-scene--arcade-versus .fighter-tile.is-p1-selected {
+  border-color: var(--arcade-orange);
+  box-shadow: 0 0 0 2px var(--arcade-orange), 3px 3px 0 var(--arcade-ink);
+}
+
 .select-scene__skeleton-tile {
   display: flex;
   flex-direction: column;
@@ -116,5 +181,42 @@
 @media (max-width: 980px) {
   .select-scene__stage {
     grid-template-columns: 1fr;
+  }
+
+  .select-scene--arcade-versus .roster-grid {
+    max-height: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .select-scene__players {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .select-scene__start-fight {
+    grid-column: 1 / -1;
+  }
+
+  .select-scene__players {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  }
+
+  .select-scene--arcade-versus .roster-grid {
+    grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  }
+}
+
+@media (max-width: 420px) {
+  .select-scene--arcade-versus .roster-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .select-scene__versus-mark {
+    transform: none;
   }
 }

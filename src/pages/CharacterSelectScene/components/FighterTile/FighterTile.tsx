@@ -9,6 +9,7 @@ interface FighterTileProps {
   character: CharacterSummary;
   isActive: boolean;
   isP1Selected: boolean;
+  isP2Selected?: boolean;
   quickSelect: boolean;
   quickActionLabel: string;
   quickActionPlayer: "P1" | "P2";
@@ -22,6 +23,7 @@ const FighterTileComponent: React.FC<FighterTileProps> = ({
   character,
   isActive,
   isP1Selected,
+  isP2Selected = false,
   quickSelect,
   quickActionLabel,
   quickActionPlayer,
@@ -56,7 +58,7 @@ const FighterTileComponent: React.FC<FighterTileProps> = ({
     <button
       type="button"
       id={`fighter-tile-${character.id}`}
-      className={`fighter-tile ${isActive ? "is-active" : ""}`}
+      className={`fighter-tile ${isActive ? "is-active" : ""}${isP1Selected ? " is-p1-selected" : ""}${isP2Selected ? " is-p2-selected" : ""}`}
       style={{ "--fighter-accent": accent } as React.CSSProperties}
       role="option"
       aria-selected={isActive}
@@ -81,6 +83,14 @@ const FighterTileComponent: React.FC<FighterTileProps> = ({
           aria-hidden="true"
         >
           {isP1Selected ? "P1 listo" : quickActionLabel}
+        </span>
+      ) : null}
+      {isP1Selected || isP2Selected ? (
+        <span
+          className={`fighter-tile__player-mark${isP2Selected ? " fighter-tile__player-mark--p2" : ""}`}
+          aria-hidden="true"
+        >
+          {isP2Selected ? "P2" : "P1"}
         </span>
       ) : null}
       <FighterPortrait character={character} accent={accent} alt="" />

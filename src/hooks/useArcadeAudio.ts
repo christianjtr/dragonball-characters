@@ -2,7 +2,13 @@ import { useCallback, useEffect, useRef } from "react";
 import { ARCADE_CONFIG } from "@config/arcadeConfig";
 import { useArcadeSettings } from "@context/arcadeSettings";
 
-export type ArcadeCue = "move" | "confirm" | "back" | "error";
+export type ArcadeCue =
+  | "move"
+  | "confirm"
+  | "back"
+  | "error"
+  | "lock-in"
+  | "transform";
 
 interface CueSpec {
   frequency: number;
@@ -19,6 +25,15 @@ const CUES: Record<ArcadeCue, CueSpec[]> = {
   ],
   back: [{ frequency: 220, duration: 0.08, type: "triangle", slideTo: 140 }],
   error: [{ frequency: 120, duration: 0.16, type: "sawtooth", slideTo: 70 }],
+  "lock-in": [
+    { frequency: 330, duration: 0.05, type: "square" },
+    { frequency: 494, duration: 0.06, type: "square" },
+    { frequency: 740, duration: 0.12, type: "triangle" },
+  ],
+  transform: [
+    { frequency: 180, duration: 0.12, type: "sawtooth", slideTo: 360 },
+    { frequency: 540, duration: 0.16, type: "triangle", slideTo: 1080 },
+  ],
 };
 
 type AudioContextConstructor = typeof AudioContext;

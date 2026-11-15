@@ -10,6 +10,26 @@
   scrollbar-width: thin;
 }
 
+.roster-grid[data-aura-active="true"] .fighter-tile.is-active {
+  animation: fighter-aura 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes fighter-aura {
+  from {
+    box-shadow:
+      4px 4px 0 var(--arcade-gold),
+      0 0 0 2px rgba(255, 187, 57, 0.52),
+      0 0 12px rgba(255, 187, 57, 0.58);
+  }
+
+  to {
+    box-shadow:
+      4px 4px 0 var(--arcade-gold),
+      0 0 0 5px rgba(255, 233, 111, 0.7),
+      0 0 24px rgba(255, 187, 57, 0.84);
+  }
+}
+
 .roster-grid::-webkit-scrollbar {
   width: 8px;
 }
@@ -29,5 +49,12 @@
 @media (max-width: 420px) {
   .roster-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .roster-grid[data-aura-active="true"] .fighter-tile.is-active {
+    animation: none;
+    box-shadow: 4px 4px 0 var(--arcade-gold), 0 0 0 3px rgba(255, 187, 57, 0.52);
   }
 }

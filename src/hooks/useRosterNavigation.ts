@@ -62,18 +62,26 @@ export const useRosterNavigation = ({
 
       switch (event.key) {
         case "ArrowRight":
+        case "d":
+        case "D":
           event.preventDefault();
           moveTo(activeIndex + 1);
           break;
         case "ArrowLeft":
+        case "a":
+        case "A":
           event.preventDefault();
           moveTo(activeIndex - 1);
           break;
         case "ArrowDown":
+        case "s":
+        case "S":
           event.preventDefault();
           moveTo(activeIndex + columns);
           break;
         case "ArrowUp":
+        case "w":
+        case "W":
           event.preventDefault();
           moveTo(activeIndex - columns);
           break;

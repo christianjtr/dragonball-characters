@@ -15,6 +15,7 @@ import { useArcadeAudio } from "@hooks/useArcadeAudio";
 import { useDocumentTitle } from "@hooks/useDocumentTitle";
 import { useGridColumns } from "@hooks/useGridColumns";
 import { useMediaQuery } from "@hooks/useMediaQuery";
+import { useGamepadNavigation } from "@hooks/useGamepadNavigation";
 import { useRosterNavigation } from "@hooks/useRosterNavigation";
 import {
   buildRosterParams,
@@ -26,18 +27,32 @@ import { getAffiliationLabel, getRaceLabel } from "@utils/characterLabels";
 import DragonballLogo from "@assets/dragon-ball.svg";
 import {
   FighterPreview,
+  PlayerSelectCard,
   ReadyBanner,
+  RecruiterCard,
   RosterFilterBar,
   RosterGrid,
 } from "./components";
 import "./CharacterSelectScene.css";
 
 const SKELETON_TILES = Array.from({ length: 12 }, (_, index) => index);
+const KONAMI_SEQUENCE = [
+  "ArrowUp",
+  "ArrowUp",
+  "ArrowDown",
+  "ArrowDown",
+  "ArrowLeft",
+  "ArrowRight",
+  "ArrowLeft",
+  "ArrowRight",
+  "b",
+  "a",
+] as const;
 
 export default function CharacterSelectScene(): React.JSX.Element {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { characters, byId, status, prefetchDetail, reload } = useRoster();
+  const { characters, byId, details, status, prefetchDetail, reload } = useRoster();
   const play = useArcadeAudio();
 
   useDocumentTitle("Elige tu luchador | Dragonball Arcade");
@@ -59,6 +74,10 @@ export default function CharacterSelectScene(): React.JSX.Element {
     () => searchParams.get("versus") === "1",
   );
   const [p1Id, setP1Id] = useState<number | null>(null);
+  const [p2Id, setP2Id] = useState<number | null>(null);
+  const [gamepadConnected, setGamepadConnected] = useState(false);
+  const [showRecruiterCard, setShowRecruiterCard] = useState(false);
+  const konamiProgress = useRef(0);
 
   const gridRef = useRef<HTMLDivElement>(null);
   const columns = useGridColumns(gridRef);
@@ -78,7 +97,19 @@ export default function CharacterSelectScene(): React.JSX.Element {
     return focused ?? view[0];
   }, [query.focus, view]);
 
+  useEffect(() => {
+    if (versusMode && activeCharacter) {
+      void prefetchDetail(activeCharacter.id);
+    }
+  }, [activeCharacter, prefetchDetail, versusMode]);
+
+  const activeDetail = activeCharacter
+    ? details[activeCharacter.id]?.data
+    : undefined;
+
   const p1Character = p1Id ? byId.get(p1Id) : undefined;
+  const p2Character = p2Id ? byId.get(p2Id) : undefined;
+  const activePlayer = versusMode && p1Id && !p2Id ? "P2" : "P1";
 
   useEffect(() => {
     return () => {
@@ -136,22 +167,36 @@ export default function CharacterSelectScene(): React.JSX.Element {
         return;
       }
 
-      play("confirm");
+      if (versusMode) {
+        if (!p1Id) {
+          setP1Id(targetId);
+          updateQuery({ focus: view.find((character) => character.id !== targetId)?.id });
+          play("lock-in");
+          return;
+        }
 
-      if (!versusMode) {
-        navigate(`/fighters/${targetId}`);
+        if (targetId === p1Id || targetId === p2Id) {
+          play("error");
+          return;
+        }
+
+        setP2Id(targetId);
+        play("transform");
         return;
       }
 
-      if (!p1Id) {
-        setP1Id(targetId);
-        return;
-      }
-
-      navigate(`/versus/${p1Id}/${targetId}`);
+      play("lock-in");
+      navigate(`/fighters/${targetId}`);
     },
-    [activeCharacter?.id, navigate, p1Id, play, versusMode],
+    [activeCharacter?.id, navigate, p1Id, p2Id, play, updateQuery, view, versusMode],
   );
+
+  const handleStartFight = useCallback(() => {
+    if (p1Id && p2Id) {
+      play("confirm");
+      navigate(`/versus/${p1Id}/${p2Id}`);
+    }
+  }, [navigate, p1Id, p2Id, play]);
 
   const handleQuickSelect = useCallback(
     (id: number) => {
@@ -164,6 +209,11 @@ export default function CharacterSelectScene(): React.JSX.Element {
 
   const handleEscape = useCallback(() => {
     play("back");
+
+    if (p2Id) {
+      setP2Id(null);
+      return;
+    }
 
     if (p1Id) {
       setP1Id(null);
@@ -184,7 +234,7 @@ export default function CharacterSelectScene(): React.JSX.Element {
     }
 
     navigate("/");
-  }, [navigate, p1Id, play, setSearchParams, versusMode]);
+  }, [navigate, p1Id, p2Id, play, setSearchParams, versusMode]);
 
   const handleClear = useCallback(() => {
     const params = new URLSearchParams();
@@ -200,9 +250,8 @@ export default function CharacterSelectScene(): React.JSX.Element {
   const handleToggleVersus = useCallback(() => {
     const next = !versusMode;
 
-    if (!next) {
-      setP1Id(null);
-    }
+    setP1Id(null);
+    setP2Id(null);
 
     setVersusMode(next);
     setSearchParams(
@@ -222,35 +271,112 @@ export default function CharacterSelectScene(): React.JSX.Element {
     play("move");
   }, [play, setSearchParams, versusMode]);
 
-  const { handleKeyDown } = useRosterNavigation({
+  const { activeIndex: keyboardActiveIndex, handleKeyDown } = useRosterNavigation({
     items: view,
     columns,
     activeId: activeCharacter?.id,
     onFocusChange: handleActivate,
-    onConfirm: () => handleConfirm(),
+    onConfirm: () => (p2Character ? handleStartFight() : handleConfirm()),
     onEscape: handleEscape,
   });
+  const activeIndex = keyboardActiveIndex;
+
+  const handleGamepadMove = useCallback(
+    (direction: "left" | "right" | "up" | "down") => {
+      const offsets = {
+        left: -1,
+        right: 1,
+        up: -columns,
+        down: columns,
+      };
+      const nextIndex = Math.max(
+        0,
+        Math.min(view.length - 1, activeIndex + offsets[direction]),
+      );
+      const character = view[nextIndex];
+
+      if (character && character.id !== activeCharacter?.id) {
+        handleActivate(character.id);
+      }
+    },
+    [activeCharacter?.id, activeIndex, columns, handleActivate, view],
+  );
+
+  const pulseGamepad = useCallback((duration: number, strong: number, weak: number) => {
+    if (!("getGamepads" in navigator)) return;
+    const gamepad = Array.from(navigator.getGamepads()).find((candidate) => candidate?.connected);
+    const actuator = gamepad?.vibrationActuator;
+
+    if (actuator && "playEffect" in actuator) {
+      void actuator
+        .playEffect("dual-rumble", {
+          duration,
+          strongMagnitude: strong,
+          weakMagnitude: weak,
+        })
+        .catch(() => undefined);
+    }
+  }, []);
+
+  useGamepadNavigation({
+    enabled: true,
+    onMove: handleGamepadMove,
+    onConfirm: () => (p2Character ? handleStartFight() : handleConfirm()),
+    onBack: handleEscape,
+    onConnectedChange: setGamepadConnected,
+    onMoveHaptic: () => pulseGamepad(35, 0.15, 0.22),
+    onConfirmHaptic: () => pulseGamepad(95, 0.48, 0.62),
+  });
+
+  const handleKonamiKey = useCallback(
+    (event: React.KeyboardEvent<HTMLDivElement>) => {
+      const expected = KONAMI_SEQUENCE[konamiProgress.current];
+      const pressed = event.key.length === 1 ? event.key.toLowerCase() : event.key;
+
+      if (pressed === "b" || pressed === "a") {
+        event.preventDefault();
+      }
+
+      if (pressed === expected) {
+        konamiProgress.current += 1;
+        if (konamiProgress.current === KONAMI_SEQUENCE.length) {
+          setShowRecruiterCard(true);
+          konamiProgress.current = 0;
+          play("transform");
+        }
+      } else {
+        konamiProgress.current = pressed === KONAMI_SEQUENCE[0] ? 1 : 0;
+      }
+    },
+    [play],
+  );
 
   const actionLabel = versusMode
-    ? p1Character
-      ? "Elegir como P2"
-      : "Elegir como P1"
+    ? p2Character
+      ? "Iniciar combate"
+      : `Confirmar ${activePlayer}`
     : "Confirmar luchador";
 
-  const quickSelect = versusMode && isCompact;
+  const quickSelect = versusMode && isCompact && !p2Id;
   const quickActionPlayer = p1Id ? "P2" : "P1";
   const quickActionLabel = `Elegir ${quickActionPlayer}`;
   const lede = isCompact
     ? versusMode
-      ? "Toca una tarjeta para elegir P1 y luego P2."
+      ? p2Character
+        ? "¡Combate listo! Confirma para comenzar."
+        : `Elige a ${activePlayer} tocando una tarjeta.`
       : "Toca una tarjeta para ver su ficha; vuelve a tocarla para confirmar."
-    : `${versusMode ? "Elige un luchador para P1 y luego para P2. " : ""}Usa las flechas para moverte, Enter para confirmar y Escape para volver.`;
+    : `${versusMode ? `Elige un luchador para ${activePlayer}. ` : ""}Usa flechas o WASD para moverte, Enter o Espacio para elegir${gamepadConnected ? ", o usa tu mando" : ""}.`;
 
   const isInitialLoading =
     (status === "idle" || status === "loading") && characters.length === 0;
 
   return (
-    <section className="select-scene" aria-labelledby="select-heading">
+    <section
+      className={`select-scene${versusMode ? " select-scene--arcade-versus" : ""}`}
+      aria-labelledby="select-heading"
+      onKeyDownCapture={handleKonamiKey}
+    >
       <div className="select-scene__intro">
         <div className="select-scene__heading">
           <h1 id="select-heading" className="select-scene__title">
@@ -267,24 +393,31 @@ export default function CharacterSelectScene(): React.JSX.Element {
         </div>
         {!isCompact ? (
           <p className="select-scene__hint">
-            <span className="arcade-kbd">Flechas</span> mover
-            <span className="arcade-kbd">Enter</span> elegir
+            <span className="arcade-kbd">Flechas / WASD</span> mover
+            <span className="arcade-kbd">Enter / Space</span> elegir
             <span className="arcade-kbd">Esc</span> volver
+            {gamepadConnected ? <span className="select-scene__gamepad">Mando conectado</span> : null}
           </p>
         ) : null}
       </div>
 
-      <RosterFilterBar
-        query={query}
-        resultCount={view.length}
-        totalCount={characters.length}
-        versusMode={versusMode}
-        onChange={updateQuery}
-        onClear={handleClear}
-        onToggleVersus={handleToggleVersus}
-      />
+      {!versusMode ? (
+        <>
+          <div className="select-scene__toolbar">
+            <RosterFilterBar
+              query={query}
+              resultCount={view.length}
+              totalCount={characters.length}
+              versusMode={false}
+              onChange={updateQuery}
+              onClear={handleClear}
+              onToggleVersus={handleToggleVersus}
+            />
+          </div>
+        </>
+      ) : null}
 
-      {p1Character ? (
+      {!versusMode && p1Character ? (
         <ReadyBanner player="P1" name={p1Character.name} />
       ) : null}
 
@@ -333,8 +466,9 @@ export default function CharacterSelectScene(): React.JSX.Element {
         <div className="select-scene__stage">
           <RosterGrid
             characters={view}
-            activeId={activeCharacter?.id}
+              activeId={activeCharacter?.id}
             selectedP1Id={p1Id ?? undefined}
+            selectedP2Id={p2Id ?? undefined}
             gridRef={gridRef}
             quickSelect={quickSelect}
             quickActionLabel={quickActionLabel}
@@ -343,9 +477,10 @@ export default function CharacterSelectScene(): React.JSX.Element {
             onQuickSelect={handleQuickSelect}
             onConfirm={handleConfirm}
             onPrefetch={handlePrefetch}
-            onKeyDown={handleKeyDown}
-          />
-          {activeCharacter ? (
+              onKeyDown={handleKeyDown}
+              auraActive={versusMode && Boolean(activeDetail?.transformations.length)}
+            />
+          {activeCharacter && !versusMode ? (
             <FighterPreview
               character={activeCharacter}
               actionLabel={actionLabel}
@@ -355,11 +490,41 @@ export default function CharacterSelectScene(): React.JSX.Element {
         </div>
       )}
 
+      {versusMode ? (
+        <div className="select-scene__players" aria-label="Selección de jugadores">
+          <PlayerSelectCard
+            player="P1"
+            character={p1Character}
+            active={activePlayer === "P1"}
+            onClear={p1Id ? () => { setP1Id(null); setP2Id(null); } : undefined}
+          />
+          <div className="select-scene__versus-mark" aria-hidden="true">VS</div>
+          <PlayerSelectCard
+            player="P2"
+            character={p2Character}
+            active={activePlayer === "P2"}
+            onClear={p2Id ? () => setP2Id(null) : undefined}
+          />
+          {p2Character ? (
+            <button
+              type="button"
+              className="select-scene__start-fight arcade-button"
+              onClick={handleStartFight}
+            >
+              INICIAR COMBATE
+            </button>
+          ) : null}
+        </div>
+      ) : null}
+
       <p className="visually-hidden" aria-live="polite">
         {activeCharacter
           ? `${activeCharacter.name}. ${getRaceLabel(activeCharacter.race)}. ${getAffiliationLabel(activeCharacter.affiliation)}.`
           : ""}
       </p>
+      {showRecruiterCard ? (
+        <RecruiterCard onClose={() => setShowRecruiterCard(false)} />
+      ) : null}
     </section>
   );
 }

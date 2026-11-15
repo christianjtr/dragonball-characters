@@ -27,15 +27,15 @@ interface ArcadeMenuEntry extends ArcadeMenuItem {
 const MENU_ENTRIES: ArcadeMenuEntry[] = [
   {
     id: "play",
-    label: "Play",
-    description: "Select fighters and enter the arena.",
+    label: "Jugar",
+    description: "Elige luchadores y entra a la arena.",
     accent: "orange",
     path: "/select",
   },
   {
     id: "options",
-    label: "Options",
-    description: "Sound and arcade preferences.",
+    label: "Opciones",
+    description: "Sonido y preferencias del arcade.",
     accent: "gold",
   },
 ];
@@ -48,7 +48,7 @@ export default function ArcadeMenuScene(): React.JSX.Element {
   const play = useArcadeAudio();
   const reducedMotion = useReducedMotion();
 
-  useDocumentTitle("Dragonball Arcade | Main Menu");
+  useDocumentTitle("Dragonball Arcade | Menú principal");
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [optionsOpen, setOptionsOpen] = useState(false);
@@ -153,8 +153,8 @@ export default function ArcadeMenuScene(): React.JSX.Element {
     !artFailed && featuredFighter?.image ? featuredFighter.image : Goku;
   const statusLabel =
     characters.length > 0
-       ? `${characters.length} fighters ready`
-       : "Syncing fighters";
+      ? `${characters.length} luchadores listos`
+      : "Sincronizando luchadores";
 
   return (
     <section
@@ -170,11 +170,11 @@ export default function ArcadeMenuScene(): React.JSX.Element {
               className="arcade-menu__title-ball"
               aria-hidden="true"
             />
-            <span className="arcade-menu__title-kicker">Dragonball</span>
-            <span className="arcade-menu__title-main">Arcade</span>
+            <span className="arcade-menu__title-kicker">Elige tu</span>
+            <span className="arcade-menu__title-main">Modo</span>
           </h1>
           <p className="arcade-menu__lede">
-            One way in. Choose how you want to play on the fighter select screen.
+            Una puerta de entrada. Elige tu forma de jugar en la selección.
           </p>
         </div>
 
@@ -184,9 +184,9 @@ export default function ArcadeMenuScene(): React.JSX.Element {
           </p>
           <p className="arcade-menu__hint">
             <span className="arcade-kbd">↑</span>
-            <span className="arcade-kbd">↓</span> move
-            <span className="arcade-kbd">Enter</span> choose
-            <span className="arcade-kbd">Esc</span> back
+            <span className="arcade-kbd">↓</span> mover
+            <span className="arcade-kbd">Enter</span> elegir
+            <span className="arcade-kbd">Esc</span> volver
           </p>
         </div>
       </div>
@@ -208,7 +208,7 @@ export default function ArcadeMenuScene(): React.JSX.Element {
             </span>
           </div>
           <figcaption className="arcade-menu__caption">
-            Choose your next destination, warrior.
+            Selecciona tu destino, guerrero.
           </figcaption>
         </figure>
 

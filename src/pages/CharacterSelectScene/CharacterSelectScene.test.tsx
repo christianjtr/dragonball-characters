@@ -54,7 +54,7 @@ const renderSelect = (initialEntry = "/select?versus=1") => {
       <MemoryRouter initialEntries={[initialEntry]}>
         <Routes>
           <Route path="/select" element={<CharacterSelectScene />} />
-          <Route path="/versus/:p1Id/:p2Id" element={<h1>FIGHT LOADED</h1>} />
+          <Route path="/versus/:p1Id/:p2Id" element={<h1>COMBATE CARGADO</h1>} />
         </Routes>
       </MemoryRouter>
     </RosterContext.Provider>,
@@ -70,7 +70,7 @@ describe("CharacterSelectScene", () => {
       key: "Enter",
     });
     expect(screen.getByRole("heading", { name: "Goku" })).toBeInTheDocument();
-    expect(screen.getByText("Choose a fighter for P2.", { exact: false })).toBeInTheDocument();
+    expect(screen.getByText("Elige un luchador para P2.", { exact: false })).toBeInTheDocument();
 
     fireEvent.keyDown(screen.getByRole("listbox", { name: "Lista de luchadores" }), {
       key: "Enter",
@@ -80,7 +80,7 @@ describe("CharacterSelectScene", () => {
     fireEvent.keyDown(screen.getByRole("listbox", { name: "Lista de luchadores" }), {
       key: "Enter",
     });
-    expect(await screen.findByRole("heading", { name: "FIGHT LOADED" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "COMBATE CARGADO" })).toBeInTheDocument();
   });
 
   it("supports WASD grid navigation", () => {
@@ -139,7 +139,7 @@ describe("CharacterSelectScene", () => {
 
   it("does not prevent normal a/b text entry in the search field", () => {
     renderSelect("/select");
-    const filter = screen.getByRole("searchbox", { name: "Search" });
+    const filter = screen.getByRole("searchbox", { name: "Buscar" });
     filter.focus();
     const bEvent = new KeyboardEvent("keydown", { key: "b", bubbles: true, cancelable: true });
     filter.dispatchEvent(bEvent);

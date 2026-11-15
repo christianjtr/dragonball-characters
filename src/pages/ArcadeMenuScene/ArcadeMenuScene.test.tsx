@@ -55,20 +55,20 @@ const renderMenu = () =>
   );
 
 describe("ArcadeMenuScene", () => {
-  it("renders one Play entry and Options", () => {
+  it("renders one Jugar entry and Opciones", () => {
     renderMenu();
 
     expect(
-      screen.getByRole("menuitem", { name: /^play/i }),
+      screen.getByRole("menuitem", { name: /^jugar/i }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("menuitem", { name: /options/i }),
+      screen.getByRole("menuitem", { name: /opciones/i }),
     ).toBeInTheDocument();
     expect(screen.queryByRole("menuitem", { name: /versus mode/i })).not.toBeInTheDocument();
     expect(screen.queryByRole("menuitem", { name: /fighter select/i })).not.toBeInTheDocument();
   });
 
-  it("confirms Play with Enter and opens the selection screen", async () => {
+  it("confirms Jugar with Enter and opens the selection screen", async () => {
     const user = userEvent.setup();
     renderMenu();
 
@@ -90,7 +90,7 @@ describe("ArcadeMenuScene", () => {
     await user.keyboard("{ArrowDown}");
 
     expect(
-      screen.getByRole("menuitem", { name: /options/i }),
+      screen.getByRole("menuitem", { name: /opciones/i }),
     ).toHaveAttribute("aria-current", "true");
 
     await user.keyboard("{Enter}");
@@ -106,7 +106,7 @@ describe("ArcadeMenuScene", () => {
     await waitFor(() => expect(menu).toHaveFocus());
 
     await user.keyboard("{ArrowDown}");
-    expect(screen.getByRole("menuitem", { name: /options/i })).toHaveAttribute("aria-current", "true");
+    expect(screen.getByRole("menuitem", { name: /opciones/i })).toHaveAttribute("aria-current", "true");
   });
 
   it("supports WASD navigation", async () => {
@@ -114,7 +114,7 @@ describe("ArcadeMenuScene", () => {
     renderMenu();
     await waitFor(() => expect(screen.getByRole("menu")).toHaveFocus());
     await user.keyboard("{s}");
-    expect(screen.getByRole("menuitem", { name: /options/i })).toHaveAttribute("aria-current", "true");
+    expect(screen.getByRole("menuitem", { name: /opciones/i })).toHaveAttribute("aria-current", "true");
   });
 
   it("opens options and closes them with Escape", async () => {
@@ -122,7 +122,7 @@ describe("ArcadeMenuScene", () => {
     renderMenu();
 
     await waitFor(() => expect(screen.getByRole("menu")).toHaveFocus());
-    await user.click(screen.getByRole("menuitem", { name: /options/i }));
+    await user.click(screen.getByRole("menuitem", { name: /opciones/i }));
 
     expect(await screen.findByRole("dialog")).toBeInTheDocument();
 
@@ -137,7 +137,7 @@ describe("ArcadeMenuScene", () => {
     const user = userEvent.setup();
     renderMenu();
     await waitFor(() => expect(screen.getByRole("menu")).toHaveFocus());
-    await user.click(screen.getByRole("menuitem", { name: /options/i }));
+    await user.click(screen.getByRole("menuitem", { name: /opciones/i }));
     const close = await screen.findByRole("button", { name: "Cerrar opciones" });
     await user.keyboard("{Enter}");
     expect(screen.getByRole("dialog")).toBeInTheDocument();
@@ -148,7 +148,7 @@ describe("ArcadeMenuScene", () => {
     const user = userEvent.setup();
     renderMenu();
 
-    await user.click(screen.getByRole("menuitem", { name: /options/i }));
+    await user.click(screen.getByRole("menuitem", { name: /opciones/i }));
 
     const effectsToggle = await screen.findByRole("button", {
       name: /efectos de sonido/i,

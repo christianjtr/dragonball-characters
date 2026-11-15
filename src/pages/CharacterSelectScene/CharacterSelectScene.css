@@ -97,6 +97,58 @@
   align-items: start;
 }
 
+.select-scene__stage--versus {
+  grid-template-columns: minmax(0, 1fr) minmax(210px, 260px);
+  align-items: stretch;
+}
+
+.select-scene__stage--versus > .roster-grid {
+  max-height: calc(100dvh - 360px);
+}
+
+.select-scene__versus-rail {
+  position: sticky;
+  top: 84px;
+  align-self: start;
+  min-width: 0;
+}
+
+.select-scene__versus-rail .select-scene__players {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+  padding: 10px;
+  border-radius: 12px;
+  box-shadow: 3px 3px 0 rgba(18, 58, 77, 0.14);
+}
+
+.select-scene__versus-rail .select-scene__versus-mark {
+  justify-self: center;
+  margin: -4px 0;
+  font-size: 1.05rem;
+}
+
+.select-scene__versus-rail .player-select-card {
+  grid-template-columns: 72px minmax(0, 1fr);
+  min-height: 0;
+  padding: 8px;
+  gap: 6px 9px;
+}
+
+.select-scene__versus-rail .player-select-card__portrait {
+  min-height: 70px;
+}
+
+.select-scene__versus-rail .player-select-card__change {
+  min-height: 28px;
+}
+
+.select-scene__versus-rail .select-scene__start-fight {
+  width: 100%;
+  min-height: 42px;
+  padding-inline: 10px;
+  font-size: 0.65rem;
+}
+
 .select-scene__gamepad {
   padding: 4px 8px;
   border: 1px solid var(--arcade-green);
@@ -138,6 +190,10 @@
 }
 
 .select-scene__players--mobile {
+  display: none;
+}
+
+.select-scene__versus-mobile {
   display: none;
 }
 
@@ -183,7 +239,7 @@
 }
 
 .select-scene--arcade-versus .select-scene__players--desktop .player-select-card {
-  min-height: 178px;
+  min-height: 0;
 }
 
 .select-scene__secret-tile span {
@@ -195,10 +251,6 @@
 @keyframes secret-tile-zap {
   from { box-shadow: 3px 3px 0 var(--arcade-ink), 0 0 10px rgba(255, 198, 55, 0.45); }
   to { box-shadow: 3px 3px 0 var(--arcade-ink), 0 0 22px rgba(54, 199, 232, 0.9); }
-}
-
-.select-scene--arcade-versus .select-scene__stage {
-  grid-template-columns: minmax(0, 1fr);
 }
 
 .select-scene--arcade-versus .fighter-tile {
@@ -237,22 +289,58 @@
     grid-template-columns: 1fr;
   }
 
+  .select-scene__stage--versus {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .select-scene__stage--versus > .roster-grid {
+    max-height: none;
+  }
+
+  .select-scene__versus-rail {
+    display: none;
+  }
+
+  .select-scene__versus-mobile {
+    display: block;
+  }
+
+  .select-scene__versus-rail .select-scene__players {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .select-scene__versus-rail .select-scene__start-fight {
+    grid-column: 1 / -1;
+  }
+
+  .select-scene__versus-mobile .select-scene__players {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  }
+
+  .select-scene__versus-mobile .player-select-card {
+    grid-template-columns: minmax(58px, 72px) minmax(0, 1fr);
+    min-height: 0;
+    padding: 8px;
+    gap: 6px 8px;
+  }
+
+  .select-scene__versus-mobile .player-select-card__portrait {
+    min-height: 68px;
+  }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 980px) {
   .select-scene__players {
     grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
     gap: 8px;
     padding: 8px;
   }
 
-  .select-scene__players--desktop {
-    display: none;
-  }
+}
 
-  .select-scene__players--mobile {
-    display: grid;
-  }
+@media (max-width: 720px) {
 
   .select-scene__start-fight {
     grid-column: 1 / -1;

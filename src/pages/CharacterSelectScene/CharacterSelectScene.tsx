@@ -55,7 +55,7 @@ export default function CharacterSelectScene(): React.JSX.Element {
   const { characters, byId, details, status, prefetchDetail, reload } = useRoster();
   const play = useArcadeAudio();
 
-  useDocumentTitle("Choose Your Fighter | Dragonball Arcade");
+  useDocumentTitle("Elige tu luchador | Dragonball Arcade");
 
   const query = useMemo(() => parseRosterQuery(searchParams), [searchParams]);
   const deferredSearch = useDeferredValue(query.search);
@@ -392,9 +392,9 @@ export default function CharacterSelectScene(): React.JSX.Element {
 
   const actionLabel = versusMode
     ? p2Character
-      ? "Start match"
-      : `Confirm ${activePlayer}`
-    : "Confirm fighter";
+      ? "Iniciar combate"
+      : `Confirmar ${activePlayer}`
+    : "Confirmar luchador";
 
   const quickSelect = versusMode && isCompact && !p2Id;
   const quickActionPlayer = p1Id ? "P2" : "P1";
@@ -402,10 +402,10 @@ export default function CharacterSelectScene(): React.JSX.Element {
   const lede = isCompact
       ? versusMode
         ? p2Character
-          ? "Match ready! Confirm to begin."
-          : `Tap a character to choose ${activePlayer}.`
-        : "Tap a character to preview; tap again to confirm."
-      : `${versusMode ? `Choose a fighter for ${activePlayer}. ` : ""}Use arrows or WASD to move, Enter or Space to confirm${gamepadConnected ? ", or use your controller" : ""}.`;
+          ? "¡Combate listo! Confirma para comenzar."
+          : `Elige a ${activePlayer} tocando una tarjeta.`
+        : "Toca una tarjeta para ver su ficha; vuelve a tocarla para confirmar."
+      : `${versusMode ? `Elige un luchador para ${activePlayer}. ` : ""}Usa flechas o WASD para moverte, Enter o Espacio para elegir${gamepadConnected ? ", o usa tu mando" : ""}.`;
 
   const isInitialLoading =
     (status === "idle" || status === "loading") && characters.length === 0;
@@ -424,17 +424,17 @@ export default function CharacterSelectScene(): React.JSX.Element {
               className="select-scene__title-ball"
               aria-hidden="true"
             />
-            <span className="select-scene__title-kicker">Choose Your</span>
-            <span className="select-scene__title-main">Fighter</span>
+            <span className="select-scene__title-kicker">Elige tu</span>
+            <span className="select-scene__title-main">Luchador</span>
           </h1>
           <p className="select-scene__lede">{lede}</p>
         </div>
         {!isCompact ? (
           <p className="select-scene__hint">
-            <span className="arcade-kbd">Arrows / WASD</span> move
-            <span className="arcade-kbd">Enter / Space</span> confirm
-            <span className="arcade-kbd">Esc</span> back
-            {gamepadConnected ? <span className="select-scene__gamepad">Controller connected</span> : null}
+            <span className="arcade-kbd">Flechas / WASD</span> mover
+            <span className="arcade-kbd">Enter / Space</span> elegir
+            <span className="arcade-kbd">Esc</span> volver
+            {gamepadConnected ? <span className="select-scene__gamepad">Mando conectado</span> : null}
           </p>
         ) : null}
       </div>
@@ -453,7 +453,7 @@ export default function CharacterSelectScene(): React.JSX.Element {
         </>
       ) : null}
 
-      <div className="select-scene__mode-switch" role="group" aria-label="Game mode">
+      <div className="select-scene__mode-switch" role="group" aria-label="Modo de juego">
         <button
           type="button"
           className="arcade-button arcade-button--sm"
@@ -474,33 +474,6 @@ export default function CharacterSelectScene(): React.JSX.Element {
 
       {!versusMode && p1Character ? (
         <ReadyBanner player="P1" name={p1Character.name} />
-      ) : null}
-
-      {versusMode ? (
-        <div className="select-scene__players select-scene__players--mobile" aria-label="Selección de jugadores">
-          <PlayerSelectCard
-            player="P1"
-            character={p1Character}
-            active={activePlayer === "P1"}
-            onClear={p1Id ? handleCancelP1 : undefined}
-          />
-          <div className="select-scene__versus-mark" aria-hidden="true">VS</div>
-          <PlayerSelectCard
-            player="P2"
-            character={p2Character}
-            active={activePlayer === "P2"}
-            onClear={p2Id ? handleCancelP2 : undefined}
-          />
-          {p2Character ? (
-            <button
-              type="button"
-              className="select-scene__start-fight arcade-button"
-              onClick={handleStartFight}
-            >
-              INICIAR COMBATE
-            </button>
-          ) : null}
-        </div>
       ) : null}
 
       {isInitialLoading ? (
@@ -532,20 +505,20 @@ export default function CharacterSelectScene(): React.JSX.Element {
       ) : status === "error" && characters.length === 0 ? (
         <StatusPanel
           tone="error"
-              title="Roster unavailable"
-              message="The fighter roster could not be loaded. Check your connection and try again."
-              actionLabel="Retry"
+              title="Lista no disponible"
+              message="No se pudo cargar la lista de luchadores. Revisa tu conexión e inténtalo de nuevo."
+              actionLabel="Reintentar"
           onAction={reload}
         />
       ) : view.length === 0 ? (
         <StatusPanel
-            title="No fighters found"
-            message="No fighters match these filters. Clear them to see the full roster."
-            actionLabel="Clear filters"
+            title="No se encontraron luchadores"
+            message="Ningún luchador coincide con esos filtros. Límpialos para ver la lista completa."
+            actionLabel="Limpiar filtros"
           onAction={handleClear}
         />
       ) : (
-        <div className="select-scene__stage">
+        <div className={`select-scene__stage${versusMode ? " select-scene__stage--versus" : ""}`}>
           <RosterGrid
             characters={view}
             activeId={activeCharacter?.id}
@@ -569,35 +542,32 @@ export default function CharacterSelectScene(): React.JSX.Element {
               onConfirm={() => handleConfirm()}
             />
           ) : null}
-        </div>
-      )}
-
-      {versusMode ? (
-        <div className="select-scene__players select-scene__players--desktop" aria-label="Selección de jugadores">
-          <PlayerSelectCard
-            player="P1"
-            character={p1Character}
-            active={activePlayer === "P1"}
-            onClear={p1Id ? handleCancelP1 : undefined}
-          />
-          <div className="select-scene__versus-mark" aria-hidden="true">VS</div>
-          <PlayerSelectCard
-            player="P2"
-            character={p2Character}
-            active={activePlayer === "P2"}
-            onClear={p2Id ? handleCancelP2 : undefined}
-          />
-          {p2Character ? (
-              <button
-              type="button"
-              className="select-scene__start-fight arcade-button"
-              onClick={handleStartFight}
-            >
-              START MATCH
-            </button>
+          {versusMode ? (
+            <aside className="select-scene__versus-rail" aria-label="Jugadores seleccionados">
+              <div className="select-scene__players" aria-label="Selección de jugadores">
+                <PlayerSelectCard
+                  player="P1"
+                  character={p1Character}
+                  active={activePlayer === "P1"}
+                  onClear={p1Id ? handleCancelP1 : undefined}
+                />
+                <div className="select-scene__versus-mark" aria-hidden="true">VS</div>
+                <PlayerSelectCard
+                  player="P2"
+                  character={p2Character}
+                  active={activePlayer === "P2"}
+                  onClear={p2Id ? handleCancelP2 : undefined}
+                />
+                {p2Character ? (
+                  <button type="button" className="select-scene__start-fight arcade-button" onClick={handleStartFight}>
+                    INICIAR COMBATE
+                  </button>
+                ) : null}
+              </div>
+            </aside>
           ) : null}
         </div>
-      ) : null}
+      )}
 
       {konamiUnlocked ? (
               <button

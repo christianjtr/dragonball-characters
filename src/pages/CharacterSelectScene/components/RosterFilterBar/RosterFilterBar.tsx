@@ -18,9 +18,9 @@ interface RosterFilterBarProps {
 const RACE_OPTIONS = Object.values(RACE);
 const AFFILIATION_OPTIONS = Object.values(AFFILIATION);
 const SORT_OPTIONS: Array<{ value: RosterSortKey; label: string }> = [
-  { value: "name", label: "Name" },
-  { value: "race", label: "Race" },
-  { value: "affiliation", label: "Affiliation" },
+  { value: "name", label: "Nombre" },
+  { value: "race", label: "Raza" },
+  { value: "affiliation", label: "Afiliación" },
 ];
 
 export const RosterFilterBar: React.FC<RosterFilterBarProps> = ({
@@ -33,26 +33,26 @@ export const RosterFilterBar: React.FC<RosterFilterBarProps> = ({
   return (
     <div className="roster-filter-bar arcade-panel">
       <label className="roster-filter-bar__field roster-filter-bar__search">
-        <span className="roster-filter-bar__label">Search</span>
+        <span className="roster-filter-bar__label">Buscar</span>
         <input
           id="roster-search"
           name="q"
           type="search"
           value={query.search}
-          placeholder="Fighter name"
+          placeholder="Nombre del luchador"
           onChange={(event) => onChange({ search: event.target.value })}
         />
       </label>
 
       <label className="roster-filter-bar__field">
-        <span className="roster-filter-bar__label">Race</span>
+        <span className="roster-filter-bar__label">Raza</span>
         <select
           id="roster-race"
           name="race"
           value={query.race}
           onChange={(event) => onChange({ race: event.target.value })}
         >
-          <option value="">All races</option>
+          <option value="">Todas las razas</option>
           {RACE_OPTIONS.map((race) => (
             <option key={race} value={race}>
               {getRaceLabel(race)}
@@ -62,14 +62,14 @@ export const RosterFilterBar: React.FC<RosterFilterBarProps> = ({
       </label>
 
       <label className="roster-filter-bar__field">
-        <span className="roster-filter-bar__label">Affiliation</span>
+        <span className="roster-filter-bar__label">Afiliación</span>
         <select
           id="roster-affiliation"
           name="affiliation"
           value={query.affiliation}
           onChange={(event) => onChange({ affiliation: event.target.value })}
         >
-          <option value="">All affiliations</option>
+          <option value="">Todas las afiliaciones</option>
           {AFFILIATION_OPTIONS.map((affiliation) => (
             <option key={affiliation} value={affiliation}>
               {getAffiliationLabel(affiliation)}
@@ -79,7 +79,7 @@ export const RosterFilterBar: React.FC<RosterFilterBarProps> = ({
       </label>
 
       <label className="roster-filter-bar__field">
-        <span className="roster-filter-bar__label">Sort by</span>
+        <span className="roster-filter-bar__label">Ordenar por</span>
         <select
           id="roster-sort"
           name="sort"
@@ -98,10 +98,10 @@ export const RosterFilterBar: React.FC<RosterFilterBarProps> = ({
 
       <div className="roster-filter-bar__actions">
         <span className="roster-filter-bar__count">
-          {resultCount} of {totalCount} fighters
+          {resultCount} de {totalCount} luchadores
         </span>
         <ArcadeButton variant="ghost" size="sm" onClick={onClear}>
-          Clear
+          Limpiar
         </ArcadeButton>
       </div>
     </div>

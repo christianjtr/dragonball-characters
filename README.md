@@ -10,10 +10,6 @@ A retro arcade-style Dragon Ball character SPA built with React 19, TypeScript, 
 | --- | --- | --- |
 | <img src="samples/menu_v3.png" alt="Dragonball Arcade home menu" width="100%" /> | <img src="samples/characters_v2.png" alt="Character selection" width="100%" /> | <img src="samples/vs_v2.png" alt="Versus match" width="100%" /> |
 
-Mobile home menu: <img src="samples/menu_mobile_v3.png" alt="Mobile home menu" width="280" />
-
-Mobile versus selection: <img src="samples/select-versus-mobile.png" alt="P1 and P2 mobile selection" width="280" />
-
 ## Features
 
 - **Arcade home menu:** one Play entry and Options, controlled by keyboard, mouse, or touch.

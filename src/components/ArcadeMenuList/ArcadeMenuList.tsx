@@ -33,17 +33,36 @@ export const ArcadeMenuList: React.FC<ArcadeMenuListProps> = ({
   className,
 }) => {
   const listRef = useRef<HTMLUListElement>(null);
-  const { handleKeyDown } = useMenuNavigation({
+  const { handleKey } = useMenuNavigation({
     itemCount: items.length,
     activeIndex,
     onMove: onActiveChange,
     onConfirm: onSelect,
-    onBack,
+    onBack: () => {
+      if (document.querySelector(".arcade-options")) return;
+      onBack?.();
+    },
   });
 
   useEffect(() => {
+    const handleWindowKeyDown = (event: globalThis.KeyboardEvent) => {
+      const target = event.target;
+      if (
+        target instanceof HTMLElement &&
+        (target.closest(".arcade-options") ||
+          target.isContentEditable ||
+          ["INPUT", "SELECT", "TEXTAREA"].includes(target.tagName))
+      ) {
+        return;
+      }
+      handleKey(event);
+    };
+
+    window.addEventListener("keydown", handleWindowKeyDown);
     listRef.current?.focus({ preventScroll: true });
-  }, []);
+
+    return () => window.removeEventListener("keydown", handleWindowKeyDown);
+  }, [handleKey]);
 
   const activeItem = items[activeIndex];
 
@@ -61,7 +80,6 @@ export const ArcadeMenuList: React.FC<ArcadeMenuListProps> = ({
         aria-activedescendant={
           activeItem ? `arcade-menu-item-${activeItem.id}` : undefined
         }
-        onKeyDown={handleKeyDown}
       >
         {items.map((item, index) => {
           const isActive = index === activeIndex;

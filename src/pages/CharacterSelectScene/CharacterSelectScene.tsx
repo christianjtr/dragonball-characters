@@ -55,7 +55,7 @@ export default function CharacterSelectScene(): React.JSX.Element {
   const { characters, byId, details, status, prefetchDetail, reload } = useRoster();
   const play = useArcadeAudio();
 
-  useDocumentTitle("Elige tu luchador | Dragonball Arcade");
+  useDocumentTitle("Choose Your Fighter | Dragonball Arcade");
 
   const query = useMemo(() => parseRosterQuery(searchParams), [searchParams]);
   const deferredSearch = useDeferredValue(query.search);
@@ -73,12 +73,16 @@ export default function CharacterSelectScene(): React.JSX.Element {
   const [versusMode, setVersusMode] = useState(
     () => searchParams.get("versus") === "1",
   );
+  useEffect(() => {
+    setVersusMode(searchParams.get("versus") === "1");
+  }, [searchParams]);
   const [p1Id, setP1Id] = useState<number | null>(null);
   const [p2Id, setP2Id] = useState<number | null>(null);
   const [gamepadConnected, setGamepadConnected] = useState(false);
   const [showRecruiterCard, setShowRecruiterCard] = useState(false);
   const [konamiUnlocked, setKonamiUnlocked] = useState(false);
   const konamiProgress = useRef(0);
+  const konamiLastKeyAt = useRef(0);
 
   const gridRef = useRef<HTMLDivElement>(null);
   const columns = useGridColumns(gridRef);
@@ -263,29 +267,18 @@ export default function CharacterSelectScene(): React.JSX.Element {
     play("back");
   }, [play, setSearchParams, versusMode]);
 
-  const handleToggleVersus = useCallback(() => {
-    const next = !versusMode;
-
+  const handleSetVersusMode = useCallback((next: boolean) => {
     setP1Id(null);
     setP2Id(null);
-
     setVersusMode(next);
-    setSearchParams(
-      (previous) => {
-        const params = new URLSearchParams(previous);
-
-        if (next) {
-          params.set("versus", "1");
-        } else {
-          params.delete("versus");
-        }
-
-        return params;
-      },
-      { replace: true },
-    );
+    setSearchParams((previous) => {
+      const params = new URLSearchParams(previous);
+      if (next) params.set("versus", "1");
+      else params.delete("versus");
+      return params;
+    }, { replace: true });
     play("move");
-  }, [play, setSearchParams, versusMode]);
+  }, [play, setSearchParams]);
 
   const { activeIndex: keyboardActiveIndex, handleKeyDown } = useRosterNavigation({
     items: view,
@@ -352,16 +345,30 @@ export default function CharacterSelectScene(): React.JSX.Element {
 
   const handleKonamiKey = useCallback(
     (event: KeyboardEvent) => {
+      if (showRecruiterCard) return;
+      if (event.repeat || event.altKey || event.ctrlKey || event.metaKey) return;
+      const target = event.target;
+      if (
+        target instanceof HTMLElement &&
+        (target.isContentEditable ||
+          ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName))
+      ) {
+        return;
+      }
+
+      const now = Date.now();
+      if (now - konamiLastKeyAt.current > 1800) {
+        konamiProgress.current = 0;
+      }
+      konamiLastKeyAt.current = now;
+
       const expected = KONAMI_SEQUENCE[konamiProgress.current];
       const pressed = event.key.length === 1 ? event.key.toLowerCase() : event.key;
-
-      if (pressed === "b" || pressed === "a") {
-        event.preventDefault();
-      }
 
       if (pressed === expected) {
         konamiProgress.current += 1;
         if (konamiProgress.current === KONAMI_SEQUENCE.length) {
+          event.preventDefault();
           setShowRecruiterCard(true);
           setKonamiUnlocked(true);
           konamiProgress.current = 0;
@@ -371,35 +378,39 @@ export default function CharacterSelectScene(): React.JSX.Element {
         konamiProgress.current = pressed === KONAMI_SEQUENCE[0] ? 1 : 0;
       }
     },
-    [play],
+    [play, showRecruiterCard],
   );
+
+  useEffect(() => {
+    const onWindowKeyDown = (event: KeyboardEvent) => {
+      handleKonamiKey(event);
+    };
+
+    window.addEventListener("keydown", onWindowKeyDown, true);
+    return () => window.removeEventListener("keydown", onWindowKeyDown, true);
+  }, [handleKonamiKey]);
 
   const actionLabel = versusMode
     ? p2Character
-      ? "Iniciar combate"
-      : `Confirmar ${activePlayer}`
-    : "Confirmar luchador";
+      ? "Start match"
+      : `Confirm ${activePlayer}`
+    : "Confirm fighter";
 
   const quickSelect = versusMode && isCompact && !p2Id;
   const quickActionPlayer = p1Id ? "P2" : "P1";
   const quickActionLabel = `Elegir ${quickActionPlayer}`;
   const lede = isCompact
-    ? versusMode
-      ? p2Character
-        ? "¡Combate listo! Confirma para comenzar."
-        : `Elige a ${activePlayer} tocando una tarjeta.`
-      : "Toca una tarjeta para ver su ficha; vuelve a tocarla para confirmar."
-    : `${versusMode ? `Elige un luchador para ${activePlayer}. ` : ""}Usa flechas o WASD para moverte, Enter o Espacio para elegir${gamepadConnected ? ", o usa tu mando" : ""}.`;
+      ? versusMode
+        ? p2Character
+          ? "Match ready! Confirm to begin."
+          : `Tap a character to choose ${activePlayer}.`
+        : "Tap a character to preview; tap again to confirm."
+      : `${versusMode ? `Choose a fighter for ${activePlayer}. ` : ""}Use arrows or WASD to move, Enter or Space to confirm${gamepadConnected ? ", or use your controller" : ""}.`;
 
   const isInitialLoading =
     (status === "idle" || status === "loading") && characters.length === 0;
 
   return (
-    <div
-      onKeyDownCapture={(event) =>
-        handleKonamiKey(event.nativeEvent)
-      }
-    >
     <section
       className={`select-scene${versusMode ? " select-scene--arcade-versus" : ""}`}
       aria-labelledby="select-heading"
@@ -413,34 +424,53 @@ export default function CharacterSelectScene(): React.JSX.Element {
               className="select-scene__title-ball"
               aria-hidden="true"
             />
-            <span className="select-scene__title-kicker">Elige tu</span>
-            <span className="select-scene__title-main">Luchador</span>
+            <span className="select-scene__title-kicker">Choose Your</span>
+            <span className="select-scene__title-main">Fighter</span>
           </h1>
           <p className="select-scene__lede">{lede}</p>
         </div>
         {!isCompact ? (
           <p className="select-scene__hint">
-            <span className="arcade-kbd">Flechas / WASD</span> mover
-            <span className="arcade-kbd">Enter / Space</span> elegir
-            <span className="arcade-kbd">Esc</span> volver
-            {gamepadConnected ? <span className="select-scene__gamepad">Mando conectado</span> : null}
+            <span className="arcade-kbd">Arrows / WASD</span> move
+            <span className="arcade-kbd">Enter / Space</span> confirm
+            <span className="arcade-kbd">Esc</span> back
+            {gamepadConnected ? <span className="select-scene__gamepad">Controller connected</span> : null}
           </p>
         ) : null}
       </div>
 
       {!versusMode ? (
-        <div className="select-scene__toolbar">
-          <RosterFilterBar
-            query={query}
-            resultCount={view.length}
-            totalCount={characters.length}
-            versusMode={false}
-            onChange={updateQuery}
-            onClear={handleClear}
-            onToggleVersus={handleToggleVersus}
-          />
-        </div>
+        <>
+          <div className="select-scene__toolbar">
+            <RosterFilterBar
+              query={query}
+              resultCount={view.length}
+              totalCount={characters.length}
+              onChange={updateQuery}
+              onClear={handleClear}
+            />
+          </div>
+        </>
       ) : null}
+
+      <div className="select-scene__mode-switch" role="group" aria-label="Game mode">
+        <button
+          type="button"
+          className="arcade-button arcade-button--sm"
+          aria-pressed={!versusMode}
+          onClick={() => handleSetVersusMode(false)}
+        >
+          INDIVIDUAL
+        </button>
+        <button
+          type="button"
+          className="arcade-button arcade-button--sm"
+          aria-pressed={versusMode}
+          onClick={() => handleSetVersusMode(true)}
+        >
+          VERSUS 2P
+        </button>
+      </div>
 
       {!versusMode && p1Character ? (
         <ReadyBanner player="P1" name={p1Character.name} />
@@ -502,16 +532,16 @@ export default function CharacterSelectScene(): React.JSX.Element {
       ) : status === "error" && characters.length === 0 ? (
         <StatusPanel
           tone="error"
-          title="Lista no disponible"
-          message="No se pudo cargar la lista de luchadores. Revisa tu conexión e inténtalo de nuevo."
-          actionLabel="Reintentar"
+              title="Roster unavailable"
+              message="The fighter roster could not be loaded. Check your connection and try again."
+              actionLabel="Retry"
           onAction={reload}
         />
       ) : view.length === 0 ? (
         <StatusPanel
-          title="No se encontraron luchadores"
-          message="Ningún luchador coincide con esos filtros. Límpialos para ver la lista completa."
-          actionLabel="Limpiar filtros"
+            title="No fighters found"
+            message="No fighters match these filters. Clear them to see the full roster."
+            actionLabel="Clear filters"
           onAction={handleClear}
         />
       ) : (
@@ -558,19 +588,19 @@ export default function CharacterSelectScene(): React.JSX.Element {
             onClear={p2Id ? handleCancelP2 : undefined}
           />
           {p2Character ? (
-            <button
+              <button
               type="button"
               className="select-scene__start-fight arcade-button"
               onClick={handleStartFight}
             >
-              INICIAR COMBATE
+              START MATCH
             </button>
           ) : null}
         </div>
       ) : null}
 
       {konamiUnlocked ? (
-        <button
+              <button
           type="button"
           className="select-scene__secret-tile"
           onClick={() => setShowRecruiterCard(true)}
@@ -589,6 +619,5 @@ export default function CharacterSelectScene(): React.JSX.Element {
         <RecruiterCard onClose={() => setShowRecruiterCard(false)} />
       ) : null}
     </section>
-    </div>
   );
 }

@@ -106,6 +106,22 @@
   font-weight: 800;
 }
 
+.select-scene__mode-switch {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  padding: var(--space-xs);
+  border: 2px solid var(--arcade-ink);
+  border-radius: 10px;
+  background: var(--arcade-panel);
+  box-shadow: 3px 3px 0 rgba(18, 58, 77, 0.14);
+}
+
+.select-scene__mode-switch [aria-pressed="true"] {
+  border-color: var(--arcade-orange);
+  background: var(--arcade-orange);
+}
+
 .select-scene__players {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);

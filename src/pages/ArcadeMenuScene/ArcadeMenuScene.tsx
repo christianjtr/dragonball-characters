@@ -26,23 +26,16 @@ interface ArcadeMenuEntry extends ArcadeMenuItem {
 
 const MENU_ENTRIES: ArcadeMenuEntry[] = [
   {
-    id: "versus",
-    label: "Versus Mode",
-    description: "Dos luchadores. Un solo ganador.",
+    id: "play",
+    label: "Play",
+    description: "Select fighters and enter the arena.",
     accent: "orange",
-    path: "/select?versus=1",
-  },
-  {
-    id: "select",
-    label: "Fighter Select",
-    description: "Explora el roster completo.",
-    accent: "blue",
     path: "/select",
   },
   {
     id: "options",
     label: "Options",
-    description: "Sonido y preferencias del arcade.",
+    description: "Sound and arcade preferences.",
     accent: "gold",
   },
 ];
@@ -55,7 +48,7 @@ export default function ArcadeMenuScene(): React.JSX.Element {
   const play = useArcadeAudio();
   const reducedMotion = useReducedMotion();
 
-  useDocumentTitle("Dragonball Arcade | Menú principal");
+  useDocumentTitle("Dragonball Arcade | Main Menu");
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [optionsOpen, setOptionsOpen] = useState(false);
@@ -103,9 +96,11 @@ export default function ArcadeMenuScene(): React.JSX.Element {
   const handleCloseOptions = useCallback(() => {
     play("back");
     setOptionsOpen(false);
-    document
-      .getElementById("arcade-main-menu")
-      ?.focus({ preventScroll: true });
+    window.setTimeout(() => {
+      document
+        .getElementById("arcade-main-menu")
+        ?.focus({ preventScroll: true });
+    }, 0);
   }, [play]);
 
   const goTo = useCallback(
@@ -158,8 +153,8 @@ export default function ArcadeMenuScene(): React.JSX.Element {
     !artFailed && featuredFighter?.image ? featuredFighter.image : Goku;
   const statusLabel =
     characters.length > 0
-      ? `${characters.length} luchadores listos`
-      : "Sincronizando luchadores";
+       ? `${characters.length} fighters ready`
+       : "Syncing fighters";
 
   return (
     <section
@@ -175,12 +170,11 @@ export default function ArcadeMenuScene(): React.JSX.Element {
               className="arcade-menu__title-ball"
               aria-hidden="true"
             />
-            <span className="arcade-menu__title-kicker">Elige tu</span>
-            <span className="arcade-menu__title-main">Modo</span>
+            <span className="arcade-menu__title-kicker">Dragonball</span>
+            <span className="arcade-menu__title-main">Arcade</span>
           </h1>
           <p className="arcade-menu__lede">
-            Tres accesos directos al arcade. Navega con las flechas y confirma
-            con Enter.
+            One way in. Choose how you want to play on the fighter select screen.
           </p>
         </div>
 
@@ -190,9 +184,9 @@ export default function ArcadeMenuScene(): React.JSX.Element {
           </p>
           <p className="arcade-menu__hint">
             <span className="arcade-kbd">↑</span>
-            <span className="arcade-kbd">↓</span> mover
-            <span className="arcade-kbd">Enter</span> elegir
-            <span className="arcade-kbd">Esc</span> volver
+            <span className="arcade-kbd">↓</span> move
+            <span className="arcade-kbd">Enter</span> choose
+            <span className="arcade-kbd">Esc</span> back
           </p>
         </div>
       </div>
@@ -214,7 +208,7 @@ export default function ArcadeMenuScene(): React.JSX.Element {
             </span>
           </div>
           <figcaption className="arcade-menu__caption">
-            Selecciona tu destino, guerrero.
+            Choose your next destination, warrior.
           </figcaption>
         </figure>
 

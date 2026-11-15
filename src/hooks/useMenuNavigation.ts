@@ -1,4 +1,4 @@
-import { useCallback, type KeyboardEvent } from "react";
+import { useCallback } from "react";
 
 interface UseMenuNavigationProps {
   itemCount: number;
@@ -34,45 +34,56 @@ export const useMenuNavigation = ({
     [activeIndex, itemCount, loop, onMove],
   );
 
-  const handleKeyDown = useCallback(
-    (event: KeyboardEvent<HTMLElement>) => {
-      switch (event.key) {
-        case "ArrowDown":
+  const handleKey = useCallback(
+    (event: globalThis.KeyboardEvent) => {
+      const target = event.target;
+      if (
+        target instanceof HTMLElement &&
+        (target.isContentEditable ||
+          ["INPUT", "SELECT", "TEXTAREA"].includes(target.tagName))
+      ) {
+        return false;
+      }
+
+      const key = event.key.toLowerCase();
+      switch (key) {
+        case "arrowdown":
+        case "s":
           event.preventDefault();
           moveTo(activeIndex + 1);
-          break;
-        case "ArrowUp":
+          return true;
+        case "arrowup":
+        case "w":
           event.preventDefault();
           moveTo(activeIndex - 1);
-          break;
-        case "Home":
+          return true;
+        case "home":
           event.preventDefault();
           moveTo(0);
-          break;
-        case "End":
+          return true;
+        case "end":
           event.preventDefault();
           moveTo(itemCount - 1);
-          break;
-        case "Enter":
+          return true;
+        case "enter":
         case " ":
           event.preventDefault();
-          if (itemCount > 0) {
-            onConfirm(activeIndex);
-          }
-          break;
-        case "Escape":
-        case "Backspace":
+          if (itemCount > 0) onConfirm(activeIndex);
+          return true;
+        case "escape":
+        case "backspace":
           if (onBack) {
             event.preventDefault();
             onBack();
+            return true;
           }
-          break;
+          return false;
         default:
-          break;
+          return false;
       }
     },
     [activeIndex, itemCount, moveTo, onBack, onConfirm],
   );
 
-  return { moveTo, handleKeyDown };
+  return { moveTo, handleKey };
 };

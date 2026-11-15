@@ -54,7 +54,7 @@ const renderSelect = (initialEntry = "/select?versus=1") => {
       <MemoryRouter initialEntries={[initialEntry]}>
         <Routes>
           <Route path="/select" element={<CharacterSelectScene />} />
-          <Route path="/versus/:p1Id/:p2Id" element={<h1>COMBATE CARGADO</h1>} />
+          <Route path="/versus/:p1Id/:p2Id" element={<h1>FIGHT LOADED</h1>} />
         </Routes>
       </MemoryRouter>
     </RosterContext.Provider>,
@@ -63,13 +63,14 @@ const renderSelect = (initialEntry = "/select?versus=1") => {
 
 describe("CharacterSelectScene", () => {
   it("selects P1 then P2 and starts the versus route", async () => {
-    renderSelect();
+    renderSelect("/select");
+    fireEvent.click(screen.getByRole("button", { name: "VERSUS 2P" }));
 
     fireEvent.keyDown(screen.getByRole("listbox", { name: "Lista de luchadores" }), {
       key: "Enter",
     });
     expect(screen.getByRole("heading", { name: "Goku" })).toBeInTheDocument();
-    expect(screen.getByText("Elige un luchador para P2.", { exact: false })).toBeInTheDocument();
+    expect(screen.getByText("Choose a fighter for P2.", { exact: false })).toBeInTheDocument();
 
     fireEvent.keyDown(screen.getByRole("listbox", { name: "Lista de luchadores" }), {
       key: "Enter",
@@ -79,24 +80,36 @@ describe("CharacterSelectScene", () => {
     fireEvent.keyDown(screen.getByRole("listbox", { name: "Lista de luchadores" }), {
       key: "Enter",
     });
-    expect(await screen.findByRole("heading", { name: "COMBATE CARGADO" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "FIGHT LOADED" })).toBeInTheDocument();
   });
 
   it("supports WASD grid navigation", () => {
-    renderSelect();
+    renderSelect("/select");
+    fireEvent.click(screen.getByRole("button", { name: "VERSUS 2P" }));
     const grid = screen.getByRole("listbox", { name: "Lista de luchadores" });
 
     fireEvent.keyDown(grid, { key: "s" });
     expect(screen.getByRole("option", { name: /Vegeta/ })).toHaveAttribute("aria-selected", "true");
   });
 
+  it("keeps both mode buttons visible and reports the selected mode accessibly", () => {
+    renderSelect("/select");
+    const individual = screen.getByRole("button", { name: "INDIVIDUAL" });
+    const versus = screen.getByRole("button", { name: "VERSUS 2P" });
+    expect(individual).toHaveAttribute("aria-pressed", "true");
+    expect(versus).toHaveAttribute("aria-pressed", "false");
+
+    fireEvent.click(versus);
+    expect(screen.getByRole("button", { name: "INDIVIDUAL" })).toHaveAttribute("aria-pressed", "false");
+    expect(screen.getByRole("button", { name: "VERSUS 2P" })).toHaveAttribute("aria-pressed", "true");
+  });
+
   it("reveals the recruiter profile after the Konami sequence", async () => {
     renderSelect();
-    const scene = document.querySelector(".select-scene");
-    if (!scene) throw new Error("Selection scene not mounted");
+    const grid = screen.getByRole("listbox", { name: "Lista de luchadores" });
 
     ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"].forEach((key) => {
-      fireEvent.keyDown(scene, { key });
+      fireEvent.keyDown(grid, { key });
     });
 
     await waitFor(() => {
@@ -108,8 +121,37 @@ describe("CharacterSelectScene", () => {
     expect(screen.getByRole("button", { name: /PERFIL SECRETO/ })).toBeInTheDocument();
   });
 
+  it("detects the Konami sequence while a filter control has focus", async () => {
+    renderSelect("/select");
+    const scene = document.querySelector(".select-scene");
+    if (!scene) throw new Error("Selection scene not mounted");
+    const outsideControl = document.createElement("button");
+    document.body.append(outsideControl);
+    outsideControl.focus();
+
+    ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"].forEach((key) => {
+      fireEvent.keyDown(outsideControl, { key });
+    });
+
+    expect(await screen.findByRole("dialog", { name: "CHRISTIAN J. TORREALBA" })).toBeInTheDocument();
+    outsideControl.remove();
+  });
+
+  it("does not prevent normal a/b text entry in the search field", () => {
+    renderSelect("/select");
+    const filter = screen.getByRole("searchbox", { name: "Search" });
+    filter.focus();
+    const bEvent = new KeyboardEvent("keydown", { key: "b", bubbles: true, cancelable: true });
+    filter.dispatchEvent(bEvent);
+    const aEvent = new KeyboardEvent("keydown", { key: "a", bubbles: true, cancelable: true });
+    filter.dispatchEvent(aEvent);
+    expect(bEvent.defaultPrevented).toBe(false);
+    expect(aEvent.defaultPrevented).toBe(false);
+  });
+
   it("preserves P1 when P2 is changed or cancelled", () => {
-    renderSelect();
+    renderSelect("/select");
+    fireEvent.click(screen.getByRole("button", { name: "VERSUS 2P" }));
     const grid = screen.getByRole("listbox", { name: "Lista de luchadores" });
 
     fireEvent.keyDown(grid, { key: "Enter" });

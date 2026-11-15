@@ -105,7 +105,7 @@
   margin: 0;
   color: var(--arcade-ink);
   font-family: var(--arcade-logo);
-  font-size: clamp(1.9rem, 6vw, 3rem);
+  font-size: clamp(1.5rem, 5vw, 2.45rem);
   font-weight: 400;
   line-height: 0.95;
   text-shadow: 2px 2px 0 rgba(18, 58, 77, 0.16);
@@ -141,29 +141,11 @@
   text-transform: uppercase;
 }
 
-.recruiter-card__stat-heading strong {
-  color: var(--arcade-magenta);
-  font-family: var(--arcade-display);
-  font-size: 0.82rem;
-}
-
-.recruiter-card__meter {
-  height: 11px;
-  overflow: hidden;
-  border: 2px solid var(--arcade-ink);
-  border-radius: 999px;
-  background: #fff;
-}
-
-.recruiter-card__meter span {
-  display: block;
-  height: 100%;
-  border-right: 2px solid var(--arcade-ink);
-  background: repeating-linear-gradient(
-    135deg,
-    var(--arcade-cyan) 0 8px,
-    #70d6dc 8px 14px
-  );
+.recruiter-card__stat-description {
+  margin: 0;
+  color: var(--arcade-ink-dim);
+  font-size: 0.68rem;
+  line-height: 1.45;
 }
 
 .recruiter-card__actions {

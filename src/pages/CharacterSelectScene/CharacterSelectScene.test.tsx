@@ -4,6 +4,7 @@ import { MemoryRouter, Route, Routes } from "react-router";
 import { RosterContext, type RosterContextValue } from "@context/rosterContext";
 import CharacterSelectScene from "./CharacterSelectScene";
 import type { CharacterSummary } from "@services/apis/dragonball/types/Character";
+import { RecruiterCard } from "./components/RecruiterCard/RecruiterCard";
 
 const goku: CharacterSummary = {
   id: 1,
@@ -99,10 +100,11 @@ describe("CharacterSelectScene", () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByRole("dialog", { name: "PLAYER 01" })).toBeInTheDocument();
+      expect(screen.getByRole("dialog", { name: "CHRISTIAN J. TORREALBA" })).toBeInTheDocument();
     });
     expect(screen.getByText("Arquitectura")).toBeInTheDocument();
     expect(screen.getByText("Product sense")).toBeInTheDocument();
+    expect(screen.queryByRole("meter")).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: /PERFIL SECRETO/ })).toBeInTheDocument();
   });
 
@@ -118,5 +120,13 @@ describe("CharacterSelectScene", () => {
     fireEvent.click(screen.getByRole("button", { name: "Cambiar luchador de P2" }));
     expect(screen.getByRole("article", { name: "P1: Goku" })).toBeInTheDocument();
     expect(screen.getByRole("article", { name: "P2: sin seleccionar" })).toBeInTheDocument();
+  });
+
+  it("shows the configured CV link on the recruiter profile", () => {
+    render(<RecruiterCard onClose={vi.fn()} />);
+    expect(screen.getByRole("link", { name: "VER CV ↗" })).toHaveAttribute(
+      "href",
+      "https://christianjtr.github.io/",
+    );
   });
 });

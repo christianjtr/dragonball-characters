@@ -36,6 +36,8 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build site
+        env:
+          VITE_RECRUITER_CV_URL: https://christianjtr.github.io/
         run: pnpm build
 
       - name: Publish dist to demo branch

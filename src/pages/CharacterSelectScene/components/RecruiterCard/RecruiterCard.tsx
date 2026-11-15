@@ -7,9 +7,9 @@ interface RecruiterCardProps {
 }
 
 const STATS = [
-  { label: "Arquitectura", value: 94 },
-  { label: "Resolución de bugs", value: 92 },
-  { label: "Product sense", value: 90 },
+  { label: "Arquitectura", description: "Diseño de sistemas y decisiones técnicas" },
+  { label: "Resolución de bugs", description: "Diagnóstico y soluciones mantenibles" },
+  { label: "Product sense", description: "Experiencias enfocadas en las personas" },
 ];
 
 export const RecruiterCard: React.FC<RecruiterCardProps> = ({ onClose }) => {
@@ -59,6 +59,7 @@ export const RecruiterCard: React.FC<RecruiterCardProps> = ({ onClose }) => {
       aria-modal="true"
       aria-labelledby="recruiter-card-title"
       onMouseDown={(event) => event.stopPropagation()}
+      onClick={(event) => event.stopPropagation()}
     >
       <div className="recruiter-card__topline">
         <span className="recruiter-card__badge">PERSONAJE SECRETO</span>
@@ -77,8 +78,8 @@ export const RecruiterCard: React.FC<RecruiterCardProps> = ({ onClose }) => {
         </div>
         <div>
           <p className="recruiter-card__eyebrow">INGENIERO DE SISTEMAS</p>
-          <h2 id="recruiter-card-title">PLAYER 01</h2>
-          <p className="recruiter-card__subtitle">Arquitecto de soluciones · Builder</p>
+          <h2 id="recruiter-card-title">CHRISTIAN J. TORREALBA</h2>
+          <p className="recruiter-card__subtitle">Ingeniería · Producto digital</p>
         </div>
       </div>
       <p className="recruiter-card__bio">
@@ -90,18 +91,8 @@ export const RecruiterCard: React.FC<RecruiterCardProps> = ({ onClose }) => {
           <div className="recruiter-card__stat" key={stat.label}>
             <div className="recruiter-card__stat-heading">
               <span>{stat.label}</span>
-              <strong>{stat.value}</strong>
             </div>
-            <div
-              className="recruiter-card__meter"
-              role="meter"
-              aria-label={stat.label}
-              aria-valuemin={0}
-              aria-valuemax={100}
-              aria-valuenow={stat.value}
-            >
-              <span style={{ width: `${stat.value}%` }} />
-            </div>
+            <p className="recruiter-card__stat-description">{stat.description}</p>
           </div>
         ))}
       </div>

@@ -8,7 +8,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [react()],
-    base: env.VITE_APP_BASE_PATH,
+    base: env.VITE_APP_BASE_PATH || '/dragonball-characters/',
     resolve: {
       alias: {
         "@clients": resolve(__dirname, "./src/clients"),

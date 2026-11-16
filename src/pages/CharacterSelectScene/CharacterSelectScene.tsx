@@ -32,6 +32,7 @@ import {
   RecruiterCard,
   RosterFilterBar,
   RosterGrid,
+  VersusReadyModal,
 } from "./components";
 import "./CharacterSelectScene.css";
 
@@ -276,7 +277,7 @@ export default function CharacterSelectScene(): React.JSX.Element {
       if (next) params.set("versus", "1");
       else params.delete("versus");
       return params;
-    }, { replace: true });
+    }, { replace: !next });
     play("move");
   }, [play, setSearchParams]);
 
@@ -587,6 +588,16 @@ export default function CharacterSelectScene(): React.JSX.Element {
       </p>
       {showRecruiterCard ? (
         <RecruiterCard onClose={() => setShowRecruiterCard(false)} />
+      ) : null}
+      {isCompact && versusMode && p1Character && p2Character ? (
+        <VersusReadyModal
+          p1={p1Character}
+          p2={p2Character}
+          onStart={handleStartFight}
+          onChangeP1={handleCancelP1}
+          onChangeP2={handleCancelP2}
+          onDismiss={handleCancelP2}
+        />
       ) : null}
     </section>
   );

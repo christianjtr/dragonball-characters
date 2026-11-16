@@ -5,3 +5,4 @@ export { RosterFilterBar } from "./RosterFilterBar/RosterFilterBar";
 export { RosterGrid } from "./RosterGrid/RosterGrid";
 export { PlayerSelectCard } from "./PlayerSelectCard/PlayerSelectCard";
 export { RecruiterCard } from "./RecruiterCard/RecruiterCard";
+export { VersusReadyModal } from "./VersusReadyModal/VersusReadyModal";

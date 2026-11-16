@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, NavLink } from "react-router";
+import { Link } from "react-router";
 import { useRoster } from "@context/rosterContext";
 import { KameHouseMark } from "@components/KameHouseMark/KameHouseMark";
 import { SoundToggle } from "@components/SoundToggle/SoundToggle";
@@ -26,17 +26,6 @@ export const Header: React.FC = () => {
           <span className="header__subtitle">Kame House</span>
         </span>
       </Link>
-
-      <nav className="header__nav" aria-label="Navegación principal">
-        <NavLink
-          to="/select"
-          className={({ isActive }) =>
-            `header__link ${isActive ? "is-active" : ""}`.trim()
-          }
-        >
-          Luchadores
-        </NavLink>
-      </nav>
 
       <div className="header__meta">
         <span className="header__count" aria-live="polite">

@@ -1,0 +1,216 @@
+.versus-ready-modal__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(18, 58, 77, 0.68);
+  backdrop-filter: blur(5px);
+  animation: versus-ready-backdrop-in 0.15s ease-out both;
+}
+
+.versus-ready-modal {
+  position: relative;
+  width: min(440px, 100%);
+  max-height: min(92dvh, 620px);
+  overflow-y: auto;
+  padding: clamp(18px, 4vw, 28px);
+  border: 3px solid var(--arcade-ink);
+  border-radius: 14px;
+  background:
+    radial-gradient(rgba(18, 58, 77, 0.07) 1px, transparent 1px) 0 0 / 12px
+      12px,
+    linear-gradient(160deg, #fffaf0 0%, #fff0d4 100%);
+  box-shadow:
+    7px 7px 0 var(--arcade-ink),
+    0 26px 72px rgba(0, 0, 0, 0.3);
+  animation: versus-ready-card-in 0.2s cubic-bezier(0.2, 0.9, 0.3, 1.15) both;
+}
+
+.versus-ready-modal__topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+
+.versus-ready-modal__badge {
+  padding: 5px 10px;
+  border: 2px solid var(--arcade-ink);
+  border-radius: 999px;
+  background: var(--arcade-green);
+  color: var(--arcade-panel);
+  font-family: var(--arcade-display);
+  font-size: 0.58rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  box-shadow: 2px 2px 0 var(--arcade-ink);
+}
+
+.versus-ready-modal__close {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 2px solid var(--arcade-ink);
+  border-radius: 8px;
+  background: var(--arcade-panel);
+  color: var(--arcade-ink);
+  box-shadow: 2px 2px 0 var(--arcade-ink);
+}
+
+.versus-ready-modal__close:hover {
+  background: var(--arcade-orange);
+}
+
+.versus-ready-modal__title {
+  margin: var(--space-md) 0 0;
+  color: var(--arcade-ink);
+  font-family: var(--arcade-logo);
+  font-size: clamp(1.4rem, 6vw, 1.9rem);
+  font-weight: 400;
+  line-height: 1;
+  text-align: center;
+  text-shadow: 2px 2px 0 rgba(18, 58, 77, 0.16);
+}
+
+.versus-ready-modal__fighters {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-sm);
+  margin-top: var(--space-lg);
+  padding: var(--space-md) var(--space-sm);
+  border: 2px solid var(--arcade-line);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.versus-ready-modal__fighter {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  min-width: 0;
+  text-align: center;
+}
+
+.versus-ready-modal__player {
+  padding: 3px 9px;
+  border: 2px solid var(--arcade-ink);
+  border-radius: 999px;
+  background: var(--fighter-accent, var(--arcade-cyan));
+  color: #fff;
+  font-family: var(--arcade-display);
+  font-size: 0.58rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-shadow: 1px 1px 0 rgba(18, 58, 77, 0.55);
+  box-shadow: 2px 2px 0 var(--arcade-ink);
+}
+
+.versus-ready-modal__portrait {
+  display: grid;
+  place-items: center;
+  width: clamp(74px, 20vw, 96px);
+  aspect-ratio: 1;
+  border: 3px solid var(--fighter-accent, var(--arcade-ink));
+  border-radius: 12px;
+  background: #fff8e9;
+  overflow: hidden;
+  box-shadow: 3px 3px 0 var(--arcade-ink);
+}
+
+.versus-ready-modal__name {
+  margin: 0;
+  max-width: 100%;
+  color: var(--arcade-ink);
+  font-family: var(--arcade-display);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.versus-ready-modal__race {
+  margin: 0;
+  color: var(--arcade-ink-dim);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.versus-ready-modal__mark {
+  color: var(--arcade-star);
+  font-family: var(--arcade-logo);
+  font-size: clamp(1.3rem, 5vw, 1.7rem);
+  text-shadow: 2px 2px 0 var(--arcade-ink);
+}
+
+.versus-ready-modal__actions {
+  display: grid;
+  gap: var(--space-sm);
+  margin-top: var(--space-lg);
+}
+
+.versus-ready-modal__action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 16px;
+  border: 2px solid var(--arcade-ink);
+  border-radius: 8px;
+  background: var(--arcade-orange);
+  color: var(--arcade-ink);
+  font-family: var(--arcade-display);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  box-shadow: 3px 3px 0 var(--arcade-ink);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.versus-ready-modal__action--primary {
+  background: var(--arcade-star);
+  color: var(--arcade-panel);
+  text-shadow: 1px 1px 0 rgba(18, 58, 77, 0.5);
+}
+
+.versus-ready-modal__action--secondary {
+  background: var(--arcade-panel);
+}
+
+.versus-ready-modal__action:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--arcade-ink);
+}
+
+.versus-ready-modal__secondary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-sm);
+}
+
+.versus-ready-modal__secondary .versus-ready-modal__action {
+  min-height: 40px;
+  font-size: 0.6rem;
+}
+
+@keyframes versus-ready-backdrop-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes versus-ready-card-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .versus-ready-modal__backdrop,
+  .versus-ready-modal {
+    animation: none;
+  }
+}

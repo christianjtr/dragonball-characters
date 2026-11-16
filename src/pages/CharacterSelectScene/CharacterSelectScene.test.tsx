@@ -1,6 +1,6 @@
-import { describe, expect, it, vi } from "vitest";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { MemoryRouter, Route, Routes } from "react-router";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { MemoryRouter, Route, Routes, useNavigate } from "react-router";
 import { RosterContext, type RosterContextValue } from "@context/rosterContext";
 import CharacterSelectScene from "./CharacterSelectScene";
 import type { CharacterSummary } from "@services/apis/dragonball/types/Character";
@@ -36,6 +36,8 @@ const rosterValue: RosterContextValue = {
   getDetail: vi.fn(),
 };
 
+const useMediaQueryMock = vi.hoisted(() => vi.fn(() => false));
+
 vi.mock("@hooks/useArcadeAudio", () => ({
   useArcadeAudio: () => vi.fn(),
 }));
@@ -45,7 +47,7 @@ vi.mock("@hooks/useGridColumns", () => ({
 }));
 
 vi.mock("@hooks/useMediaQuery", () => ({
-  useMediaQuery: () => false,
+  useMediaQuery: useMediaQueryMock,
 }));
 
 const renderSelect = (initialEntry = "/select?versus=1") => {
@@ -61,7 +63,33 @@ const renderSelect = (initialEntry = "/select?versus=1") => {
   );
 };
 
+const HistoryProbe = () => {
+  const navigate = useNavigate();
+  return (
+    <button type="button" onClick={() => navigate(-1)}>
+      VOLVER HISTORIA
+    </button>
+  );
+};
+
+const renderSelectWithHistoryProbe = (initialEntry = "/select") => {
+  return render(
+    <RosterContext.Provider value={rosterValue}>
+      <MemoryRouter initialEntries={[initialEntry]}>
+        <HistoryProbe />
+        <Routes>
+          <Route path="/select" element={<CharacterSelectScene />} />
+          <Route path="/versus/:p1Id/:p2Id" element={<h1>COMBATE CARGADO</h1>} />
+        </Routes>
+      </MemoryRouter>
+    </RosterContext.Provider>,
+  );
+};
+
 describe("CharacterSelectScene", () => {
+  beforeEach(() => {
+    useMediaQueryMock.mockReturnValue(false);
+  });
   it("selects P1 then P2 and starts the versus route", async () => {
     renderSelect("/select");
     fireEvent.click(screen.getByRole("button", { name: "VERSUS 2P" }));
@@ -170,5 +198,49 @@ describe("CharacterSelectScene", () => {
       "href",
       "https://christianjtr.github.io/",
     );
+  });
+
+  it("pushes versus mode into history so going back returns to individual mode", () => {
+    renderSelectWithHistoryProbe("/select");
+
+    fireEvent.click(screen.getByRole("button", { name: "VERSUS 2P" }));
+    expect(screen.getByRole("button", { name: "VERSUS 2P" })).toHaveAttribute("aria-pressed", "true");
+
+    fireEvent.click(screen.getByRole("button", { name: "VOLVER HISTORIA" }));
+    expect(screen.getByRole("button", { name: "INDIVIDUAL" })).toHaveAttribute("aria-pressed", "true");
+  });
+
+  it("shows the versus ready modal on mobile when both players are picked and starts the fight", async () => {
+    useMediaQueryMock.mockReturnValue(true);
+    renderSelect("/select");
+    fireEvent.click(screen.getByRole("button", { name: "VERSUS 2P" }));
+    const grid = screen.getByRole("listbox", { name: "Lista de luchadores" });
+
+    fireEvent.keyDown(grid, { key: "Enter" });
+    fireEvent.keyDown(grid, { key: "Enter" });
+
+    const dialog = screen.getByRole("dialog", { name: "¿Listo para el combate?" });
+    expect(within(dialog).getByRole("heading", { name: "Goku" })).toBeInTheDocument();
+    expect(within(dialog).getByRole("heading", { name: "Vegeta" })).toBeInTheDocument();
+
+    fireEvent.click(within(dialog).getByRole("button", { name: "INICIAR COMBATE" }));
+    expect(await screen.findByRole("heading", { name: "COMBATE CARGADO" })).toBeInTheDocument();
+  });
+
+  it("lets the versus ready modal change picks and closes after clearing P2", () => {
+    useMediaQueryMock.mockReturnValue(true);
+    renderSelect("/select");
+    fireEvent.click(screen.getByRole("button", { name: "VERSUS 2P" }));
+    const grid = screen.getByRole("listbox", { name: "Lista de luchadores" });
+
+    fireEvent.keyDown(grid, { key: "Enter" });
+    fireEvent.keyDown(grid, { key: "Enter" });
+
+    const dialog = screen.getByRole("dialog", { name: "¿Listo para el combate?" });
+    fireEvent.click(within(dialog).getByRole("button", { name: "CAMBIAR P2" }));
+
+    expect(screen.getByRole("article", { name: "P1: Goku" })).toBeInTheDocument();
+    expect(screen.getByRole("article", { name: "P2: sin seleccionar" })).toBeInTheDocument();
+    expect(screen.queryByRole("dialog", { name: "¿Listo para el combate?" })).not.toBeInTheDocument();
   });
 });

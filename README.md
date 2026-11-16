@@ -15,7 +15,7 @@ A retro arcade-style Dragon Ball character SPA built with React 19, TypeScript, 
 - **Arcade home menu:** one Play entry and Options, controlled by keyboard, mouse, or touch.
 - **58-character roster:** search, race and affiliation filters, sorting, and shareable selection state in the URL.
 - **Individual selection:** browse the character grid and open a fighter preview/profile.
-- **Versus selection:** choose Individual or Versus 2P from the selection screen. Pick P1 and then P2, change or cancel picks, and start the match.
+- **Versus selection:** choose Individual or Versus 2P from the selection screen. Pick P1 and then P2, change or cancel picks, and start the match. On mobile, a centered ready modal helps decide when both fighters are picked. Entering Versus mode pushes browser history, so Back returns to Individual mode.
 - **Multimodal controls:** Arrow keys or WASD to navigate; Enter or Space to confirm; Escape to go back. The native Gamepad API supports D-pad/stick navigation, confirm/back buttons, and optional haptic feedback where supported by the controller and browser.
 - **Arcade feedback:** Web Audio synthesized movement, confirm, lock-in, and transformation cues. Versus selections with available transformations receive a visual aura.
 - **Recruiter easter egg:** enter ↑ ↑ ↓ ↓ ← → ← → B A on the character selection screen to reveal Christian J. Torrealba’s profile and CV link.
@@ -51,6 +51,7 @@ pnpm dev         # Start the development server
 pnpm typecheck   # TypeScript checks
 pnpm lint        # ESLint
 pnpm test        # Run Vitest tests
+pnpm test:watch  # Run Vitest in watch mode
 pnpm build       # Create a production build
 pnpm preview     # Preview the production build
 ```
@@ -66,6 +67,10 @@ VITE_RECRUITER_CV_URL=https://example.com/cv pnpm build
 ```
 
 GitHub Pages must be configured to publish from the `demo` branch.
+
+## Repository maintenance
+
+[Dependabot](.github/dependabot.yml) checks the npm and GitHub Actions ecosystems weekly and groups the updates into a single pull request per ecosystem (up to 5 open at a time). Node.js 22+ and pnpm 10 are pinned in `package.json` via `engines` and `packageManager`, matching the deployment workflow.
 
 ## Audio
 

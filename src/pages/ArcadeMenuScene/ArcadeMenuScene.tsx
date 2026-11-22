@@ -12,9 +12,11 @@ import {
 } from "@components/ArcadeMenuList/ArcadeMenuList";
 import { ArcadeOptionsPanel } from "@components/ArcadeOptionsPanel/ArcadeOptionsPanel";
 import { KameHouseScene } from "@components/KameHouseScene/KameHouseScene";
+import { NavigationHint } from "@components/NavigationHint/NavigationHint";
 import { useRoster } from "@context/rosterContext";
 import { useArcadeAudio } from "@hooks/useArcadeAudio";
 import { useDocumentTitle } from "@hooks/useDocumentTitle";
+import { useMediaQuery } from "@hooks/useMediaQuery";
 import { useReducedMotion } from "@hooks/useReducedMotion";
 import DragonballLogo from "@assets/dragon-ball.svg";
 import Goku from "@assets/goku.gif";
@@ -47,6 +49,7 @@ export default function ArcadeMenuScene(): React.JSX.Element {
   const { characters } = useRoster();
   const play = useArcadeAudio();
   const reducedMotion = useReducedMotion();
+  const isCompact = useMediaQuery("(max-width: 980px)");
 
   useDocumentTitle("Dragonball Arcade | Menú principal");
 
@@ -182,12 +185,7 @@ export default function ArcadeMenuScene(): React.JSX.Element {
           <p className="arcade-menu__status" aria-live="polite">
             {statusLabel}
           </p>
-          <p className="arcade-menu__hint">
-            <span className="arcade-kbd">↑</span>
-            <span className="arcade-kbd">↓</span> mover
-            <span className="arcade-kbd">Enter</span> elegir
-            <span className="arcade-kbd">Esc</span> volver
-          </p>
+          <NavigationHint variant="menu" compact={isCompact} />
         </div>
       </div>
 

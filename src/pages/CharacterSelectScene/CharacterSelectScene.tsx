@@ -8,6 +8,7 @@ import React, {
 } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import { ARCADE_CONFIG } from "@config/arcadeConfig";
+import { NavigationHint } from "@components/NavigationHint/NavigationHint";
 import { Skeleton } from "@components/Skeleton/Skeleton";
 import { StatusPanel } from "@components/StatusPanel/StatusPanel";
 import { useRoster } from "@context/rosterContext";
@@ -430,14 +431,11 @@ export default function CharacterSelectScene(): React.JSX.Element {
           </h1>
           <p className="select-scene__lede">{lede}</p>
         </div>
-        {!isCompact ? (
-          <p className="select-scene__hint">
-            <span className="arcade-kbd">Flechas / WASD</span> mover
-            <span className="arcade-kbd">Enter / Space</span> elegir
-            <span className="arcade-kbd">Esc</span> volver
-            {gamepadConnected ? <span className="select-scene__gamepad">Mando conectado</span> : null}
-          </p>
-        ) : null}
+        <NavigationHint
+          variant="select"
+          compact={isCompact}
+          gamepadConnected={gamepadConnected}
+        />
       </div>
 
       {!versusMode ? (

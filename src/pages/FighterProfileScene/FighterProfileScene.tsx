@@ -1,12 +1,16 @@
-import React from "react";
-import { Link, useParams } from "react-router";
+import React, { useCallback } from "react";
+import { Link, useNavigate, useParams } from "react-router";
 import { isHTTPError } from "@clients/httpClient";
 import { FighterPortrait } from "@components/FighterPortrait/FighterPortrait";
+import { NavigationHint } from "@components/NavigationHint/NavigationHint";
 import NotFound from "@components/NotFound/NotFound";
 import { Skeleton } from "@components/Skeleton/Skeleton";
 import { StatusPanel } from "@components/StatusPanel/StatusPanel";
+import { useArcadeAudio } from "@hooks/useArcadeAudio";
+import { useBackNavigation } from "@hooks/useBackNavigation";
 import { useCharacterDetail } from "@hooks/useCharacterDetail";
 import { useDocumentTitle } from "@hooks/useDocumentTitle";
+import { useMediaQuery } from "@hooks/useMediaQuery";
 import { getCharacterAccent } from "@utils/characterTheme";
 import BloodIcon from "@assets/blood.png";
 import EqualityIcon from "@assets/equality.png";
@@ -40,10 +44,19 @@ const ProfileSkeleton: React.FC = () => (
 
 export default function FighterProfileScene(): React.JSX.Element {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const { id: numericId, summary, detail, status, error, retry } =
     useCharacterDetail(id);
+  const play = useArcadeAudio();
+  const isCompact = useMediaQuery("(max-width: 980px)");
 
   const character = detail ?? summary;
+  const backTo = character ? `/select?focus=${character.id}` : "/select";
+  const handleBack = useCallback(() => {
+    play("back");
+    navigate(backTo);
+  }, [backTo, navigate, play]);
+  const gamepadConnected = useBackNavigation({ onBack: handleBack });
 
   useDocumentTitle(
     character
@@ -103,10 +116,17 @@ export default function FighterProfileScene(): React.JSX.Element {
       style={{ "--profile-accent": accent } as React.CSSProperties}
     >
       <div className="profile-scene__topbar">
-        <Link className="profile-scene__back" to={`/select?focus=${character.id}`}>
+        <Link className="profile-scene__back" to={backTo}>
           Volver a luchadores
         </Link>
-        <span className="profile-scene__record">Luchador #{character.id}</span>
+        <div className="profile-scene__topbar-meta">
+          <NavigationHint
+            variant="detail"
+            compact={isCompact}
+            gamepadConnected={gamepadConnected}
+          />
+          <span className="profile-scene__record">Luchador #{character.id}</span>
+        </div>
       </div>
 
       <div className="profile-scene__layout">

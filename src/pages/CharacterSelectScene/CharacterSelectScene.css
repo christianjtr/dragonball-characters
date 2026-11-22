@@ -78,18 +78,6 @@
   font-size: 0.9rem;
 }
 
-.select-scene__hint {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-xs);
-  margin: 0;
-  color: var(--arcade-ink);
-  font-size: 0.66rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
 .select-scene__stage {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
@@ -147,15 +135,6 @@
   min-height: 42px;
   padding-inline: 10px;
   font-size: 0.65rem;
-}
-
-.select-scene__gamepad {
-  padding: 4px 8px;
-  border: 1px solid var(--arcade-green);
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--arcade-green) 14%, transparent);
-  color: var(--arcade-ink);
-  font-weight: 800;
 }
 
 .select-scene__mode-switch {

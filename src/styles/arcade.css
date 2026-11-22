@@ -111,7 +111,11 @@
   border-radius: 12px;
   background:
     radial-gradient(rgba(18, 58, 77, 0.055) 1px, transparent 1px) 0 0 / 12px 12px,
-    linear-gradient(180deg, #fffaf0, #fff0d4);
+    linear-gradient(
+      180deg,
+      var(--kame-sand),
+      color-mix(in srgb, var(--arcade-panel-strong) 72%, var(--kakarot-silver))
+    );
   box-shadow:
     4px 4px 0 rgba(18, 58, 77, 0.16),
     inset 0 1px 0 rgba(255, 255, 255, 0.85);

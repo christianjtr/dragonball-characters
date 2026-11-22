@@ -102,18 +102,6 @@
   content: "★";
 }
 
-.arcade-menu__hint {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-xs);
-  margin: 0;
-  color: var(--arcade-ink);
-  font-size: 0.66rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
 .arcade-menu__body {
   display: grid;
   grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
@@ -337,10 +325,6 @@
 
   .arcade-menu__title {
     font-size: clamp(1.9rem, 10vw, 3rem);
-  }
-
-  .arcade-menu__hint {
-    font-size: 0.6rem;
   }
 }
 

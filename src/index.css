@@ -2,7 +2,7 @@
 
 :root {
   color-scheme: light;
-  --arcade-bg: #2f7fd8;
+  --arcade-bg: #1f5fa8;
   --arcade-bg-soft: #eaf9f7;
   --arcade-panel: #fff8e9;
   --arcade-panel-strong: #ffe9bb;
@@ -16,6 +16,11 @@
   --arcade-orange: #ef8f2f;
   --arcade-blue: #2b4c9b;
   --arcade-star: #d63b3b;
+  --kame-pink: #f2b6cb;
+  --kame-teal: #4f8fa2;
+  --kame-sand: #fbf1c8;
+  --kakarot-silver: #dbe7ec;
+  --kakarot-navy: #1b3b63;
   --arcade-line: rgba(18, 58, 77, 0.22);
   --arcade-line-strong: rgba(18, 58, 77, 0.58);
   --arcade-font: ui-monospace, "SFMono-Regular", "Cascadia Code",
@@ -82,8 +87,8 @@ body {
     ),
     linear-gradient(
       180deg,
-      #2f7fd8 0%,
-      #57aee6 34%,
+      var(--arcade-bg) 0%,
+      #4ca6d8 34%,
       #8fe0ea 66%,
       #d9f7f0 100%
     );

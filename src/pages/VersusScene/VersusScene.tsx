@@ -1,12 +1,16 @@
-import React from "react";
-import { Link, useParams } from "react-router";
+import React, { useCallback } from "react";
+import { Link, useNavigate, useParams } from "react-router";
 import { isHTTPError } from "@clients/httpClient";
 import { FighterPortrait } from "@components/FighterPortrait/FighterPortrait";
+import { NavigationHint } from "@components/NavigationHint/NavigationHint";
 import NotFound from "@components/NotFound/NotFound";
 import { Skeleton } from "@components/Skeleton/Skeleton";
 import { StatusPanel } from "@components/StatusPanel/StatusPanel";
+import { useArcadeAudio } from "@hooks/useArcadeAudio";
+import { useBackNavigation } from "@hooks/useBackNavigation";
 import { useCharacterDetail } from "@hooks/useCharacterDetail";
 import { useDocumentTitle } from "@hooks/useDocumentTitle";
+import { useMediaQuery } from "@hooks/useMediaQuery";
 import type { CharacterSummary } from "@services/apis/dragonball/types/Character";
 import { getCharacterAccent } from "@utils/characterTheme";
 import {
@@ -81,11 +85,20 @@ const VersusSkeleton: React.FC = () => (
 
 export default function VersusScene(): React.JSX.Element {
   const { p1Id, p2Id } = useParams<{ p1Id: string; p2Id: string }>();
+  const navigate = useNavigate();
   const p1 = useCharacterDetail(p1Id);
   const p2 = useCharacterDetail(p2Id);
+  const play = useArcadeAudio();
+  const isCompact = useMediaQuery("(max-width: 980px)");
 
   const p1Character = p1.detail ?? p1.summary;
   const p2Character = p2.detail ?? p2.summary;
+  const backTo = p1Character ? `/select?focus=${p1Character.id}` : "/select";
+  const handleBack = useCallback(() => {
+    play("back");
+    navigate(backTo);
+  }, [backTo, navigate, play]);
+  const gamepadConnected = useBackNavigation({ onBack: handleBack });
 
   useDocumentTitle(
     p1Character && p2Character
@@ -146,7 +159,12 @@ export default function VersusScene(): React.JSX.Element {
         {p1Character.name} vs {p2Character.name}
       </h1>
       <div className="versus-scene__topbar">
-        <Link className="versus-scene__back" to="/select">
+        <NavigationHint
+          variant="versus"
+          compact={isCompact}
+          gamepadConnected={gamepadConnected}
+        />
+        <Link className="versus-scene__back" to={backTo}>
           Volver a luchadores
         </Link>
       </div>
@@ -166,7 +184,7 @@ export default function VersusScene(): React.JSX.Element {
       <div className="versus-scene__actions">
         <Link
           className="versus-scene__action"
-          to={`/select?focus=${p1Character.id}`}
+          to={backTo}
         >
           Cambiar luchadores
         </Link>

@@ -10,6 +10,22 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-sm);
+  padding-bottom: var(--space-xs);
+  background: linear-gradient(
+      90deg,
+      var(--kame-pink),
+      var(--kame-teal),
+      var(--kakarot-navy)
+    )
+    bottom / 100% 2px no-repeat;
+}
+
+.profile-scene__topbar-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-sm);
 }
 
 .profile-scene__back {

@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes, useLocation } from "react-router";
 import VersusScene from "./VersusScene";
 import type { CharacterSummary } from "@services/apis/dragonball/types/Character";
@@ -21,6 +22,8 @@ const vegeta: CharacterSummary = {
   ...goku,
   id: 2,
   name: "Vegeta",
+  ki: "50.000.000",
+  maxKi: "80.000.000",
   image: "https://example.com/vegeta.png",
 };
 
@@ -54,32 +57,33 @@ const renderVersus = (initialEntry = "/versus/1/2") =>
     </MemoryRouter>,
   );
 
+const makeDetailEntry = (summary: CharacterSummary) => ({
+  id: summary.id,
+  summary,
+  detail: {
+    ...summary,
+    originPlanet: {
+      id: 6,
+      name: "Tierra",
+      isDestroyed: false,
+      description: "Planeta natal.",
+      image: "https://example.com/earth.png",
+      deletedAt: null,
+    },
+    transformations: [],
+  },
+  status: "ready",
+  error: undefined,
+  retry: vi.fn(),
+});
+
 describe("VersusScene navigation", () => {
   beforeEach(() => {
     playMock.mockClear();
     useMediaQueryMock.mockReturnValue(false);
-    useCharacterDetailMock.mockImplementation((id: string | number) => {
-      const summary = Number(id) === 1 ? goku : vegeta;
-      return {
-        id: summary.id,
-        summary,
-        detail: {
-          ...summary,
-          originPlanet: {
-            id: 6,
-            name: "Tierra",
-            isDestroyed: false,
-            description: "Planeta natal.",
-            image: "https://example.com/earth.png",
-            deletedAt: null,
-          },
-          transformations: [],
-        },
-        status: "ready",
-        error: undefined,
-        retry: vi.fn(),
-      };
-    });
+    useCharacterDetailMock.mockImplementation((id: string | number) =>
+      makeDetailEntry(Number(id) === 1 ? goku : vegeta),
+    );
   });
 
   it("links back to the roster focused on P1", () => {
@@ -106,5 +110,129 @@ describe("VersusScene navigation", () => {
     renderVersus();
     expect(screen.getByText("toca para regresar")).toBeInTheDocument();
     expect(screen.queryByText("Esc")).not.toBeInTheDocument();
+  });
+
+  it("reveals the visual Ki duel when VS is pressed", () => {
+    renderVersus();
+
+    expect(document.querySelector(".versus-scene__duel")).toBeNull();
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "Medir el Ki de ambos luchadores" }),
+    );
+
+    expect(document.querySelector(".versus-scene__duel--p1")).not.toBeNull();
+    expect(screen.getByText("Pulsa VS para repetir el duelo")).toBeInTheDocument();
+    expect(screen.getByText(/Ventaja para Goku/)).toBeInTheDocument();
+    expect(playMock).toHaveBeenCalledWith("lock-in");
+  });
+
+  it("marks a Ki tie when both fighters share the same values", () => {
+    useCharacterDetailMock.mockImplementation((id: string | number) =>
+      makeDetailEntry(
+        Number(id) === 1
+          ? goku
+          : { ...vegeta, ki: goku.ki, maxKi: goku.maxKi },
+      ),
+    );
+    renderVersus();
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "Medir el Ki de ambos luchadores" }),
+    );
+
+    expect(document.querySelector(".versus-scene__duel--tie")).not.toBeNull();
+    expect(screen.getByText(/Empate técnico/)).toBeInTheDocument();
+  });
+
+  it("compares Ki values with text multipliers", () => {
+    useCharacterDetailMock.mockImplementation((id: string | number) =>
+      makeDetailEntry(
+        Number(id) === 1
+          ? { ...goku, ki: "60 Septillion", maxKi: "90 Septillion" }
+          : { ...vegeta, ki: "12.34 Septillion", maxKi: "19.84 Septillion" },
+      ),
+    );
+    renderVersus();
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "Medir el Ki de ambos luchadores" }),
+    );
+
+    expect(document.querySelector(".versus-scene__duel--p1")).not.toBeNull();
+  });
+
+  it("activates the Ki duel with Enter without focusing the button", () => {
+    renderVersus();
+
+    fireEvent.keyDown(window, { key: "Enter" });
+
+    expect(document.querySelector(".versus-scene__duel--p1")).not.toBeNull();
+    expect(playMock).toHaveBeenCalledWith("lock-in");
+  });
+
+  it("activates the Ki duel with gamepad A", () => {
+    const frames: FrameRequestCallback[] = [];
+    const buttons = Array.from({ length: 17 }, () => ({
+      pressed: false,
+      touched: false,
+      value: 0,
+    }));
+    const gamepad = {
+      index: 0,
+      connected: true,
+      axes: [0, 0],
+      buttons,
+    } as unknown as Gamepad;
+    const originalGetGamepads = Object.getOwnPropertyDescriptor(
+      navigator,
+      "getGamepads",
+    );
+
+    vi.stubGlobal("requestAnimationFrame", (callback: FrameRequestCallback) => {
+      frames.push(callback);
+      return frames.length;
+    });
+    vi.stubGlobal("cancelAnimationFrame", vi.fn());
+    Object.defineProperty(navigator, "getGamepads", {
+      configurable: true,
+      value: () => [gamepad],
+    });
+
+    try {
+      renderVersus();
+      expect(frames.length).toBeGreaterThan(0);
+      act(() => {
+        frames.shift()?.(0);
+      });
+      expect(frames.length).toBeGreaterThan(0);
+      buttons[0].pressed = true;
+      act(() => {
+        frames.shift()?.(200);
+      });
+
+      expect(document.querySelector(".versus-scene__duel--p1")).not.toBeNull();
+      expect(playMock).toHaveBeenCalledWith("lock-in");
+    } finally {
+      if (originalGetGamepads) {
+        Object.defineProperty(navigator, "getGamepads", originalGetGamepads);
+      } else {
+        Reflect.deleteProperty(navigator, "getGamepads");
+      }
+      vi.unstubAllGlobals();
+    }
+  });
+
+  it("activates the Ki duel with the keyboard", async () => {
+    const user = userEvent.setup();
+    renderVersus();
+
+    screen
+      .getByRole("button", { name: "Medir el Ki de ambos luchadores" })
+      .focus();
+    await user.keyboard("{Enter}");
+
+    expect(document.querySelector(".versus-scene__duel--p1")).not.toBeNull();
+    expect(playMock).toHaveBeenCalledTimes(1);
   });
 });

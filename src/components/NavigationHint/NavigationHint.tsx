@@ -27,7 +27,10 @@ const HINT_PARTS: Record<NavigationHintVariant, HintPart[]> = {
     { keys: ["Esc"], label: "volver" },
   ],
   detail: [{ keys: ["Esc"], label: "volver a luchadores" }],
-  versus: [{ keys: ["Esc"], label: "volver a luchadores" }],
+  versus: [
+    { keys: ["A / Enter"], label: "medir ki" },
+    { keys: ["Esc"], label: "volver a luchadores" },
+  ],
 };
 
 export const NavigationHint: React.FC<NavigationHintProps> = ({

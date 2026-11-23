@@ -1,27 +1,30 @@
 # Dragonball Arcade
 
-A retro arcade-style Dragon Ball character SPA built with React 19, TypeScript, and Vite. It uses the [Dragonball API](https://web.dragonball-api.com/) and brings together an arcade home menu, individual and versus character selection, fighter profiles, and a versus screen.
+A retro arcade-style Dragon Ball character SPA built with React 19, TypeScript, and Vite. It uses the [Dragonball API](https://web.dragonball-api.com/) and brings together an arcade home menu, individual and versus character selection, compact fighter profiles, and a versus screen with an animated Ki duel.
 
 **Demo:** [christianjtr.github.io/dragonball-characters](https://christianjtr.github.io/dragonball-characters/)
 
 ## Screenshots
 
-| Home menu | Character selection | Versus |
-| --- | --- | --- |
-| <img src="samples/menu_v3.png" alt="Dragonball Arcade home menu" width="100%" /> | <img src="samples/characters_v2.png" alt="Character selection" width="100%" /> | <img src="samples/vs_v2.png" alt="Versus match" width="100%" /> |
+| Home menu | Character selection |
+| --- | --- |
+| <img src="samples/menu_v3.png" alt="Dragonball Arcade home menu with the rotating fighter hero" width="100%" /> | <img src="samples/characters_v2.png" alt="Character selection roster and fighter preview" width="100%" /> |
+| Fighter profile | Versus Ki duel |
+| <img src="samples/detail.png" alt="Compact fighter profile with bio, planet, and transformations" width="100%" /> | <img src="samples/vs_v2.png" alt="Versus screen after revealing the visual Ki duel" width="100%" /> |
 
 ## Features
 
-- **Arcade home menu:** a full-bleed Kame House hero with a rotating fighter spotlight, one Play entry and Options, controlled by keyboard, mouse, or touch.
+- **Arcade home menu:** a full-bleed Kame House hero with a rotating fighter spotlight (Goku, Vegeta, Freezer, and Gohan every 6.5s), one Play entry and Options, controlled by keyboard, mouse, or touch. Rotation pauses for reduced motion or while Options is open.
 - **58-character roster:** a compact filter popover with removable chips, search, race and affiliation filters, sorting, and shareable selection state in the URL.
 - **Individual selection:** browse the character grid and open a fighter preview/profile.
-- **Versus selection:** choose Individual or Versus 2P from the selection screen. Pick P1 and then P2, change or cancel picks, and start the match. On mobile, a centered ready modal helps decide when both fighters are picked. Entering Versus mode pushes browser history, so Back returns to Individual mode.
-- **Multimodal controls:** Arrow keys or WASD to navigate; Enter or Space to confirm; Escape or Backspace to go back. Fighter profiles and the versus screen also return to the roster with Escape/Backspace or the gamepad's B button, restoring focus to the selected fighter. Visible back links are available on both screens, and compact layouts use a touch-friendly "VOLVER" hint. The native Gamepad API supports D-pad/stick navigation, confirm/back buttons, and optional haptic feedback where supported by the controller and browser.
-- **Arcade feedback:** Web Audio synthesized movement, confirm, lock-in, and transformation cues. Versus selections with available transformations receive a visual aura.
+- **Versus selection:** choose Individual or Versus 2P from the selection screen. Pick P1 and then P2, change or cancel picks, and start the match. On mobile, a centered ready modal confirms both fighters and quick-tap cards pick players without a keyboard. Entering Versus mode pushes browser history, so Back returns to Individual mode.
+- **Visual Ki duel:** press the central VS badge, or A/Enter, to compare both fighters' maximum Ki with animated dual meters, a crown on the winner, win/lose/tie card states, and a screen-reader status. Press it again to replay; values are shown exactly as the API returns them.
+- **Multimodal controls:** Arrow keys or WASD to navigate; Enter or Space to confirm; Escape or Backspace to go back. On the versus screen, Enter triggers the duel even without focusing the VS button, and the gamepad's A button does the same. Fighter profiles and the versus screen also return to the roster with Escape/Backspace or the gamepad's B button, restoring focus to the selected fighter. Visible back links are available on both screens, and compact layouts use a touch-friendly "VOLVER" hint. The native Gamepad API supports D-pad/stick navigation, confirm/back buttons, and optional haptic feedback where supported by the controller and browser.
+- **Arcade feedback:** Web Audio synthesized movement, confirm, back, lock-in, error, and transformation cues; versus picks with available transformations receive a visual aura.
 - **Recruiter easter egg:** enter ↑ ↑ ↓ ↓ ← → ← → B A on the character selection screen to reveal Christian J. Torrealba’s profile and CV link.
-- **Fighter profiles:** portraits, Ki stats, descriptions, origin planets, and transformations.
+- **Compact fighter profiles:** portraits, Ki stats in the card header, clamped bios with a Ver más / Ver menos toggle, framed origin planets with a discrete intact/destroyed status, and transformation lists.
 - **Spanish UI and responsive design:** shared arcade tokens blend a light Kame House palette with Kakarot-inspired panels and adapt to desktop, tablet, and mobile.
-- **Accessibility:** keyboard support, managed focus, screen-reader labels, and `prefers-reduced-motion` support.
+- **Accessibility:** keyboard support, managed focus, screen-reader labels and live statuses, and `prefers-reduced-motion` support.
 - **GitHub Pages:** pushes to `main` automatically build the app and publish only `dist/` to the `demo` branch. SPA routes use `public/404.html` as a fallback.
 
 ## Tech stack
@@ -79,7 +82,7 @@ Background music uses the original TV-size instrumental of **Romantic Ageru Yo**
 - File: `public/audio/dragon-ball-romantic-ageru-yo.mp4`
 - Source: [Internet Archive](https://archive.org/details/OG-DB-Ending-Original-Instrumental)
 - Credits: `public/audio/CREDITS.md`
-- Audio starts disabled. Enable it in `OPTIONS` or with the header toggle. Music and sound effects have separate settings saved in `localStorage`.
+- Audio starts disabled. Enable it in `OPTIONS` or with the header toggle. Music and sound effects have separate settings saved in `localStorage`. The lock-in cue also fires when the versus Ki duel is revealed.
 
 ## Project structure
 

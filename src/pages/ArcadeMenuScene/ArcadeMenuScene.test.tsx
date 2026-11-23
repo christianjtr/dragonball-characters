@@ -1,6 +1,6 @@
 import React from "react";
 import { describe, expect, it, vi } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes, useLocation } from "react-router";
 import { ArcadeSettingsProvider } from "@context/ArcadeSettingsProvider";
@@ -24,10 +24,33 @@ const goku: CharacterSummary = {
   deletedAt: null,
 };
 
+const vegeta: CharacterSummary = {
+  ...goku,
+  id: 2,
+  name: "Vegeta",
+  image: "https://example.com/vegeta.png",
+};
+
+const freezer: CharacterSummary = {
+  ...goku,
+  id: 3,
+  name: "Freezer",
+  image: "https://example.com/freezer.png",
+};
+
+const gohan: CharacterSummary = {
+  ...goku,
+  id: 4,
+  name: "Gohan",
+  image: "https://example.com/gohan.png",
+};
+
+const roster: CharacterSummary[] = [goku, vegeta, freezer, gohan];
+
 const rosterValue: RosterContextValue = {
   status: "ready",
-  characters: [goku],
-  byId: new Map([[goku.id, goku]]),
+  characters: roster,
+  byId: new Map(roster.map((character) => [character.id, character])),
   details: {},
   reload: vi.fn(),
   prefetchDetail: vi.fn().mockResolvedValue(undefined),
@@ -66,6 +89,15 @@ describe("ArcadeMenuScene", () => {
     ).toBeInTheDocument();
     expect(screen.queryByRole("menuitem", { name: /versus mode/i })).not.toBeInTheDocument();
     expect(screen.queryByRole("menuitem", { name: /fighter select/i })).not.toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
+      "Dragonball Arcade",
+    );
+    expect(
+      screen.getByText("Elige a tu luchador, ajusta el sonido y entra a la arena."),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/mover/i)).toBeInTheDocument();
+    expect(screen.queryByText("Elige tu", { exact: true })).not.toBeInTheDocument();
+    expect(screen.queryByText("Modo", { exact: true })).not.toBeInTheDocument();
   });
 
   it("confirms Jugar with Enter and opens the selection screen", async () => {
@@ -165,5 +197,79 @@ describe("ArcadeMenuScene", () => {
         window.localStorage.getItem("dragonball-arcade:effects-enabled"),
       ).toBe("true");
     });
+  });
+
+  it("rotates the hero through the preferred fighters", () => {
+    vi.useFakeTimers();
+
+    try {
+      renderMenu();
+
+      expect(screen.getByRole("img", { name: "Goku" })).toBeInTheDocument();
+
+      act(() => {
+        vi.advanceTimersByTime(6500);
+      });
+      expect(screen.getByRole("img", { name: "Vegeta" })).toBeInTheDocument();
+
+      act(() => {
+        vi.advanceTimersByTime(6500);
+      });
+      expect(screen.getByRole("img", { name: "Freezer" })).toBeInTheDocument();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("pauses hero rotation while options are open", () => {
+    vi.useFakeTimers();
+
+    try {
+      renderMenu();
+      fireEvent.click(screen.getByRole("menuitem", { name: /opciones/i }));
+
+      act(() => {
+        vi.advanceTimersByTime(20000);
+      });
+
+      expect(screen.getByRole("img", { name: "Goku" })).toBeInTheDocument();
+      expect(screen.getByRole("dialog")).toBeInTheDocument();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("does not rotate the hero when reduced motion is preferred", () => {
+    const originalMatchMedia = window.matchMedia;
+    Object.defineProperty(window, "matchMedia", {
+      writable: true,
+      value: vi.fn().mockImplementation((query: string) => ({
+        matches: query.includes("prefers-reduced-motion"),
+        media: query,
+        onchange: null,
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+      })),
+    });
+    vi.useFakeTimers();
+
+    try {
+      renderMenu();
+
+      act(() => {
+        vi.advanceTimersByTime(20000);
+      });
+
+      expect(screen.getByRole("img", { name: "Goku" })).toBeInTheDocument();
+    } finally {
+      vi.useRealTimers();
+      Object.defineProperty(window, "matchMedia", {
+        writable: true,
+        value: originalMatchMedia,
+      });
+    }
   });
 });

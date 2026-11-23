@@ -28,8 +28,25 @@
   outline: none;
 }
 
+.app-layout__main--menu {
+  display: flex;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.app-layout__main--menu > * {
+  flex: 1;
+  min-width: 0;
+}
+
 @media (max-width: 720px) {
   .app-layout__main {
     padding: var(--space-md) var(--space-md) var(--space-xl);
+  }
+
+  .app-layout__main--menu {
+    padding: 0;
   }
 }

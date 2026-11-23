@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import { isHTTPError } from "@clients/httpClient";
 import { FighterPortrait } from "@components/FighterPortrait/FighterPortrait";
@@ -27,7 +27,7 @@ import "./FighterProfileScene.css";
 const ProfileSkeleton: React.FC = () => (
   <div className="profile-scene__layout" aria-hidden="true">
     <div className="profile-scene__hero arcade-panel">
-      <Skeleton style={{ height: "clamp(240px, 42vh, 400px)" }} />
+      <Skeleton style={{ height: "clamp(200px, 32vh, 320px)" }} />
     </div>
     <div className="profile-scene__panel arcade-panel">
       <Skeleton style={{ height: "0.9rem", width: "30%" }} />
@@ -49,6 +49,7 @@ export default function FighterProfileScene(): React.JSX.Element {
     useCharacterDetail(id);
   const play = useArcadeAudio();
   const isCompact = useMediaQuery("(max-width: 980px)");
+  const [bioExpanded, setBioExpanded] = useState(false);
 
   const character = detail ?? summary;
   const backTo = character ? `/select?focus=${character.id}` : "/select";
@@ -108,6 +109,7 @@ export default function FighterProfileScene(): React.JSX.Element {
 
   const accent = getCharacterAccent(character.race);
   const transformations = detail?.transformations ?? [];
+  const isLongBio = character.description.length > 220;
 
   return (
     <section
@@ -140,49 +142,67 @@ export default function FighterProfileScene(): React.JSX.Element {
         </div>
 
         <div className="profile-scene__panel arcade-panel">
-          <header>
-            <p className="profile-scene__eyebrow">
-              {getRaceLabel(character.race)}
-            </p>
-            <h1 id="profile-name" className="profile-scene__name">
-              {character.name}
-            </h1>
-            <ul className="profile-scene__tags">
-              <li>
-                <img src={FistBumpIcon} alt="" aria-hidden="true" />
-                {getAffiliationLabel(character.affiliation)}
-              </li>
-              <li>
-                <img src={EqualityIcon} alt="" aria-hidden="true" />
-                {getGenderLabel(character.gender)}
-              </li>
-              <li>
-                <img src={BloodIcon} alt="" aria-hidden="true" />
+          <header className="profile-scene__card-header">
+            <div className="profile-scene__identity">
+              <p className="profile-scene__eyebrow">
                 {getRaceLabel(character.race)}
-              </li>
-            </ul>
+              </p>
+              <h1 id="profile-name" className="profile-scene__name">
+                {character.name}
+              </h1>
+              <ul className="profile-scene__tags">
+                <li>
+                  <img src={FistBumpIcon} alt="" aria-hidden="true" />
+                  {getAffiliationLabel(character.affiliation)}
+                </li>
+                <li>
+                  <img src={EqualityIcon} alt="" aria-hidden="true" />
+                  {getGenderLabel(character.gender)}
+                </li>
+                <li>
+                  <img src={BloodIcon} alt="" aria-hidden="true" />
+                  {getRaceLabel(character.race)}
+                </li>
+              </ul>
+            </div>
+
+            <dl className="profile-scene__stats">
+              <div>
+                <dt>
+                  <img src={FireIcon} alt="" aria-hidden="true" />
+                  Ki base
+                </dt>
+                <dd>{character.ki}</dd>
+              </div>
+              <div>
+                <dt>
+                  <img src={FireIcon} alt="" aria-hidden="true" />
+                  Ki máximo
+                </dt>
+                <dd>{character.maxKi}</dd>
+              </div>
+            </dl>
           </header>
 
-          <dl className="profile-scene__stats">
-            <div>
-              <dt>
-                <img src={FireIcon} alt="" aria-hidden="true" />
-                Ki base
-              </dt>
-              <dd>{character.ki}</dd>
-            </div>
-            <div>
-              <dt>
-                <img src={FireIcon} alt="" aria-hidden="true" />
-                Ki máximo
-              </dt>
-              <dd>{character.maxKi}</dd>
-            </div>
-          </dl>
-
-          <section className="profile-scene__section" aria-labelledby="profile-bio">
+          <section
+            className={`profile-scene__section profile-scene__section--bio${detail ? "" : " profile-scene__section--full"}${bioExpanded ? " is-expanded" : ""}`}
+            aria-labelledby="profile-bio"
+          >
             <h2 id="profile-bio">Perfil</h2>
-            <p>{character.description}</p>
+            <p id="profile-bio-text">{character.description}</p>
+            {isLongBio ? (
+              <div className="profile-scene__bio-actions">
+                <button
+                  type="button"
+                  className="profile-scene__expand"
+                  aria-expanded={bioExpanded}
+                  aria-controls="profile-bio-text"
+                  onClick={() => setBioExpanded((expanded) => !expanded)}
+                >
+                  {bioExpanded ? "Ver menos" : "Ver más"}
+                </button>
+              </div>
+            ) : null}
           </section>
 
           {detail ? (
@@ -194,18 +214,26 @@ export default function FighterProfileScene(): React.JSX.Element {
                 <h2 id="profile-origin">Planeta de origen</h2>
                 <div className="profile-scene__planet">
                   {detail.originPlanet.image ? (
-                    <img
-                      src={detail.originPlanet.image}
-                      alt=""
-                      loading="lazy"
-                      width={96}
-                      height={96}
-                    />
+                    <span className="profile-scene__planet-frame">
+                      <img
+                        src={detail.originPlanet.image}
+                        alt=""
+                        loading="lazy"
+                        width={72}
+                        height={72}
+                      />
+                    </span>
                   ) : null}
                   <div>
                     <h3>{detail.originPlanet.name}</h3>
                     <p>{detail.originPlanet.description}</p>
-                    <p className="profile-scene__planet-status">
+                    <p
+                      className={`profile-scene__planet-status${detail.originPlanet.isDestroyed ? " is-destroyed" : ""}`}
+                    >
+                      <span
+                        className="profile-scene__planet-status-dot"
+                        aria-hidden="true"
+                      />
                       {getPlanetStatusLabel(detail.originPlanet.isDestroyed)}
                     </p>
                   </div>
@@ -213,7 +241,7 @@ export default function FighterProfileScene(): React.JSX.Element {
               </section>
 
               <section
-                className="profile-scene__section"
+                className="profile-scene__section profile-scene__section--transformations"
                 aria-labelledby="profile-transformations"
               >
                 <h2 id="profile-transformations">Transformaciones</h2>

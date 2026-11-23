@@ -16,7 +16,6 @@ import { NavigationHint } from "@components/NavigationHint/NavigationHint";
 import { useRoster } from "@context/rosterContext";
 import { useArcadeAudio } from "@hooks/useArcadeAudio";
 import { useDocumentTitle } from "@hooks/useDocumentTitle";
-import { useMediaQuery } from "@hooks/useMediaQuery";
 import { useReducedMotion } from "@hooks/useReducedMotion";
 import DragonballLogo from "@assets/dragon-ball.svg";
 import Goku from "@assets/goku.gif";
@@ -43,20 +42,22 @@ const MENU_ENTRIES: ArcadeMenuEntry[] = [
 ];
 
 const TRANSITION_DELAY_MS = 220;
+const HERO_ROTATION_MS = 6500;
+const HERO_NAMES = ["goku", "vegeta", "freezer", "gohan"];
 
 export default function ArcadeMenuScene(): React.JSX.Element {
   const navigate = useNavigate();
   const { characters } = useRoster();
   const play = useArcadeAudio();
   const reducedMotion = useReducedMotion();
-  const isCompact = useMediaQuery("(max-width: 980px)");
 
   useDocumentTitle("Dragonball Arcade | Menú principal");
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [optionsOpen, setOptionsOpen] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [artFailed, setArtFailed] = useState(false);
+  const [failedArtIds, setFailedArtIds] = useState<number[]>([]);
+  const [heroIndex, setHeroIndex] = useState(0);
 
   const activeIndexRef = useRef(0);
   const transitionTimer = useRef<number | undefined>(undefined);
@@ -67,21 +68,38 @@ export default function ArcadeMenuScene(): React.JSX.Element {
     };
   }, []);
 
-  const featuredFighter = useMemo(() => {
-    if (characters.length === 0) {
-      return undefined;
-    }
-
-    return (
+  const heroFighters = useMemo(() => {
+    const preferred = HERO_NAMES.map((name) =>
       characters.find((character) =>
-        character.name.toLowerCase().includes("goku"),
-      ) ?? characters[0]
+        character.name.toLowerCase().includes(name),
+      ),
+    ).filter((character) => character !== undefined);
+
+    const unique = [...preferred, ...characters].filter(
+      (character, index, list) =>
+        list.findIndex((candidate) => candidate.id === character.id) === index,
     );
+
+    return unique.slice(0, 4);
   }, [characters]);
 
+  const heroFighter = heroFighters[heroIndex % heroFighters.length];
+
   useEffect(() => {
-    setArtFailed(false);
-  }, [featuredFighter?.id]);
+    setHeroIndex(0);
+  }, [heroFighters]);
+
+  useEffect(() => {
+    if (reducedMotion || optionsOpen || heroFighters.length < 2) {
+      return;
+    }
+
+    const interval = window.setInterval(() => {
+      setHeroIndex((index) => (index + 1) % heroFighters.length);
+    }, HERO_ROTATION_MS);
+
+    return () => window.clearInterval(interval);
+  }, [heroFighters.length, optionsOpen, reducedMotion]);
 
   const handleActiveChange = useCallback(
     (index: number) => {
@@ -153,7 +171,19 @@ export default function ArcadeMenuScene(): React.JSX.Element {
   }, [play]);
 
   const artSource =
-    !artFailed && featuredFighter?.image ? featuredFighter.image : Goku;
+    heroFighter && !failedArtIds.includes(heroFighter.id) && heroFighter.image
+      ? heroFighter.image
+      : Goku;
+
+  const handleArtError = useCallback(() => {
+    if (!heroFighter) return;
+    setFailedArtIds((previous) =>
+      previous.includes(heroFighter.id)
+        ? previous
+        : [...previous, heroFighter.id],
+    );
+  }, [heroFighter]);
+
   const statusLabel =
     characters.length > 0
       ? `${characters.length} luchadores listos`
@@ -164,66 +194,62 @@ export default function ArcadeMenuScene(): React.JSX.Element {
       className={`arcade-menu ${isTransitioning ? "is-transitioning" : ""}`}
       aria-labelledby="arcade-menu-heading"
     >
-      <div className="arcade-menu__intro">
-        <div className="arcade-menu__heading">
-          <h1 id="arcade-menu-heading" className="arcade-menu__title">
-            <img
-              src={DragonballLogo}
-              alt=""
-              className="arcade-menu__title-ball"
-              aria-hidden="true"
-            />
-            <span className="arcade-menu__title-kicker">Elige tu</span>
-            <span className="arcade-menu__title-main">Modo</span>
-          </h1>
-          <p className="arcade-menu__lede">
-            Una puerta de entrada. Elige tu forma de jugar en la selección.
-          </p>
-        </div>
-
-        <div className="arcade-menu__intro-meta">
-          <p className="arcade-menu__status" aria-live="polite">
-            {statusLabel}
-          </p>
-          <NavigationHint variant="menu" compact={isCompact} />
-        </div>
-      </div>
-
       <div className="arcade-menu__body">
-        <figure className="arcade-menu__art">
+        <div className="arcade-menu__art">
           <div className="arcade-menu__stage">
-            <KameHouseScene className="arcade-menu__stage-scene" />
+            <KameHouseScene
+              className="arcade-menu__stage-scene"
+              preserveAspectRatio="xMidYMid slice"
+            />
             <span className="arcade-menu__stage-glow" aria-hidden="true" />
             <img
+              key={heroFighter?.id ?? "fallback"}
               className="arcade-menu__fighter"
               src={artSource}
-              alt={featuredFighter ? featuredFighter.name : "Goku"}
+              alt={heroFighter?.name ?? "Goku"}
               loading="eager"
-              onError={() => setArtFailed(true)}
+              onError={handleArtError}
             />
-            <span className="arcade-menu__stage-tag">
-              Kame House // Sector 7
-            </span>
+            <span className="arcade-menu__scrim" aria-hidden="true" />
           </div>
-          <figcaption className="arcade-menu__caption">
-            Selecciona tu destino, guerrero.
-          </figcaption>
-        </figure>
+        </div>
 
-        <div className="arcade-menu__panel">
-          <p className="arcade-menu__eyebrow">★ Main Menu // Player 1</p>
+        <div className="arcade-menu__overlay">
+          <div className="arcade-menu__intro">
+            <div className="arcade-menu__heading">
+              <h1 id="arcade-menu-heading" className="arcade-menu__title">
+                <img
+                  src={DragonballLogo}
+                  alt=""
+                  className="arcade-menu__title-ball"
+                  aria-hidden="true"
+                />
+                <span className="arcade-menu__title-main">
+                  Dragonball Arcade
+                </span>
+              </h1>
+              <p className="arcade-menu__lede">
+                Elige a tu luchador, ajusta el sonido y entra a la arena.
+              </p>
+            </div>
+          </div>
 
-          <ArcadeMenuList
-            items={MENU_ENTRIES}
-            activeIndex={activeIndex}
-            onActiveChange={handleActiveChange}
-            onSelect={handleSelect}
-            onBack={handleBack}
-          />
+          <div className="arcade-menu__controls">
+            <ArcadeMenuList
+              items={MENU_ENTRIES}
+              activeIndex={activeIndex}
+              onActiveChange={handleActiveChange}
+              onSelect={handleSelect}
+              onBack={handleBack}
+            />
 
-          <p className="arcade-menu__tagline">
-            Insert coin · {characters.length > 0 ? "Ready" : "Loading"}
-          </p>
+            <div className="arcade-menu__control-bar">
+              <p className="arcade-menu__status" aria-live="polite">
+                {statusLabel}
+              </p>
+              <NavigationHint variant="menu" />
+            </div>
+          </div>
         </div>
       </div>
 

@@ -1,13 +1,115 @@
 .arcade-menu {
   display: flex;
+  min-height: 100%;
+  position: relative;
+}
+
+.arcade-menu__body {
+  position: relative;
+  flex: 1;
+  min-height: 100%;
+  overflow: hidden;
+  background: linear-gradient(
+    135deg,
+    var(--arcade-bg) 0%,
+    #2f7fd8 38%,
+    #63b8ea 70%,
+    #d9f7f0 100%
+  );
+  isolation: isolate;
+}
+
+.arcade-menu__art {
+  position: absolute;
+  inset: 0;
+  min-width: 0;
+  overflow: hidden;
+  pointer-events: none;
+  animation: arcade-menu-enter 0.35s ease-out both;
+}
+
+.arcade-menu__stage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.arcade-menu__stage-scene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  filter: saturate(1.08);
+}
+
+.arcade-menu__stage-glow {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(
+    circle at 76% 24%,
+    rgba(255, 244, 196, 0.42) 0%,
+    transparent 56%
+  );
+}
+
+.arcade-menu__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(31, 95, 168, 0.88) 0%,
+      rgba(31, 95, 168, 0.56) 34%,
+      rgba(31, 95, 168, 0) 72%
+    ),
+    linear-gradient(
+      0deg,
+      rgba(31, 95, 168, 0.58) 0%,
+      rgba(31, 95, 168, 0) 52%
+    );
+}
+
+.arcade-menu__fighter {
+  position: absolute;
+  right: 2%;
+  bottom: -2%;
+  z-index: 2;
+  width: auto;
+  max-width: 58%;
+  height: 94%;
+  object-fit: contain;
+  object-position: bottom right;
+  filter: drop-shadow(0 18px 28px rgba(9, 50, 94, 0.38));
+  animation: arcade-menu-fighter 0.6s cubic-bezier(0.2, 0.9, 0.3, 1.15) both;
+}
+
+.arcade-menu__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: flex;
   flex-direction: column;
-  gap: var(--space-md);
+  justify-content: space-between;
+  gap: var(--space-lg);
+  padding: clamp(20px, 4vw, 64px);
+  pointer-events: none;
+  animation: arcade-menu-enter 0.4s ease-out both;
+}
+
+.arcade-menu__intro,
+.arcade-menu__controls {
+  pointer-events: auto;
 }
 
 .arcade-menu__intro {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
+  align-items: flex-start;
   justify-content: space-between;
   gap: var(--space-md);
 }
@@ -24,34 +126,24 @@
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
-  gap: 0.08em;
+  gap: 0.12em;
   max-width: 100%;
   margin: 0;
-  padding: 0 0.08em 0.08em 0;
   font-family: var(--arcade-logo);
-  font-size: clamp(1.9rem, 6.2vw, 4rem);
+  font-size: clamp(2.4rem, 7vw, 5.6rem);
   font-weight: 400;
   letter-spacing: 0.01em;
-  line-height: 0.9;
-  text-transform: uppercase;
-  filter: drop-shadow(4px 4px 0 rgba(18, 58, 77, 0.28));
+  line-height: 0.92;
+  filter: drop-shadow(0 4px 0 rgba(239, 143, 47, 0.28));
   transform: rotate(-1deg);
   transform-origin: left center;
 }
 
-.arcade-menu__title-kicker {
-  flex: none;
-  color: var(--arcade-ink);
-  font-size: 0.48em;
-  letter-spacing: 0.12em;
-  white-space: nowrap;
-}
-
 .arcade-menu__title-ball {
   flex: none;
-  width: 0.78em;
-  height: 0.78em;
-  filter: drop-shadow(0.04em 0.04em 0 rgba(18, 58, 77, 0.3));
+  width: 0.8em;
+  height: 0.8em;
+  filter: drop-shadow(0 0.04em 0 rgba(239, 143, 47, 0.35));
   transform: rotate(8deg);
 }
 
@@ -62,27 +154,50 @@
   background-image: linear-gradient(
     180deg,
     #fff8b0 0%,
-    #ffd23f 42%,
-    #f5a623 100%
+    #ffd23f 45%,
+    #ef8f2f 100%
   );
   background-clip: text;
   -webkit-background-clip: text;
-  -webkit-text-stroke: 0.045em var(--arcade-ink);
+  -webkit-text-stroke: 0.035em #fffdf3;
   paint-order: stroke fill;
+  text-shadow: 0 0.06em 0 rgba(239, 143, 47, 0.35);
 }
 
 .arcade-menu__lede {
-  max-width: 62ch;
+  max-width: 46ch;
   margin: var(--space-xs) 0 0;
-  color: var(--arcade-ink-dim);
-  font-size: 0.9rem;
+  color: var(--arcade-panel);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-shadow: 0 2px 8px rgba(9, 50, 94, 0.55);
 }
 
-.arcade-menu__intro-meta {
+.arcade-menu__controls {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  gap: var(--space-sm);
+  width: min(460px, 100%);
+  animation: arcade-menu-enter 0.4s ease-out both;
+}
+
+.arcade-menu__controls .arcade-menu-list {
+  width: 100%;
+}
+
+.arcade-menu__control-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   gap: var(--space-xs);
+  width: fit-content;
+  max-width: 100%;
+  padding: 10px 14px;
+  border: 1px solid rgba(255, 248, 233, 0.55);
+  border-radius: 10px;
+  background: rgba(31, 95, 168, 0.82);
+  box-shadow: 0 10px 28px rgba(9, 50, 94, 0.3);
+  backdrop-filter: blur(6px);
 }
 
 .arcade-menu__status {
@@ -90,9 +205,10 @@
   align-items: center;
   gap: 6px;
   margin: 0;
-  color: var(--arcade-ink);
+  color: var(--arcade-panel);
   font-size: 0.66rem;
   letter-spacing: 0.12em;
+  text-shadow: 0 1px 2px rgba(9, 50, 94, 0.6);
   text-transform: uppercase;
   white-space: nowrap;
 }
@@ -102,137 +218,36 @@
   content: "★";
 }
 
-.arcade-menu__body {
-  display: grid;
-  grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
-  align-items: start;
-  gap: var(--space-lg);
+.arcade-menu__control-bar .navigation-hint {
+  color: var(--arcade-panel);
 }
 
-.arcade-menu__art {
-  min-width: 0;
-  margin: 0;
-  animation: arcade-menu-enter 0.35s ease-out both;
+.arcade-menu__control-bar .arcade-kbd {
+  border-color: rgba(255, 248, 233, 0.65);
+  background: rgba(255, 248, 233, 0.16);
+  color: var(--arcade-panel);
+  font-weight: 800;
 }
 
-.arcade-menu__stage {
-  position: relative;
-  width: 100%;
-  max-width: 100%;
-  aspect-ratio: 16 / 11;
-  min-height: clamp(260px, 46vh, 520px);
-  overflow: hidden;
-  border: 2px solid var(--arcade-ink);
-  border-radius: 12px;
-  background:
-    radial-gradient(
-      circle at 50% 82%,
-      rgba(255, 244, 196, 0.85) 0%,
-      transparent 55%
-    ),
-    linear-gradient(180deg, #8fe0ea 0%, #d9f7f0 100%);
-  box-shadow:
-    4px 4px 0 rgba(18, 58, 77, 0.16),
-    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+.arcade-menu__controls .arcade-menu-list__item {
+  color: var(--arcade-panel);
 }
 
-.arcade-menu__stage-scene {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.95;
-  filter: saturate(1.05);
+.arcade-menu__controls .arcade-menu-list__label {
+  color: var(--arcade-panel);
+  text-shadow: 0 2px 10px rgba(9, 50, 94, 0.65);
 }
 
-.arcade-menu__stage-glow {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: radial-gradient(
-    ellipse at 50% 82%,
-    rgba(255, 248, 176, 0.75) 0%,
-    transparent 58%
-  );
-  pointer-events: none;
+.arcade-menu__controls .arcade-menu-list__description {
+  color: #d9f7f0;
 }
 
-.arcade-menu__fighter {
-  position: absolute;
-  bottom: -2%;
-  left: 50%;
-  z-index: 2;
-  width: auto;
-  max-width: 82%;
-  height: 92%;
-  object-fit: contain;
-  object-position: bottom center;
-  filter:
-    drop-shadow(0 2px 0 rgba(18, 58, 77, 0.35))
-    drop-shadow(0 12px 18px rgba(18, 58, 77, 0.25));
-  transform: translateX(-50%);
-  animation: arcade-menu-fighter 0.55s cubic-bezier(0.2, 0.9, 0.3, 1.15) both;
+.arcade-menu__controls .arcade-menu-list__item.is-active .arcade-menu-list__description {
+  color: var(--arcade-panel);
 }
 
-.arcade-menu__stage-tag {
-  position: absolute;
-  top: 14px;
-  left: 14px;
-  z-index: 3;
-  padding: 4px 10px;
-  border: 2px solid var(--arcade-ink);
-  border-radius: 999px;
-  background: var(--arcade-panel);
-  color: var(--arcade-ink-dim);
-  font-size: 0.54rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  box-shadow: 2px 2px 0 rgba(18, 58, 77, 0.18);
-}
-
-.arcade-menu__caption {
-  margin: 10px 0 0;
-  color: var(--arcade-ink-dim);
-  font-size: 0.6rem;
-  letter-spacing: 0.18em;
-  text-align: center;
-  text-transform: uppercase;
-}
-
-.arcade-menu__panel {
-  position: relative;
-  min-width: 0;
-  padding: clamp(18px, 2.6vw, 30px);
-  border: 2px solid var(--arcade-ink);
-  border-radius: 12px;
-  background:
-    radial-gradient(rgba(18, 58, 77, 0.055) 1px, transparent 1px) 0 0 / 12px
-      12px,
-    linear-gradient(180deg, #fffaf0, #fff0d4);
-  box-shadow:
-    4px 4px 0 rgba(18, 58, 77, 0.16),
-    inset 0 1px 0 rgba(255, 255, 255, 0.85);
-  animation: arcade-menu-enter 0.35s ease-out both;
-}
-
-.arcade-menu__eyebrow {
-  margin: 0 0 var(--space-sm);
-  color: var(--arcade-magenta);
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-}
-
-.arcade-menu__tagline {
-  margin: clamp(14px, 2vh, 20px) 0 0;
-  padding-top: var(--space-sm);
-  border-top: 2px dashed var(--arcade-line);
-  color: var(--arcade-ink-dim);
-  font-size: 0.58rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+.arcade-menu__controls .arcade-menu-list__item:focus-visible {
+  outline-color: var(--arcade-panel);
 }
 
 .arcade-menu__transition {
@@ -266,12 +281,12 @@
 @keyframes arcade-menu-fighter {
   from {
     opacity: 0;
-    transform: translateX(-50%) translateY(18px) scale(1.04);
+    transform: translateY(24px) scale(1.05);
   }
 
   to {
     opacity: 1;
-    transform: translateX(-50%) translateY(0) scale(1);
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -292,55 +307,52 @@
 }
 
 @media (max-width: 980px) {
-  .arcade-menu__body {
-    grid-template-columns: 1fr;
-  }
-
-  .arcade-menu__panel {
-    order: 1;
-  }
-
-  .arcade-menu__art {
-    order: 2;
-  }
-
-  .arcade-menu__stage {
-    aspect-ratio: 16 / 8;
-    min-height: 220px;
-  }
-
   .arcade-menu__fighter {
-    height: 100%;
+    right: -4%;
+    max-width: 70%;
+    height: 82%;
+    opacity: 0.92;
+  }
+
+  .arcade-menu__scrim {
+    background: linear-gradient(
+      0deg,
+      rgba(31, 95, 168, 0.92) 0%,
+      rgba(31, 95, 168, 0.6) 50%,
+      rgba(31, 95, 168, 0) 100%
+    );
   }
 }
 
 @media (max-width: 720px) {
-  .arcade-menu__intro {
-    align-items: flex-start;
-  }
-
-  .arcade-menu__intro-meta {
-    align-items: flex-start;
+  .arcade-menu__overlay {
+    padding: clamp(18px, 5vw, 26px);
   }
 
   .arcade-menu__title {
-    font-size: clamp(1.9rem, 10vw, 3rem);
+    font-size: clamp(1.55rem, 8vw, 2.6rem);
+  }
+
+  .arcade-menu__fighter {
+    right: -8%;
+    bottom: 14%;
+    max-width: 82%;
+    height: 64%;
+    opacity: 0.78;
   }
 }
 
 @media (max-width: 520px) {
-  .arcade-menu__stage {
-    min-height: 190px;
-  }
-
-  .arcade-menu__stage-tag {
-    font-size: 0.48rem;
+  .arcade-menu__controls,
+  .arcade-menu__controls .arcade-menu-list,
+  .arcade-menu__control-bar {
+    width: 100%;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .arcade-menu__art,
-  .arcade-menu__panel,
+  .arcade-menu__overlay,
   .arcade-menu__fighter,
   .arcade-menu__transition {
     animation: none;

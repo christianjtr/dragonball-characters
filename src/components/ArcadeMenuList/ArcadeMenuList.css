@@ -27,19 +27,28 @@
   align-items: center;
   gap: clamp(10px, 1.4vw, 16px);
   width: 100%;
-  min-height: 64px;
-  padding: clamp(10px, 1.4vh, 16px) clamp(14px, 1.8vw, 20px);
-  border: 2px solid var(--arcade-ink);
-  border-radius: 10px;
-  background: var(--arcade-panel);
+  min-height: 72px;
+  padding: 6px 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
   color: var(--arcade-ink);
   text-align: left;
-  box-shadow: 3px 3px 0 rgba(18, 58, 77, 0.16);
   transition:
-    border-color 0.15s ease,
-    background-color 0.15s ease,
-    transform 0.15s ease,
-    box-shadow 0.15s ease;
+    filter 0.15s ease,
+    transform 0.15s ease;
+}
+
+.arcade-menu-list__item::after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--menu-accent);
+  content: "";
+  transition: width 0.2s ease;
 }
 
 .arcade-menu-list__item[data-accent="blue"] {
@@ -52,15 +61,19 @@
 
 .arcade-menu-list__item:hover,
 .arcade-menu-list__item.is-active {
-  border-color: var(--menu-accent);
-  background: #fffaf0;
-  box-shadow: 4px 4px 0 var(--menu-accent);
-  transform: translate(-1px, -1px);
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--menu-accent) 42%, transparent));
+  transform: translateX(8px);
+}
+
+.arcade-menu-list__item:hover::after,
+.arcade-menu-list__item.is-active::after {
+  width: 100%;
 }
 
 .arcade-menu-list__item:focus-visible {
+  border-radius: 8px;
   outline: 3px solid var(--arcade-blue);
-  outline-offset: 2px;
+  outline-offset: 4px;
 }
 
 .arcade-menu-list__item.is-active {
@@ -96,17 +109,18 @@
 .arcade-menu-list__label {
   color: var(--arcade-ink);
   font-family: var(--arcade-display);
-  font-size: clamp(1.05rem, 2.2vw, 1.45rem);
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
   font-weight: 900;
-  letter-spacing: 0.05em;
-  line-height: 1;
+  letter-spacing: 0.04em;
+  line-height: 0.95;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.85);
   text-transform: uppercase;
 }
 
 .arcade-menu-list__description {
   overflow: hidden;
   color: var(--arcade-ink-dim);
-  font-size: clamp(0.6rem, 1vw, 0.7rem);
+  font-size: clamp(0.6rem, 1vw, 0.72rem);
   font-weight: 600;
   letter-spacing: 0.1em;
   text-overflow: ellipsis;
@@ -135,13 +149,11 @@
 @keyframes arcade-menu-highlight {
   0%,
   100% {
-    box-shadow: 4px 4px 0 var(--menu-accent);
+    filter: drop-shadow(0 0 4px color-mix(in srgb, var(--menu-accent) 35%, transparent));
   }
 
   50% {
-    box-shadow:
-      4px 4px 0 var(--menu-accent),
-      0 0 0 3px color-mix(in srgb, var(--menu-accent) 22%, transparent);
+    filter: drop-shadow(0 0 16px color-mix(in srgb, var(--menu-accent) 70%, transparent));
   }
 }
 
@@ -158,8 +170,8 @@
 
 @media (max-width: 720px) {
   .arcade-menu-list__item {
-    min-height: 58px;
-    padding: 10px 14px;
+    min-height: 64px;
+    padding: 6px 0;
   }
 
   .arcade-menu-list__description {

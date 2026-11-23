@@ -51,28 +51,6 @@
   outline-offset: 2px;
 }
 
-.fighter-tile__star {
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  z-index: 1;
-  display: none;
-  place-items: center;
-  width: 28px;
-  height: 28px;
-  border: 2px solid var(--arcade-ink);
-  border-radius: 50%;
-  background: var(--arcade-panel);
-  color: var(--arcade-star);
-  font-size: 1rem;
-  line-height: 1;
-}
-
-.fighter-tile.is-active .fighter-tile__star {
-  display: grid;
-  animation: arcade-ready 0.3s ease-out;
-}
-
 .fighter-tile__player-mark {
   position: absolute;
   top: 6px;

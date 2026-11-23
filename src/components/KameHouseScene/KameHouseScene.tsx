@@ -3,15 +3,20 @@ import "./KameHouseScene.css";
 
 interface KameHouseSceneProps {
   className?: string;
+  preserveAspectRatio?: string;
 }
 
-export const KameHouseScene: React.FC<KameHouseSceneProps> = ({ className }) => {
+export const KameHouseScene: React.FC<KameHouseSceneProps> = ({
+  className,
+  preserveAspectRatio,
+}) => {
   const classes = ["kame-house-scene", className].filter(Boolean).join(" ");
 
   return (
     <svg
       className={classes}
       viewBox="0 0 1200 760"
+      preserveAspectRatio={preserveAspectRatio}
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
       focusable="false"

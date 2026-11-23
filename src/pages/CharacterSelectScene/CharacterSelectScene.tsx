@@ -8,6 +8,7 @@ import React, {
 } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import { ARCADE_CONFIG } from "@config/arcadeConfig";
+import { ArcadeButton } from "@components/ArcadeButton/ArcadeButton";
 import { NavigationHint } from "@components/NavigationHint/NavigationHint";
 import { Skeleton } from "@components/Skeleton/Skeleton";
 import { StatusPanel } from "@components/StatusPanel/StatusPanel";
@@ -25,13 +26,12 @@ import {
 } from "@utils/rosterQuery";
 import { buildRosterView } from "@utils/rosterSort";
 import { getAffiliationLabel, getRaceLabel } from "@utils/characterLabels";
-import DragonballLogo from "@assets/dragon-ball.svg";
 import {
   FighterPreview,
   PlayerSelectCard,
   ReadyBanner,
   RecruiterCard,
-  RosterFilterBar,
+  RosterFilterPopover,
   RosterGrid,
   VersusReadyModal,
 } from "./components";
@@ -82,6 +82,7 @@ export default function CharacterSelectScene(): React.JSX.Element {
   const [p2Id, setP2Id] = useState<number | null>(null);
   const [gamepadConnected, setGamepadConnected] = useState(false);
   const [showRecruiterCard, setShowRecruiterCard] = useState(false);
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const [konamiUnlocked, setKonamiUnlocked] = useState(false);
   const konamiProgress = useRef(0);
   const konamiLastKeyAt = useRef(0);
@@ -297,6 +298,8 @@ export default function CharacterSelectScene(): React.JSX.Element {
 
   const handleGamepadMove = useCallback(
     (direction: "left" | "right" | "up" | "down") => {
+      if (filtersOpen) return;
+
       const offsets = {
         left: -1,
         right: 1,
@@ -313,7 +316,7 @@ export default function CharacterSelectScene(): React.JSX.Element {
         handleActivate(character.id);
       }
     },
-    [activeCharacter?.id, activeIndex, columns, handleActivate, view],
+    [activeCharacter?.id, activeIndex, columns, filtersOpen, handleActivate, view],
   );
 
   const pulseGamepad = useCallback((duration: number, strong: number, weak: number) => {
@@ -336,10 +339,14 @@ export default function CharacterSelectScene(): React.JSX.Element {
     enabled: true,
     onMove: handleGamepadMove,
     onConfirm: () => {
+      if (filtersOpen) return;
       if (versusMode && p2Character) handleStartFight();
       else handleConfirm();
     },
-    onBack: handleEscape,
+    onBack: () => {
+      if (filtersOpen) setFiltersOpen(false);
+      else handleEscape();
+    },
     onConnectedChange: setGamepadConnected,
     onMoveHaptic: () => pulseGamepad(35, 0.15, 0.22),
     onConfirmHaptic: () => pulseGamepad(95, 0.48, 0.62),
@@ -347,7 +354,7 @@ export default function CharacterSelectScene(): React.JSX.Element {
 
   const handleKonamiKey = useCallback(
     (event: KeyboardEvent) => {
-      if (showRecruiterCard) return;
+      if (showRecruiterCard || filtersOpen) return;
       if (event.repeat || event.altKey || event.ctrlKey || event.metaKey) return;
       const target = event.target;
       if (
@@ -380,7 +387,7 @@ export default function CharacterSelectScene(): React.JSX.Element {
         konamiProgress.current = pressed === KONAMI_SEQUENCE[0] ? 1 : 0;
       }
     },
-    [play, showRecruiterCard],
+    [filtersOpen, play, showRecruiterCard],
   );
 
   useEffect(() => {
@@ -419,15 +426,8 @@ export default function CharacterSelectScene(): React.JSX.Element {
     >
       <div className="select-scene__intro">
         <div className="select-scene__heading">
-          <h1 id="select-heading" className="select-scene__title">
-            <img
-              src={DragonballLogo}
-              alt=""
-              className="select-scene__title-ball"
-              aria-hidden="true"
-            />
-            <span className="select-scene__title-kicker">Elige tu</span>
-            <span className="select-scene__title-main">Luchador</span>
+          <h1 id="select-heading" className="visually-hidden">
+            Elige tu luchador
           </h1>
           <p className="select-scene__lede">{lede}</p>
         </div>
@@ -438,37 +438,42 @@ export default function CharacterSelectScene(): React.JSX.Element {
         />
       </div>
 
-      {!versusMode ? (
-        <>
-          <div className="select-scene__toolbar">
-            <RosterFilterBar
-              query={query}
-              resultCount={view.length}
-              totalCount={characters.length}
-              onChange={updateQuery}
-              onClear={handleClear}
-            />
-          </div>
-        </>
-      ) : null}
+      <div className="select-scene__toolbar">
+        <div
+          className="select-scene__mode-switch"
+          role="group"
+          aria-label="Modo de juego"
+        >
+          <button
+            type="button"
+            className="arcade-button arcade-button--sm"
+            aria-pressed={!versusMode}
+            onClick={() => handleSetVersusMode(false)}
+          >
+            INDIVIDUAL
+          </button>
+          <button
+            type="button"
+            className="arcade-button arcade-button--sm"
+            aria-pressed={versusMode}
+            onClick={() => handleSetVersusMode(true)}
+          >
+            VERSUS 2P
+          </button>
+        </div>
 
-      <div className="select-scene__mode-switch" role="group" aria-label="Modo de juego">
-        <button
-          type="button"
-          className="arcade-button arcade-button--sm"
-          aria-pressed={!versusMode}
-          onClick={() => handleSetVersusMode(false)}
-        >
-          INDIVIDUAL
-        </button>
-        <button
-          type="button"
-          className="arcade-button arcade-button--sm"
-          aria-pressed={versusMode}
-          onClick={() => handleSetVersusMode(true)}
-        >
-          VERSUS 2P
-        </button>
+        <RosterFilterPopover
+          query={query}
+          resultCount={view.length}
+          totalCount={characters.length}
+          open={filtersOpen}
+          onOpenChange={setFiltersOpen}
+          onChange={updateQuery}
+        />
+
+        <ArcadeButton variant="ghost" size="sm" onClick={handleClear}>
+          Limpiar
+        </ArcadeButton>
       </div>
 
       {!versusMode && p1Character ? (

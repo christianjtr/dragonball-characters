@@ -93,4 +93,25 @@ describe("FighterProfileScene navigation", () => {
     expect(screen.getByText("toca para regresar")).toBeInTheDocument();
     expect(screen.queryByText("Esc")).not.toBeInTheDocument();
   });
+
+  it("expands long biographies on demand", () => {
+    const current = useCharacterDetailMock();
+    const longDescription = "x".repeat(240);
+    useCharacterDetailMock.mockReturnValue({
+      ...current,
+      summary: { ...goku, description: longDescription },
+      detail: { ...current.detail, description: longDescription },
+    });
+
+    renderProfile();
+    const toggle = screen.getByRole("button", { name: "Ver más" });
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+
+    fireEvent.click(toggle);
+
+    expect(screen.getByRole("button", { name: "Ver menos" })).toHaveAttribute(
+      "aria-expanded",
+      "true",
+    );
+  });
 });

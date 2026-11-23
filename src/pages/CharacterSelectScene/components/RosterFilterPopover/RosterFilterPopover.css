@@ -1,0 +1,154 @@
+.roster-filters {
+  position: relative;
+  min-width: 0;
+}
+
+.roster-filters__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.roster-filters__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.roster-filters__badge {
+  display: inline-grid;
+  min-width: 18px;
+  height: 18px;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--arcade-orange);
+  color: var(--arcade-ink);
+  font-size: 0.6rem;
+  line-height: 1;
+}
+
+.roster-filters__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 190px;
+  min-height: 28px;
+  padding: 3px 8px;
+  border: 1px solid var(--arcade-line);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--arcade-panel) 85%, var(--kame-sand));
+  color: var(--arcade-ink);
+  font-size: 0.62rem;
+  cursor: pointer;
+}
+
+.roster-filters__chip:hover {
+  border-color: var(--arcade-orange);
+}
+
+.roster-filters__chip-label {
+  color: var(--arcade-ink-dim);
+  text-transform: uppercase;
+}
+
+.roster-filters__chip-value {
+  overflow: hidden;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.roster-filters__panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 50;
+  display: grid;
+  gap: var(--space-sm);
+  width: min(340px, calc(100vw - 32px));
+  max-height: min(70dvh, 520px);
+  padding: var(--space-md);
+  overflow-y: auto;
+  border: 2px solid var(--arcade-ink);
+  border-radius: 14px;
+  background: var(--arcade-panel);
+  box-shadow: var(--arcade-shadow);
+}
+
+.roster-filters__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.roster-filters__label {
+  color: var(--arcade-ink-dim);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.roster-filters__panel input,
+.roster-filters__panel select {
+  width: 100%;
+  height: 42px;
+  min-height: 42px;
+  padding: 0 var(--space-sm);
+  border: 2px solid var(--arcade-ink);
+  border-radius: 999px;
+  background: var(--arcade-panel);
+  color: var(--arcade-ink);
+  font-size: 0.8rem;
+}
+
+.roster-filters__panel select {
+  padding-right: 2.5rem;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5l5-5' fill='none' stroke='%23123a4d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.95rem center;
+  background-size: 12px 8px;
+  cursor: pointer;
+}
+
+.roster-filters__panel select option {
+  background: var(--arcade-panel);
+  color: var(--arcade-ink);
+}
+
+.roster-filters__panel input:focus-visible,
+.roster-filters__panel select:focus-visible {
+  outline: 3px solid var(--arcade-orange);
+  outline-offset: 2px;
+}
+
+.roster-filters__panel input::placeholder {
+  color: rgba(71, 111, 124, 0.7);
+}
+
+.roster-filters__panel input:hover,
+.roster-filters__panel select:hover {
+  border-color: var(--arcade-orange);
+}
+
+.roster-filters__count {
+  margin: 0;
+  color: var(--arcade-ink-dim);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+}
+
+.roster-filters__count::before {
+  margin-right: 4px;
+  color: var(--arcade-star);
+  content: "★";
+}
+
+@media (max-width: 720px) {
+  .roster-filters__panel {
+    right: auto;
+    left: 0;
+  }
+}

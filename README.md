@@ -12,8 +12,8 @@ A retro arcade-style Dragon Ball character SPA built with React 19, TypeScript, 
 
 ## Features
 
-- **Arcade home menu:** one Play entry and Options, controlled by keyboard, mouse, or touch.
-- **58-character roster:** search, race and affiliation filters, sorting, and shareable selection state in the URL.
+- **Arcade home menu:** a full-bleed Kame House hero with a rotating fighter spotlight, one Play entry and Options, controlled by keyboard, mouse, or touch.
+- **58-character roster:** a compact filter popover with removable chips, search, race and affiliation filters, sorting, and shareable selection state in the URL.
 - **Individual selection:** browse the character grid and open a fighter preview/profile.
 - **Versus selection:** choose Individual or Versus 2P from the selection screen. Pick P1 and then P2, change or cancel picks, and start the match. On mobile, a centered ready modal helps decide when both fighters are picked. Entering Versus mode pushes browser history, so Back returns to Individual mode.
 - **Multimodal controls:** Arrow keys or WASD to navigate; Enter or Space to confirm; Escape or Backspace to go back. Fighter profiles and the versus screen also return to the roster with Escape/Backspace or the gamepad's B button, restoring focus to the selected fighter. Visible back links are available on both screens, and compact layouts use a touch-friendly "VOLVER" hint. The native Gamepad API supports D-pad/stick navigation, confirm/back buttons, and optional haptic feedback where supported by the controller and browser.

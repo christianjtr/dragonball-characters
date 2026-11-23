@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
-import { MemoryRouter, Route, Routes, useNavigate } from "react-router";
+import { MemoryRouter, Route, Routes, useLocation, useNavigate } from "react-router";
 import { RosterContext, type RosterContextValue } from "@context/rosterContext";
 import CharacterSelectScene from "./CharacterSelectScene";
 import type { CharacterSummary } from "@services/apis/dragonball/types/Character";
@@ -54,6 +54,7 @@ const renderSelect = (initialEntry = "/select?versus=1") => {
   return render(
     <RosterContext.Provider value={rosterValue}>
       <MemoryRouter initialEntries={[initialEntry]}>
+        <SearchProbe />
         <Routes>
           <Route path="/select" element={<CharacterSelectScene />} />
           <Route path="/versus/:p1Id/:p2Id" element={<h1>COMBATE CARGADO</h1>} />
@@ -61,6 +62,11 @@ const renderSelect = (initialEntry = "/select?versus=1") => {
       </MemoryRouter>
     </RosterContext.Provider>,
   );
+};
+
+const SearchProbe = () => {
+  const location = useLocation();
+  return <div data-testid="search-params">{location.search}</div>;
 };
 
 const HistoryProbe = () => {
@@ -90,6 +96,13 @@ describe("CharacterSelectScene", () => {
   beforeEach(() => {
     useMediaQueryMock.mockReturnValue(false);
   });
+
+  it("does not render a circular focus badge on roster tiles", () => {
+    renderSelect("/select");
+
+    expect(document.querySelector(".fighter-tile__star")).not.toBeInTheDocument();
+  });
+
   it("selects P1 then P2 and starts the versus route", async () => {
     renderSelect("/select");
     fireEvent.click(screen.getByRole("button", { name: "VERSUS 2P" }));
@@ -167,6 +180,7 @@ describe("CharacterSelectScene", () => {
 
   it("does not prevent normal a/b text entry in the search field", () => {
     renderSelect("/select");
+    fireEvent.click(screen.getByRole("button", { name: "FILTROS" }));
     const filter = screen.getByRole("searchbox", { name: "Buscar" });
     filter.focus();
     const bEvent = new KeyboardEvent("keydown", { key: "b", bubbles: true, cancelable: true });
@@ -175,6 +189,76 @@ describe("CharacterSelectScene", () => {
     filter.dispatchEvent(aEvent);
     expect(bEvent.defaultPrevented).toBe(false);
     expect(aEvent.defaultPrevented).toBe(false);
+  });
+
+  it("syncs filter chips with the URL and removes a filter from its chip", () => {
+    renderSelect("/select?q=goku&race=Saiyan&sort=race");
+
+    const params = screen.getByTestId("search-params");
+    expect(params).toHaveTextContent("q=goku");
+    expect(
+      screen.getByRole("button", { name: "Quitar filtro Buscar: goku" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Quitar filtro Raza: Saiyajin" }),
+    ).toBeInTheDocument();
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "Quitar filtro Buscar: goku" }),
+    );
+
+    expect(params).not.toHaveTextContent("q=goku");
+    expect(
+      screen.queryByRole("button", { name: "Quitar filtro Buscar: goku" }),
+    ).not.toBeInTheDocument();
+    expect(params).toHaveTextContent("race=Saiyan");
+  });
+
+  it("closes the filter popover with Escape without leaving the selection scene", () => {
+    renderSelect("/select");
+    fireEvent.click(screen.getByRole("button", { name: "FILTROS" }));
+
+    expect(
+      screen.getByRole("dialog", { name: "Filtros de luchadores" }),
+    ).toBeInTheDocument();
+
+    fireEvent.keyDown(document, { key: "Escape" });
+
+    expect(
+      screen.queryByRole("dialog", { name: "Filtros de luchadores" }),
+    ).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "INDIVIDUAL" })).toBeInTheDocument();
+    expect(screen.getByTestId("search-params")).toBeEmptyDOMElement();
+  });
+
+  it("blocks the Konami sequence while the filter popover is open", async () => {
+    renderSelect("/select");
+    fireEvent.click(screen.getByRole("button", { name: "FILTROS" }));
+
+    const sequence = [
+      "ArrowUp",
+      "ArrowUp",
+      "ArrowDown",
+      "ArrowDown",
+      "ArrowLeft",
+      "ArrowRight",
+      "ArrowLeft",
+      "ArrowRight",
+      "b",
+      "a",
+    ];
+
+    sequence.forEach((key) => fireEvent.keyDown(document.body, { key }));
+    expect(
+      screen.queryByRole("dialog", { name: "CHRISTIAN J. TORREALBA" }),
+    ).not.toBeInTheDocument();
+
+    fireEvent.keyDown(document, { key: "Escape" });
+    sequence.forEach((key) => fireEvent.keyDown(document.body, { key }));
+
+    expect(
+      await screen.findByRole("dialog", { name: "CHRISTIAN J. TORREALBA" }),
+    ).toBeInTheDocument();
   });
 
   it("preserves P1 when P2 is changed or cancelled", () => {

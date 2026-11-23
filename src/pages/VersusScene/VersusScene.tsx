@@ -159,14 +159,14 @@ export default function VersusScene(): React.JSX.Element {
         {p1Character.name} vs {p2Character.name}
       </h1>
       <div className="versus-scene__topbar">
+        <Link className="versus-scene__back" to={backTo}>
+          Volver a luchadores
+        </Link>
         <NavigationHint
           variant="versus"
           compact={isCompact}
           gamepadConnected={gamepadConnected}
         />
-        <Link className="versus-scene__back" to={backTo}>
-          Volver a luchadores
-        </Link>
       </div>
 
       <div className="versus-scene__arena">

@@ -74,9 +74,6 @@ const FighterTileComponent: React.FC<FighterTileProps> = ({
       onPointerEnter={() => onPrefetch(character.id)}
       onFocus={() => onPrefetch(character.id)}
     >
-      <span className="fighter-tile__star" aria-hidden="true">
-        ★
-      </span>
       {quickSelect ? (
         <span
           className={`fighter-tile__quick-action fighter-tile__quick-action--${quickActionPlayer.toLowerCase()}${isP1Selected ? " fighter-tile__quick-action--ready" : ""}`}
